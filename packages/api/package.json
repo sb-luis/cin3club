@@ -1,0 +1,48 @@
+{
+  "name": "kino-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "type": "module",
+  "main": "lib/index.js",
+  "author": "Luis Sanchez Barranquero <luis.sb.dev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@hapi/glue": "^9.0.1",
+    "@hapi/hapi": "^21.3.2",
+    "@hapipal/confidence": "^6.0.2",
+    "@hapipal/haute-couture": "^4.3.1",
+    "@hapipal/toys": "^4.0.0",
+    "blipp": "^4.0.2",
+    "dotenv": "^8.2.0",
+    "exiting": "^6.1.0",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.0",
+    "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/eslint-parser": "^7.23.3",
+    "@hapi/eslint-plugin": "^6.0.0",
+    "@hapipal/hpal": "^3.1.0",
+    "@hapipal/hpal-debug": "^2.1.0",
+    "@rushstack/eslint-patch": "^1.5.1",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

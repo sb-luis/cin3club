@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ui:
+    container_name: kino-ui
+    build:
+      context: ./packages/ui
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./packages/ui/src/:/app/src
+      - ./packages/ui/package.json/:/app/package.json
+    ports:
+      - '8000:80'
+  api:
+    container_name: kino-api
+    build:
+      context: ./packages/api
+      dockerfile: Dockerfile
+      target: dev
+    env_file:
+      - ./packages/api/.env
+    volumes:
+      - ./packages/api/lib/:/app/lib
+      - ./packages/api/server/:/app/server
+      - ./packages/api/package.json/:/app/package.json
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+  db:
+    container_name: database-docker
+    image: postgres:11.6-alpine
+    env_file:
+      - ./packages/api/.env
+    ports:
+      - '5432:5432'
+    restart: always
