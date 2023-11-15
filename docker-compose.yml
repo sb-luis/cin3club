@@ -18,8 +18,8 @@ services:
       context: ./packages/api
       dockerfile: Dockerfile
       target: dev
-    env_file:
-      - ./packages/api/.env
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/kino
     volumes:
       - ./packages/api/lib/:/app/lib
       - ./packages/api/server/:/app/server
@@ -31,8 +31,12 @@ services:
   db:
     container_name: database-docker
     image: postgres:11.6-alpine
-    env_file:
-      - ./packages/api/.env
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=kino
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
     ports:
       - '5432:5432'
     restart: always

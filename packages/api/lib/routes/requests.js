@@ -6,7 +6,7 @@ export default [
     method: 'GET',
     path: '/',
     handler: async (request, h) => {
-      const { Request } = request.server.plugins.sql;
+      const { Request } = request.server.app.models;
       const items = await Request.findAll();
       return JSON.stringify(items, null, 2);
     },
@@ -16,7 +16,7 @@ export default [
     method: 'POST',
     path: '/',
     handler: async (request, h) => {
-      const { Request } = request.server.plugins.sql;
+      const { Request } = request.server.app.models;
       const xFF = request.headers['x-forwarded-for'];
       const clientIp = xFF ? xFF.split(',')[0] : request.info.remoteAddress;
       const serverHost = os.hostname();
@@ -32,7 +32,7 @@ export default [
     method: 'DELETE',
     path: '/',
     handler: async (request, h) => {
-      const { Request } = request.server.plugins.sql;
+      const { Request } = request.server.app.models;
 
       // Truncate the Request table
       await Request.destroy({

@@ -21,7 +21,6 @@
     "@hapipal/haute-couture": "^4.3.1",
     "@hapipal/toys": "^4.0.0",
     "blipp": "^4.0.2",
-    "dotenv": "^8.2.0",
     "exiting": "^6.1.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
