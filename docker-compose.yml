@@ -1,21 +1,21 @@
 version: '3.8'
 
 services:
-  ui:
-    container_name: kino-ui
+  frontend:
+    container_name: kino-frontend
     build:
-      context: ./packages/ui
+      context: ./packages/frontend
       dockerfile: Dockerfile
       target: dev
     volumes:
-      - ./packages/ui/src/:/app/src
-      - ./packages/ui/package.json/:/app/package.json
+      - ./packages/frontend/src/:/app/src
+      - ./packages/frontend/package.json/:/app/package.json
     ports:
       - '8000:8000'
-  api:
-    container_name: kino-api
+  backend:
+    container_name: kino-backend
     build:
-      context: ./packages/api
+      context: ./packages/backend
       dockerfile: Dockerfile
       target: dev
     environment:
@@ -25,9 +25,9 @@ services:
       - CLIENT_URL=http://localhost:8000
       - LOG_LEVEL=info
     volumes:
-      - ./packages/api/lib/:/app/lib
-      - ./packages/api/server/:/app/server
-      - ./packages/api/package.json/:/app/package.json
+      - ./packages/backend/lib/:/app/lib
+      - ./packages/backend/server/:/app/server
+      - ./packages/backend/package.json/:/app/package.json
     ports:
       - '3000:3000'
     depends_on:

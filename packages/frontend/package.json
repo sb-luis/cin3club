@@ -1,5 +1,5 @@
 {
-  "name": "kino-ui",
+  "name": "@private/frontend",
   "type": "module",
   "version": "0.0.0",
   "private": true,
