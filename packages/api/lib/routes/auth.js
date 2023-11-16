@@ -1,84 +1,279 @@
 import Bcrypt from 'bcrypt';
 import Boom from '@hapi/boom';
-import { users } from '../users.js';
-import crypto from 'crypto';
+
+// Set expiry date to be tomorrow
+const SESSION_EXPIRY_TIME = 1;
 
 export default [
   {
     method: 'POST',
-    path: '/register',
+    path: '/auth/register',
     handler: async (request, h) => {
-      console.log('posting to register');
-      const { username, password } = request.payload;
-      let account = users.find((user) => user.username === username);
+      const { User, Session } = request.server.app.models;
+      const { alias, password } = request.payload;
 
-      if (!account) {
-        console.log('hashing password...');
-        const hash = await Bcrypt.hash(password, 11);
+      // Start an unmanaged transaction
+      const { connection } = request.server.app;
+      const transaction = await connection.transaction();
 
-        const sessionId = crypto.randomUUID();
+      try {
+        // Make sure the given 'alias' is not in use
+        let user = await User.findOne({
+          where: {
+            alias,
+          },
+        });
 
-        console.log('creating account...');
-        account = { username, password: hash, sessionId };
+        if (user) {
+          return Boom.badRequest("User 'alias' already exists");
+        }
 
-        users.push(account);
-        console.log('account created...');
+        // Hash user's password
+        const hash = await Bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
-        console.log(users);
-        console.log('setting auth cookie...');
+        // Create user
+        user = await User.create(
+          {
+            alias,
+            password: hash,
+          },
+          { transaction },
+        );
 
-        // Add session to cookies
-        request.cookieAuth.set({ id: account.sessionId });
+        // Create session
+        let date = new Date();
+        date.setDate(date.getDate() + SESSION_EXPIRY_TIME);
+        const session = await Session.create(
+          {
+            userId: user.id,
+            expires: date,
+          },
+          { transaction },
+        );
+
+        // If all db interactions went well...
+        await transaction.commit();
+
+        // Add session to cookies and return
+        request.cookieAuth.set(session);
+        return h.response('OK').code(200);
+      } catch (err) {
+        // If anything went wrong...
+        console.log(err);
+        transaction.rollback();
+        return Boom.badImplementation();
       }
-
-      return account;
     },
   },
   {
     method: 'POST',
-    path: '/login',
+    path: '/auth/login',
     handler: async (request, h) => {
-      console.log('POSTING TO LOGIN');
-      const { username, password } = request.payload;
+      const { User, Session } = request.server.app.models;
+      const { alias, password } = request.payload;
+      const { connection } = request.server.app;
+      const transaction = await connection.transaction();
 
-      console.log('searching user');
+      let date = new Date();
 
-      const account = users.find((user) => user.username === username);
+      try {
+        // Validate user alias
+        let user = await User.findOne({
+          where: {
+            alias,
+          },
+        });
 
-      if (!account || !(await Bcrypt.compare(password, account.password))) {
-        return Boom.unauthorized();
+        // Validate user password
+        if (!user || !(await Bcrypt.compare(password, user.password))) {
+          return Boom.unauthorized();
+        }
+
+        // Check if there is an existing session for this user
+        let session = await Session.findOne({
+          where: {
+            userId: user.id,
+          },
+        });
+
+        // If session found but expired...
+        if (session && session.expires <= date) {
+          // Delete session
+          await Session.destroy(
+            {
+              where: { id: session.id },
+            },
+            { transaction },
+          );
+          session = null;
+        }
+
+        // If a session is not found or has expired
+        if (!session) {
+          // Create session
+          date.setDate(date.getDate() + SESSION_EXPIRY_TIME);
+          session = await Session.create(
+            {
+              userId: user.id,
+              expires: date,
+            },
+            { transaction },
+          );
+        }
+
+        // If all db interactions went well...
+        transaction.commit();
+        // Add session to cookies and return
+        request.cookieAuth.set(session);
+        return h.response('OK').code(200);
+      } catch (err) {
+        // If anything went wrong...
+        console.log(err);
+        transaction.rollback();
+        return Boom.badImplementation();
       }
-
-      // Add session to cookies
-      request.cookieAuth.set({ id: account.sessionId });
-      return account;
     },
   },
   {
     method: 'GET',
-    path: '/logout',
+    path: '/auth/logout',
     handler: async (request, h) => {
-      let session = null;
+      console.log('logging out!');
+      const { Session } = request.server.app.models;
       const sessionId = request.auth.credentials.id;
 
-      //Logout user
-      try {
-        // Logout user from database
-      } catch (err) {
-        err.response
-          ? console.log(`${err.response.status}: ${err.response.data.message}`)
-          : console.log(err);
-      }
+      // Delete session
+      await Session.destroy({
+        where: { id: sessionId },
+      });
 
-      return session;
+      return h.response('OK').code(200);
+    },
+    options: {
+      auth: 'session',
     },
   },
   {
     method: 'GET',
     path: '/auth/me',
     handler: async (request, h) => {
-      console.log('printing credentials');
-      return request.auth.credentials;
+      const { User } = request.server.app.models;
+      const userId = request.auth.credentials.userId;
+
+      let user = await User.findOne({
+        where: {
+          id: userId,
+        },
+        attributes: ['alias', 'email'],
+      });
+
+      return user.toJSON();
+    },
+    options: {
+      auth: 'session',
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/auth/me',
+    handler: async (request, h) => {
+      const { User } = request.server.app.models;
+      const { password, newEmail, newAlias, newPassword } = request.payload;
+      const userId = request.auth.credentials.userId;
+
+      // Get existing user
+      let user = await User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      // Validate user password
+      if (!(await Bcrypt.compare(password, user.password))) {
+        return Boom.unauthorized();
+      }
+
+      if (newAlias) {
+        // Make sure the given 'alias' is not in use
+        const collision = await User.findOne({
+          where: {
+            alias: newAlias,
+          },
+        });
+        if (collision) return Boom.badRequest("User 'alias' already exists");
+        user.alias = newAlias;
+      }
+
+      // Update any new data about the user
+      if (newEmail) {
+        user.email = newEmail;
+      }
+
+      if (newPassword) {
+        // Hash user's password
+        const hash = await Bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS));
+        user.password = hash;
+      }
+
+      // Save user with new data
+      await user.save();
+
+      return h.response('OK').status(200);
+    },
+    options: {
+      auth: 'session',
+    },
+  },
+  {
+    method: 'POST',
+    path: '/auth/delete-me',
+    handler: async (request, h) => {
+      const { User, Session } = request.server.app.models;
+      const { password } = request.payload;
+      const { connection } = request.server.app;
+      const transaction = await connection.transaction();
+      const userId = request.auth.credentials.userId;
+
+      try {
+        // Validate user password
+        let user = await User.findOne({
+          where: {
+            userId,
+          },
+        });
+        if (!(await Bcrypt.compare(password, user.password))) {
+          return Boom.unauthorized();
+        }
+
+        // Delete all sessions by given user
+        await Session.destroy(
+          {
+            where: {
+              userId,
+            },
+          },
+          { transaction },
+        );
+
+        // Delete user
+        await User.destroy(
+          {
+            where: {
+              id: userId,
+            },
+          },
+          { transaction },
+        );
+
+        // If all db interactions went well...
+        transaction.commit();
+        return h.response('OK').code(200);
+      } catch (err) {
+        // If anything went wrong...
+        console.log(err);
+        transaction.rollback();
+        return Boom.badImplementation();
+      }
     },
     options: {
       auth: 'session',

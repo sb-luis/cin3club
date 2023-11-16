@@ -54,6 +54,7 @@ router.beforeEach(async (to) => {
     await authStore.loadCredentials();
 
     if (!authStore.credentials) {
+      console.log('Redirecting to /login page');
       // Redirect to login if credentials are invalid
       return { path: '/login', replace: true };
     }

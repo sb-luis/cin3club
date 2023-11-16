@@ -1,27 +1,28 @@
-import { users } from '../users.js';
-
 export default function () {
   const name = 'session';
   const scheme = 'cookie';
 
-  const validate = async (request, session) => {
-    console.log('VALIDATING REQUEST...');
-    console.log(`${session.id}`);
+  const validate = async (request, cookieSession) => {
+    const { Session } = request.server.app.models;
+    let currentDate = new Date();
 
-    console.log(users);
+    // Validate session exists
+    const dbSession = await Session.findOne({ id: cookieSession.id });
 
-    const account = await users.find((user) => user.sessionId === session.id);
-
-    if (!account) {
-      console.log('no matching account found');
-      return { valid: false };
+    // Request unauthenticated...
+    if (!dbSession) {
+      // ...if session not found
+      return { isValid: false };
+    } else if (dbSession && dbSession.expires <= currentDate) {
+      // ...if session found but expired
+      await Session.destroy({
+        where: { id: session.id },
+      });
+      return { isValid: false };
     }
 
-    // If session not found, request is unauthorized
-    console.log('found credentials!');
-
-    // Set request.auth.credentials
-    return { isValid: true, credentials: account };
+    // Otherwise set request.auth.credentials
+    return { isValid: true, credentials: cookieSession };
   };
 
   const options = {

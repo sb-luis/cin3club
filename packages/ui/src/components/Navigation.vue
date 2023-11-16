@@ -19,7 +19,7 @@ const { credentials } = storeToRefs(authStore);
       <RouterLink class="p-2" to="/register">register</RouterLink>
     </template>
     <template v-else>
-      <span class="p-2">Logged in as '{{ credentials.username }}'</span>
+      <span class="p-2">Logged in as '{{ credentials }}'</span>
       <RouterLink class="p-2" to="/" @click="authStore.logout">logout</RouterLink>
     </template>
   </nav>

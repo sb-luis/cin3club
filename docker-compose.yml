@@ -20,8 +20,9 @@ services:
       target: dev
     environment:
       - DATABASE_URL=postgres://user:pass@db:5432/kino
-      - CLIENT_URL=http://localhost:8000
+      - BCRYPT_SALT_ROUNDS=11
       - COOKIE_KEY=1111111111111111111111111111111111
+      - CLIENT_URL=http://localhost:8000
     volumes:
       - ./packages/api/lib/:/app/lib
       - ./packages/api/server/:/app/server

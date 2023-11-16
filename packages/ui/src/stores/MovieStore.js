@@ -12,8 +12,6 @@ export const useMovieStore = defineStore('MovieStore', {
       this.isLoading = true;
       const res = await this.$axios.get('/api/movies');
       this.movies = res.data;
-      console.log(this.movies);
-
       this.isLoading = false;
     },
   },
