@@ -11,7 +11,7 @@ services:
       - ./packages/ui/src/:/app/src
       - ./packages/ui/package.json/:/app/package.json
     ports:
-      - '8000:80'
+      - '8000:8000'
   api:
     container_name: kino-api
     build:
@@ -20,6 +20,8 @@ services:
       target: dev
     environment:
       - DATABASE_URL=postgres://user:pass@db:5432/kino
+      - CLIENT_URL=http://localhost:8000
+      - COOKIE_KEY=1111111111111111111111111111111111
     volumes:
       - ./packages/api/lib/:/app/lib
       - ./packages/api/server/:/app/server

@@ -1,5 +1,5 @@
 {
-  "name": "kino-api",
+  "name": "@private/api",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -14,13 +14,15 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@hapi/basic": "^7.0.2",
     "@hapi/boom": "^10.0.1",
+    "@hapi/cookie": "^12.0.1",
     "@hapi/glue": "^9.0.1",
     "@hapi/hapi": "^21.3.2",
     "@hapipal/confidence": "^6.0.2",
     "@hapipal/haute-couture": "^4.3.1",
     "@hapipal/toys": "^4.0.0",
-    "blipp": "^4.0.2",
+    "bcrypt": "^5.1.1",
     "exiting": "^6.1.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
@@ -34,6 +36,7 @@
     "@hapipal/hpal": "^3.1.0",
     "@hapipal/hpal-debug": "^2.1.0",
     "@rushstack/eslint-patch": "^1.5.1",
+    "blipp": "^4.0.2",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",

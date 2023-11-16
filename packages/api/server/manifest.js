@@ -13,7 +13,12 @@ export default new Confidence.Store({
       $default: 3000,
     },
     routes: {
-      cors: true,
+      cors: {
+        // an array of origins or '*' or 'ignore'
+        origin: [process.env.CLIENT_URL],
+        // boolean - 'Access-Control-Allow-Credentials'
+        credentials: true,
+      },
     },
     debug: {
       $filter: 'NODE_ENV',

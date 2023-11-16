@@ -4,7 +4,7 @@ export default [
   // GET
   {
     method: 'GET',
-    path: '/',
+    path: '/api/requests',
     handler: async (request, h) => {
       const { Request } = request.server.app.models;
       const items = await Request.findAll();
@@ -14,7 +14,7 @@ export default [
   // POST
   {
     method: 'POST',
-    path: '/',
+    path: '/api/requests',
     handler: async (request, h) => {
       const { Request } = request.server.app.models;
       const xFF = request.headers['x-forwarded-for'];
@@ -30,7 +30,7 @@ export default [
   // DELETE
   {
     method: 'DELETE',
-    path: '/',
+    path: '/api/requests',
     handler: async (request, h) => {
       const { Request } = request.server.app.models;
 

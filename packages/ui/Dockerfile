@@ -11,7 +11,7 @@ COPY . .
 # --- DEVELOPMENT ---
 FROM base AS dev 
 # expose port to access server
-EXPOSE 80
+EXPOSE 8000
 # run app
 CMD ["npm", "run", "dev"]
 
