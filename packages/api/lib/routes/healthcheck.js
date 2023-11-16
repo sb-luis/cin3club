@@ -4,7 +4,7 @@ export default {
   options: {
     handler(request, h) {
       request.log('info', 'healthcheck heartbeat');
-      return h.response('SUCCESS');
+      return h.response('OK').code(200);
     },
   },
 };

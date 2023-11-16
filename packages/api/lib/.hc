@@ -7,7 +7,7 @@ module.exports = {
     list: true,
     signature: ['name', 'schema'],
     method: (server, options, name, schema) => {
-      console.log(`Defining '${name}' model...`);
+      server.log('debug', `Defining '${name}' model `);
       const { connection } = server.app;
       server.app.models = server.app.models || {};
       server.app.models[name] = connection.define(name, schema);

@@ -59,7 +59,7 @@ export default [
         return h.response('OK').code(200);
       } catch (err) {
         // If anything went wrong...
-        console.log(err);
+        request.log('err', err);
         transaction.rollback();
         return Boom.badImplementation();
       }
@@ -128,7 +128,7 @@ export default [
         return h.response('OK').code(200);
       } catch (err) {
         // If anything went wrong...
-        console.log(err);
+        request.log('err', err);
         transaction.rollback();
         return Boom.badImplementation();
       }
@@ -138,7 +138,7 @@ export default [
     method: 'GET',
     path: '/auth/logout',
     handler: async (request, h) => {
-      console.log('logging out!');
+      request.log('debug', 'Logging out!');
       const { Session } = request.server.app.models;
       const sessionId = request.auth.credentials.id;
 
@@ -270,7 +270,7 @@ export default [
         return h.response('OK').code(200);
       } catch (err) {
         // If anything went wrong...
-        console.log(err);
+        request.log('err', err);
         transaction.rollback();
         return Boom.badImplementation();
       }

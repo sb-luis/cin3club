@@ -8,7 +8,7 @@ export default {
   path: '/api/movies',
   options: {
     handler(request, h) {
-      console.log('Proceeding to protected route');
+      request.log('debug', 'Proceeding to protected route');
       return movies;
     },
     auth: 'session',

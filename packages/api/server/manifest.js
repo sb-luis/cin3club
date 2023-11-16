@@ -22,12 +22,10 @@ export default new Confidence.Store({
     },
     debug: {
       $filter: 'NODE_ENV',
-      $default: {
-        log: ['error', 'start'],
-        request: ['error'],
-      },
+      $default: {},
       production: {
-        request: ['implementation'],
+        log: ['error', 'start'],
+        request: ['error', 'implementation'],
       },
     },
   },
