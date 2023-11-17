@@ -4,7 +4,7 @@ import Layout from './layouts/Layout.vue';
 
 // Pages
 import Home from './pages/Home.vue';
-import Requests from './pages/Requests.vue';
+import Profile from './pages/Profile.vue';
 import Movies from './pages/Movies.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
@@ -12,7 +12,7 @@ import NotFound from './pages/NotFound.vue';
 export const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/movies', name: 'Movies', component: Movies },
-  { path: '/requests', name: 'Requests', component: Requests },
+  { path: '/profile', name: 'Profile', component: Profile },
   {
     path: '/login',
     name: 'Login',

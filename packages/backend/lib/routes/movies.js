@@ -14,7 +14,7 @@ export default [
 
       try {
         const res = await axios.get(`http://www.omdbapi.com/?s=${s}&page=1&apikey=${process.env.MOVIE_API_KEY}`);
-        return res.data.Search.filter;
+        return res.data.Search;
       } catch (err) {
         request.log('err', err);
       }

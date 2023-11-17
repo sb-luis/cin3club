@@ -1,30 +1,35 @@
 export const en = {
   translation: {
     app: {
-      title: 'KINO',
+      title: 'kino',
     },
     pages: {
       home: {
-        title: 'Home',
+        title: 'home',
+      },
+      profile: {
+        title: 'profile',
       },
       movies: {
-        title: 'Movies',
+        title: 'movies',
         searchLabel: 'Search for a movie',
+        searchPlaceholder: 'search',
+        welcomeMessage: 'The place where your favourite movies live!',
       },
       login: {
-        title: 'Login',
+        title: 'login',
         aliasLabel: 'Alias',
-        aliasPlaceholder: 'Type your alias',
+        aliasPlaceholder: 'alias',
         passwordLabel: 'Password',
-        passwordPlaceholder: 'Type your password',
+        passwordPlaceholder: 'password',
         submitButton: 'Login',
       },
       register: {
-        title: 'Register',
+        title: 'register',
         aliasLabel: 'Alias',
-        aliasPlaceholder: 'Type your alias',
+        aliasPlaceholder: 'alias',
         passwordLabel: 'Password',
-        passwordPlaceholder: 'Type your password',
+        passwordPlaceholder: 'password',
         submitButton: 'Register',
       },
     },

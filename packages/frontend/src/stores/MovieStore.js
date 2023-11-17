@@ -7,12 +7,24 @@ export const useMovieStore = defineStore('MovieStore', {
       isLoading: false,
       movieDetailsCache: {},
       movies: [],
-      querySchema: Joi.string().min(3).max(50).required(),
+      querySchema: Joi.string().min(3).max(50).required().label('search query'),
       queryValue: '',
       queryError: '',
     };
   },
   actions: {
+    async validateQuery() {
+      this.queryError = '';
+
+      // Update router with last query
+      this.$router.replace({ path: '/movies', query: { s: this.queryValue } });
+
+      // Validate query
+      const { value, error } = this.querySchema.validate(this.queryValue);
+      if (error) {
+        return (this.queryError = error.message);
+      }
+    },
     async getMovies() {
       // Validate query
       const { value, error } = this.querySchema.validate(this.queryValue);
@@ -29,6 +41,7 @@ export const useMovieStore = defineStore('MovieStore', {
       try {
         const res = await this.$axios.get(`/api/movies?s=${s}`);
         this.movies = res.data;
+        console.log(this.movies);
       } catch (err) {
         console.error(err);
       }

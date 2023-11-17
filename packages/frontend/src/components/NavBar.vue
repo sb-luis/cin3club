@@ -11,7 +11,6 @@ const { credentials } = storeToRefs(authStore);
     <RouterLink to="/">home</RouterLink>
     <template v-if="credentials">
       <RouterLink to="/movies">movies</RouterLink>
-      <RouterLink to="/requests">requests</RouterLink>
       <RouterLink to="/profile">profile</RouterLink>
     </template>
     <template v-if="!credentials">

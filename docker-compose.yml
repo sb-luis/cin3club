@@ -10,6 +10,8 @@ services:
     volumes:
       - ./packages/frontend/src/:/app/src
       - ./packages/frontend/package.json/:/app/package.json
+      - ./packages/frontend/tailwind.config.cjs/:/app/tailwind.config.cjs
+      - ./packages/frontend/index.html/:/app/index.html
     ports:
       - '8000:8000'
   backend:

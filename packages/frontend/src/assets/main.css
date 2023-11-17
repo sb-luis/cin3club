@@ -41,6 +41,10 @@ a:hover:after {
   top: 0%;
 }
 
+input:autofill {
+  background: none;
+}
+
 body {
   min-height: 100vh;
   transition:
