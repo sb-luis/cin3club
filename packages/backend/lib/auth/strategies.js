@@ -7,7 +7,11 @@ export default function () {
     let currentDate = new Date();
 
     // Validate session exists
-    const dbSession = await Session.findOne({ id: cookieSession.id });
+    let dbSession = await Session.findOne({
+      where: {
+        id: cookieSession.id,
+      },
+    });
 
     // Request unauthenticated...
     if (!dbSession) {

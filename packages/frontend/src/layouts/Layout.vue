@@ -1,5 +1,5 @@
 <script setup>
-import Navigation from '../components/Navigation.vue';
+import NavBar from '../components/NavBar.vue';
 import { routes } from '../routes';
 import { useAuthStore } from '../stores/AuthStore';
 
@@ -10,34 +10,23 @@ const year = date.getFullYear();
 </script>
 
 <template>
-  <header>
-    <h1>{{ $t('app.title') }}</h1>
-    <Navigation />
-  </header>
+  <div class="w-full h-full z-10 relative">
+    <div class="h-full py-3 px-6 m-auto flex flex-col items-center">
+      <header class="text-center">
+        <h1 class="text-5xl">{{ $t('app.title') }}</h1>
+        <NavBar class="pt-2" />
+      </header>
 
-  <main>
-    <router-view v-slot="{ Component, route }">
-      <component :is="Component" :key="route.path" />
-    </router-view>
-  </main>
+      <main class="flex-1 max-w-6xl">
+        <router-view v-slot="{ Component, route }">
+          <component :is="Component" :key="route.path" />
+        </router-view>
+      </main>
 
-  <footer>
-    <p>{{ $t('footer.license') }}</p>
-    <p>{{ $t('footer.copyright', { year }) }}</p>
-  </footer>
+      <footer class="py-6">
+        <p>{{ $t('footer.license') }}</p>
+        <p>{{ $t('footer.copyright', { year }) }}</p>
+      </footer>
+    </div>
+  </div>
 </template>
-
-<style>
-header {
-  text-align: center;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-bottom: 0.5rem;
-}
-</style>

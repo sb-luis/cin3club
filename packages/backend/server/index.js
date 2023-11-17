@@ -1,11 +1,10 @@
 'use strict';
 
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-
 import Glue from '@hapi/glue';
 import Exiting from 'exiting';
 import Manifest from './manifest.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 // Compute __dirname as ESM doesn't expose it
 const __dirname = dirname(fileURLToPath(import.meta.url));

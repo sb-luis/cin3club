@@ -9,15 +9,12 @@ onMounted(() => requestStore.getRequests());
 
 <template>
   <div>
+    <h2 class="text-5xl py-5 uppercase">Requests:</h2>
     <div class="pb-2">
-      <button @click="requestStore.postRequest()" class="bg-green-800 mr-2 px-2 rounded">
-        POST
-      </button>
+      <button @click="requestStore.postRequest()" class="bg-green-800 mr-2 px-2 rounded">POST</button>
       <button @click="requestStore.deleteRequests()" class="bg-red-800 px-2 rounded">DELETE</button>
     </div>
     <div>
-      <h2 v-if="requestStore.isLoading">Loading...</h2>
-      <h2 class="py-2" v-else>Requests:</h2>
       <table>
         <tr>
           <th>Timestamp</th>
