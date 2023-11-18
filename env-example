@@ -1,1 +1,4 @@
-MOVIE_API_KEY=foo
+OMDB_ENDPOINT=http://www.omdbapi.com
+OMDB_KEY=foo
+TMDB_ENDPOINT=https://api.themoviedb.org/3
+TMDB_KEY=bar

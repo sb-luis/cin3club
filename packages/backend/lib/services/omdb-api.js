@@ -9,15 +9,17 @@ export default class OmdbApi extends Schmervice.Service {
   async getMovies(searchQuery) {
     this.server.log(['info', 'omdb-api'], `GET movies named '${searchQuery}'`);
 
-    const res = await axios.get(`http://www.omdbapi.com/?s=${searchQuery}&page=1&apikey=${process.env.MOVIE_API_KEY}`);
+    // Fetch movies from OMDB
+    const res = await axios.get(`${process.env.OMDB_ENDPOINT}/?s=${searchQuery}&page=1&apikey=${process.env.OMDB_KEY}`);
 
     let data = [];
 
+    // Data schema mappings (OMDB to Kino)
     if (res.data?.Search?.length) {
       data = res.data.Search.filter((item) => item.Poster && item.Poster !== 'N/A').map((item) => {
         return {
           id: item.imdbID,
-          title: item.Title,
+          englishTitle: item.Title,
           releaseDate: `${item.Year}-01-01`,
           posterPath: item.Poster,
         };
@@ -30,7 +32,8 @@ export default class OmdbApi extends Schmervice.Service {
   async getMovieDetails(id) {
     this.server.log(['info', 'omdb-api'], `GET movie details for '${id}'`);
 
-    const res = await axios.get(`http://www.omdbapi.com/?i=${id}&apikey=${process.env.MOVIE_API_KEY}`);
+    // Fetch movie details from OMDB
+    const res = await axios.get(`${process.env.OMDB_ENDPOINT}/?i=${id}&apikey=${process.env.OMDB_KEY}`);
 
     return res.data;
   }

@@ -15,6 +15,10 @@ const dateStrToYear = (str) => {
   return d.getFullYear();
 };
 
+const fullPosterUrl = (path) => {
+  return `https://image.tmdb.org/t/p/w220_and_h330_face${path}`;
+};
+
 const movieStore = useMovieStore();
 
 const movieDetails = computed(() => {
@@ -28,40 +32,23 @@ const movieDetails = computed(() => {
     v-if="movie"
     @click="() => movieStore.selectMovie(movie.id)"
     class="bg-slate-900 hover:bg-slate-800 transition-colors duration-300 ease-cubic rounded-2xl w-full flex justify-between p-2 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)]"
-    :class="{ 'opacity-50': !movieDetails, border: movieStore.selectedMovie === movie.id }"
   >
-    <div class="text-start p-2">
+    <div class="max-w-[480px] text-start p-2">
       <div class="pb-5">
-        <p class="text-2xl md:text-4xl py-2">{{ movie.title }}</p>
+        <p class="text-2xl break-words md:text-4xl py-2">{{ movie.englishTitle }}</p>
+        <p v-if="movie.originalTitle !== movie.englishTitle" class="text-sm text-blue-400 italic md:text-2xl py-2">
+          {{ movie.originalTitle }}
+        </p>
         <div class="md:text-lg flex items-center space-x-2 md:space-x-4">
           <p>{{ dateStrToYear(movie.releaseDate) }}</p>
-          <!-- <span v-if="movieDetails">|</span>
-          <p v-if="movieDetails">{{ movieDetails.runningTime }}</p> -->
-          <!-- <span v-if="movieDetails" class="hidden md:block">|</span>
-          <div v-if="movieDetails" class="hidden md:flex items-center">
-            <p>{{ movieDetails.metascore }}</p>
-            <span class="p-2 text-xs">metascore</span>
-          </div> -->
         </div>
       </div>
-      <!-- <div class="pb-2 md:flex" v-if="movieDetails">
-        <p class="pr-2">Director:</p>
-        <p class="font-bold">{{ movieDetails.Director }}</p>
-      </div>
-      <div class="pb-2 hidden md:flex" v-if="movieDetails">
-        <p class="pr-2">Cast:</p>
-        <p class="font-bold">{{ movieDetails.Actors }}</p>
-      </div>
-      <div class="md:flex" v-if="movieDetails">
-        <p class="pr-2">Country:</p>
-        <p class="font-bold">{{ movieDetails.Country }}</p>
-      </div> -->
     </div>
-    <div class="relative flex justify-center items-start w-[200px] h-[300px]">
+    <div class="min-w-[220px] relative flex justify-center items-start w-[220px] h-[330px]">
       <RatingForm v-show="movieStore.selectedMovie === movie.id" />
-      <div class="absolute z-[-1] top-0 left-0">
+      <div class="absolute top-0 left-0">
         <img
-          :src="movie.posterPath"
+          :src="fullPosterUrl(movie.posterPath)"
           class="shadow-sm rounded-2xl w-[200px]"
           :class="{ 'blur-xl opacity-50': movieStore.selectedMovie === movie.id }"
         />

@@ -10,9 +10,9 @@ export default [
     path: '/api/movies',
     handler: async (request, h) => {
       const { s } = request.query;
-      const { omdbApi } = request.services();
+      const { tmdbApi } = request.services();
       try {
-        const movies = await omdbApi.getMovies(s);
+        const movies = await tmdbApi.getMovies(s);
         return movies;
       } catch (err) {
         request.log('err', err);
