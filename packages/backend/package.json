@@ -21,6 +21,7 @@
     "@hapi/hapi": "^21.3.2",
     "@hapipal/confidence": "^6.0.2",
     "@hapipal/haute-couture": "^4.3.1",
+    "@hapipal/schmervice": "^3.0.0",
     "@hapipal/toys": "^4.0.0",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",

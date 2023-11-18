@@ -2,6 +2,10 @@ export const en = {
   translation: {
     app: {
       title: 'kino',
+      footer: {
+        license: 'Released under the MIT License',
+        copyright: 'Copyright © {{year}} Luis Sanchez Barranquero',
+      },
     },
     pages: {
       home: {
@@ -33,9 +37,13 @@ export const en = {
         submitButton: 'Register',
       },
     },
-    footer: {
-      license: 'Released under the MIT License',
-      copyright: 'Copyright © {{year}} Luis Sanchez Barranquero',
+    components: {
+      ratingForm: {
+        title: 'Rate this movie',
+        ratingLabel: 'Score (0-100)',
+        dateSeenLabel: 'Date Seen',
+        submitButton: 'Rate',
+      },
     },
   },
 };

@@ -9,19 +9,28 @@ import Movies from './pages/Movies.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
 
+// Profile Pages
+import UserProfile from './components/UserProfile.vue';
+import UserRatings from './components/UserRatings.vue';
+
 export const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/movies', name: 'Movies', component: Movies },
-  { path: '/profile', name: 'Profile', component: Profile },
+  { path: '/', component: Home },
+  { path: '/movies', component: Movies },
+  {
+    path: '/me',
+    component: Profile,
+    children: [
+      { path: '', component: UserProfile },
+      { path: 'ratings', component: UserRatings },
+    ],
+  },
   {
     path: '/login',
-    name: 'Login',
     component: Auth,
     props: { authPage: 'login' },
   },
   {
     path: '/register',
-    name: 'Register',
     component: Auth,
     props: { authPage: 'register' },
   },

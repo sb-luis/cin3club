@@ -6,6 +6,7 @@ export const useMovieStore = defineStore('MovieStore', {
     return {
       isLoading: false,
       movieDetailsCache: {},
+      selectedMovie: '',
       movies: [],
       querySchema: Joi.string().min(3).max(50).required().label('search query'),
       queryValue: '',
@@ -47,17 +48,21 @@ export const useMovieStore = defineStore('MovieStore', {
       }
       this.isLoading = false;
     },
-    async rateMovie({ id }) {
+    async rateMovie({ id, rating, dateSeen }) {
       this.isLoading = true;
       // Send request
       try {
-        const res = await this.$axios.post(`/api/movies/${id}`);
+        const res = await this.$axios.post(`/api/ratings/${id}`, { dateSeen, rating });
+        console.log('movie rated!');
         console.log(res.data);
-        this.movieDetailsCache[id] = res.data;
+        //this.movieDetailsCache[id] = res.data;
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
+    },
+    async selectMovie(id) {
+      this.selectedMovie = id;
     },
   },
 });

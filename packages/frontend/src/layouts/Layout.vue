@@ -1,6 +1,5 @@
 <script setup>
 import NavBar from '../components/NavBar.vue';
-import { routes } from '../routes';
 import { useAuthStore } from '../stores/AuthStore';
 
 const authStore = useAuthStore();
@@ -24,8 +23,8 @@ const year = date.getFullYear();
       </main>
 
       <footer class="py-6 text-xs text-center text-gray-500">
-        <p>{{ $t('footer.license') }}</p>
-        <p>{{ $t('footer.copyright', { year }) }}</p>
+        <p>{{ $t('app.footer.license') }}</p>
+        <p>{{ $t('app.footer.copyright', { year }) }}</p>
       </footer>
     </div>
   </div>

@@ -9,12 +9,11 @@ export default [
     method: 'get',
     path: '/api/movies',
     handler: async (request, h) => {
-      request.log('debug', 'Fetching movies from thrid-party API...');
       const { s } = request.query;
-
+      const { omdbApi } = request.services();
       try {
-        const res = await axios.get(`http://www.omdbapi.com/?s=${s}&page=1&apikey=${process.env.MOVIE_API_KEY}`);
-        return res.data.Search;
+        const movies = await omdbApi.getMovies(s);
+        return movies;
       } catch (err) {
         request.log('err', err);
       }
@@ -34,12 +33,11 @@ export default [
     path: '/api/movies/{id}',
     handler: async (request, h) => {
       const { id } = request.params;
+      const { omdbApi } = request.services();
 
       try {
-        // GET movie details
-        request.log('info', `Querying movie details for imdbID "${id}"`);
-        const res = await axios.get(`http://www.omdbapi.com/?i=${id}&apikey=${process.env.MOVIE_API_KEY}`);
-        return res.data;
+        const movieDetails = await omdbApi.getMovieDetails(id);
+        return movieDetails;
       } catch (err) {
         request.log('err', err);
       }
