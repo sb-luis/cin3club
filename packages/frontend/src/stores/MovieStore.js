@@ -1,46 +1,48 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
+import { useMainStore } from './MainStore';
 import Joi from 'joi';
 
 export const useMovieStore = defineStore('MovieStore', {
   state: () => {
     return {
       isLoading: false,
-      movieDetailsCache: {},
-      selectedMovie: '',
       movies: [],
-      querySchema: Joi.string().min(3).max(50).required().label('search query'),
-      queryValue: '',
-      queryError: '',
+      movieDetails: {},
+      searchQuery: '',
+      searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
+      searchQueryError: '',
     };
   },
   actions: {
     async validateQuery() {
-      this.queryError = '';
+      this.searchQueryError = '';
 
       // Update router with last query
-      this.$router.replace({ path: '/movies', query: { s: this.queryValue } });
+      this.$router.replace({ path: '/movies', query: { s: this.searchQuery } });
 
       // Validate query
-      const { value, error } = this.querySchema.validate(this.queryValue);
+      const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
       if (error) {
-        return (this.queryError = error.message);
+        return (this.searchQueryError = error.message);
       }
     },
     async getMovies() {
       // Validate query
-      const { value, error } = this.querySchema.validate(this.queryValue);
+      const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
       if (error) {
-        return (this.queryError = error.message);
+        return (this.searchQueryError = error.message);
       }
 
-      this.queryError = '';
+      const mainStore = useMainStore();
+
+      this.searchQueryError = '';
       this.isLoading = true;
       // Send request
-      const s = encodeURIComponent(this.queryValue);
+      const s = encodeURIComponent(this.searchQuery);
 
       // Send request
       try {
-        const res = await this.$axios.get(`/api/movies?s=${s}`);
+        const res = await this.$axios.get(`/api/movies?s=${s}&lang=${mainStore.lang}`);
         this.movies = res.data;
         console.log(this.movies);
       } catch (err) {
@@ -61,8 +63,21 @@ export const useMovieStore = defineStore('MovieStore', {
       }
       this.isLoading = false;
     },
-    async selectMovie(id) {
-      this.selectedMovie = id;
+    async getMovieDetails(id) {
+      const mainStore = useMainStore();
+
+      this.isLoading = true;
+      // Send request
+      try {
+        const url = `/api/movies/${id}?lang=${mainStore.lang}`;
+        console.log(url);
+        const res = await this.$axios.get(url);
+        this.movieDetails = res.data;
+        console.log(this.movieDetails);
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
     },
   },
 });

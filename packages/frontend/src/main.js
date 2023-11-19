@@ -20,7 +20,7 @@ app.provide('$axios', axiosInstance);
 import i18next from 'i18next';
 import i18NextVue from 'i18next-vue';
 import * as locales from './locales';
-i18next.init({ lng: 'en', resources: { ...locales } });
+i18next.init({ lng: 'en-gb', resources: { ...locales } });
 
 // --- pinia store ---
 const piniaStore = createPinia();

@@ -8,11 +8,11 @@ import axios from 'axios';
 // https://developer.themoviedb.org/docs/rate-limiting
 
 export default class TmdbApi extends Schmervice.Service {
-  async getMovies(searchQuery) {
-    this.server.log(['info', 'tmdb-api'], `GET movies named '${searchQuery}'`);
+  async getMovies({ s, lang }) {
+    this.server.log(['info', 'tmdb-api'], `GET movies named '${s}' in lang '${lang}'`);
 
     // Fetch data from TMDB
-    const url = `${process.env.TMDB_ENDPOINT}/search/movie?query=${searchQuery}&page=1`;
+    const url = `${process.env.TMDB_ENDPOINT}/search/movie?query=${s}&language=${lang}&page=1`;
 
     const res = await axios.get(url, {
       headers: {
@@ -20,9 +20,6 @@ export default class TmdbApi extends Schmervice.Service {
         Authorization: `Bearer ${process.env.TMDB_KEY}`,
       },
     });
-
-    console.log(res.status);
-    console.log(res.data);
 
     let data = [];
 
@@ -51,9 +48,47 @@ export default class TmdbApi extends Schmervice.Service {
     return data;
   }
 
-  async getMovieDetails(id) {
-    this.server.log(['info', 'tmdb-api'], `GET movie details for '${id}'`);
+  async getMovieDetails({ id, lang = 'en-GB' }) {
+    this.server.log(['info', 'tmdb-api'], `GET movie details for '${id}' in lang '${lang}'`);
 
-    return {};
+    // Fetch data from TMDB
+    const httpOptions = {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.TMDB_KEY}`,
+      },
+    };
+    const movieDetailsUrl = `${process.env.TMDB_ENDPOINT}/movie/${id}?language=${lang}`;
+    const movieCreditsUrl = `${process.env.TMDB_ENDPOINT}/movie/${id}/credits`;
+
+    const res = await Promise.all([axios.get(movieDetailsUrl, httpOptions), axios.get(movieCreditsUrl, httpOptions)]);
+
+    const data = { ...res[0].data, ...res[1].data };
+
+    let movieDetails = {
+      // same as lister
+      englishTitle: data.title,
+      originalTitle: data.original_title,
+      releaseDate: data.release_date, // y-m-d
+      posterPath: data.poster_path,
+      // additional
+      description: data.overview,
+      runningTime: data.runtime, // minutes
+      genres: data.genres.map((i) => i.name),
+      productionCountries: data.production_countries.map((i) => ({ name: i.name, code: i.iso_3166_1 })),
+      productionCompanies: data.production_companies.map((i) => ({
+        name: i.name,
+        country: i.origin_country,
+      })),
+      languages: data.spoken_languages.map((item) => item.iso_639_1),
+      status: data.status,
+      budget: data.budget,
+      revenue: data.revenue,
+      imdbId: data.imdb_id,
+      tmdbId: data.id,
+      directors: data.crew.filter((i) => i.job === 'Director').map((i) => i.original_name),
+    };
+
+    return movieDetails;
   }
 }

@@ -1,24 +1,26 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '../stores/AuthStore';
+import { useMainStore } from '../stores/MainStore';
 
 const authStore = useAuthStore();
+const mainStore = useMainStore();
 const { credentials } = storeToRefs(authStore);
 </script>
 
 <template>
-  <nav class="flex justify-around max-w-xl m-auto space-x-6">
-    <RouterLink to="/">home</RouterLink>
+  <nav class="flex justify-between max-w-xl m-auto space-x-6">
+    <RouterLink :to="{ path: '/', query: { lang: mainStore.lang } }">home</RouterLink>
     <template v-if="credentials">
-      <RouterLink to="/movies">movies</RouterLink>
-      <RouterLink to="/me">profile</RouterLink>
+      <RouterLink :to="{ path: '/movies', query: { lang: mainStore.lang } }">movies</RouterLink>
+      <RouterLink :to="{ path: '/me', query: { lang: mainStore.lang } }">profile</RouterLink>
     </template>
     <template v-if="!credentials">
-      <RouterLink to="/login">login</RouterLink>
-      <RouterLink to="/register">register</RouterLink>
+      <RouterLink :to="{ path: '/login', query: { lang: mainStore.lang } }">login</RouterLink>
+      <RouterLink :to="{ path: '/register', query: { lang: mainStore.lang } }">register</RouterLink>
     </template>
     <template v-else>
-      <RouterLink to="/" @click="authStore.logout">logout</RouterLink>
+      <RouterLink :to="{ path: '/', query: { lang: mainStore.lang } }" @click="authStore.logout">logout</RouterLink>
     </template>
   </nav>
 </template>

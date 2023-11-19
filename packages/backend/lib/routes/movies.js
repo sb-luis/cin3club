@@ -9,10 +9,10 @@ export default [
     method: 'get',
     path: '/api/movies',
     handler: async (request, h) => {
-      const { s } = request.query;
+      const { s, lang } = request.query;
       const { tmdbApi } = request.services();
       try {
-        const movies = await tmdbApi.getMovies(s);
+        const movies = await tmdbApi.getMovies({ s, lang });
         return movies;
       } catch (err) {
         request.log('err', err);
@@ -23,20 +23,27 @@ export default [
       validate: {
         query: Joi.object({
           s: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
+          lang: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
         }).options({ stripUnknown: true }),
       },
     },
   },
   // MOVIE DETAILS
   {
-    method: 'POST',
+    method: 'GET',
     path: '/api/movies/{id}',
     handler: async (request, h) => {
+      console.log('fetching movie details!');
+
       const { id } = request.params;
-      const { omdbApi } = request.services();
+      const { lang } = request.query;
+      const { tmdbApi } = request.services();
+
+      console.log(`Passing ID ${id}`);
+      console.log(`Passing lang '${lang}'`);
 
       try {
-        const movieDetails = await omdbApi.getMovieDetails(id);
+        const movieDetails = await tmdbApi.getMovieDetails({ id, lang });
         return movieDetails;
       } catch (err) {
         request.log('err', err);
@@ -44,6 +51,9 @@ export default [
     },
     options: {
       validate: {
+        query: Joi.object({
+          lang: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
+        }).options({ stripUnknown: true }),
         params: Joi.object({
           id: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
         }).options({ stripUnknown: true }),
