@@ -1,10 +1,12 @@
 import Schmervice from '@hapipal/schmervice';
 
 export default class RatingService extends Schmervice.Service {
-  async getAllRatings({ userId }) {
+  async getAllRatings({ userId, page = 1, sort = 'DESC' }) {
     this.server.log(['info', 'rating-service'], `READ user ratings`);
 
     const { Rating, Movie } = this.server.app.models;
+
+    const offset = parseInt(page - 1) * 10;
 
     // Fetch data from DB
     const ratings = await Rating.findAll({
@@ -17,11 +19,18 @@ export default class RatingService extends Schmervice.Service {
         as: 'movie',
         attributes: ['id', 'englishTitle', 'originalTitle', 'releaseDate', 'posterPath'],
       },
+      offset: offset,
       limit: 10,
-      order: [['dateSeen', 'DESC']],
+      order: [['dateSeen', sort]],
     });
 
-    return ratings;
+    const total = await Rating.count({
+      where: {
+        userId,
+      },
+    });
+
+    return { ratings, total };
   }
 
   async getMovieRatings({ userId, movieId }) {

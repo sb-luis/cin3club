@@ -12,13 +12,22 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       const { ratingService } = request.services();
+      const { page, sort } = request.query;
       const userId = request.auth.credentials.userId;
       try {
-        const ratings = await ratingService.getAllRatings({ userId });
+        const ratings = await ratingService.getAllRatings({ userId, page, sort });
         return ratings;
       } catch (err) {
         return Boom.boomify(err);
       }
+    },
+    options: {
+      validate: {
+        query: Joi.object({
+          page: Joi.number(),
+          sort: Joi.string(),
+        }),
+      },
     },
   },
   // GET user ratings for one movie

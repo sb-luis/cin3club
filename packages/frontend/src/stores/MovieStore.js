@@ -11,10 +11,17 @@ export const useMovieStore = defineStore('MovieStore', {
       selectedMovieRatings: [],
       movies: [],
       ratings: [],
+      ratingsSortOrder: 'DESC',
+      ratingsItemsTotal: 0,
+      ratingsPageCurrent: 1,
+      ratingsPageSize: 10,
       searchQuery: '',
       searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
       searchQueryError: '',
     };
+  },
+  getters: {
+    ratingsPageTotal: (state) => Math.ceil(state.ratingsItemsTotal / state.ratingsPageSize),
   },
   actions: {
     //  --- MOVIES ---
@@ -69,7 +76,13 @@ export const useMovieStore = defineStore('MovieStore', {
       this.isLoading = false;
     },
     //  --- RATINGS ---
+    async toggleRatingsSort() {
+      // if changing sort order, reset page
+      this.ratingsPageCurrent = 1;
+      this.ratingsSortOrder = this.ratingsSortOrder === 'DESC' ? 'ASC' : 'DESC';
+    },
     async refreshRatings() {
+      this.isLoading = true;
       if (this.$router.currentRoute.path.startsWith('/movies')) {
         // Re-fetch movie ratings (movie details)
         await this.getMovieRatings();
@@ -77,12 +90,16 @@ export const useMovieStore = defineStore('MovieStore', {
         // Re-fetch movie ratings (rating lister)
         await this.getAllRatings();
       }
+      this.isLoading = false;
     },
     async getAllRatings() {
+      this.isLoading = true;
       try {
-        // GET MOVIE RATINGS
-        const res = await this.$axios.get(`/api/ratings`);
-        this.ratings = res.data;
+        // GET ALL RATINGS
+        const res = await this.$axios.get(`/api/ratings?page=${this.ratingsPageCurrent}&sort=${this.ratingsSortOrder}`);
+        console.log(res.data);
+        this.ratings = res.data.ratings;
+        this.ratingsItemsTotal = res.data.total;
       } catch (err) {
         console.error(err);
       }

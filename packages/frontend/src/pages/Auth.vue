@@ -25,8 +25,6 @@ const handleAuth = async (event) => {
 
 <template>
   <div>
-    <h3 class="text-4xl pt-2 py-5">{{ $t(`pages.${authPage}.title`) }}</h3>
-
     <form @submit.prevent="handleAuth">
       <div>
         <label for="alias" class="hidden">{{ $t(`pages.${authPage}.aliasLabel`) }}</label>

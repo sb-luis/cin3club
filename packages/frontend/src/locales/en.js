@@ -22,6 +22,8 @@ export const en = {
       },
       ratings: {
         title: 'ratings',
+        totalCount_one: '{{count}} rating',
+        totalCount_other: '{{count}} ratings',
       },
       movieDetails: {
         title: 'movie details',

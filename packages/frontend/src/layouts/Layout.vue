@@ -22,10 +22,14 @@ const year = date.getFullYear();
       />
       <button @click="() => mainStore.hideModal()" class="top-5 absolute right-5 border px-2 rounded">BACK</button>
     </div>
-    <div class="h-full py-3 px-6 m-auto flex flex-col items-center" :class="{ blur: mainStore.renderModal }">
+    <div
+      class="h-full py-2 px-3 m-auto flex flex-col justify-stretch items-center"
+      :class="{ blur: mainStore.renderModal }"
+    >
       <header class="text-center w-full relative">
-        <h1 class="text-8xl font-kaushan">{{ $t('app.title') }}</h1>
-        <NavBar class="pt-2" />
+        <h1 class="text-5xl text-start font-kaushan">{{ $t('app.title') }}</h1>
+        <!-- NAVBAR -->
+        <NavBar class="p-2 max-w-[250px] m-auto" />
         <!-- TOGGLE LOCALE -->
         <button @click="() => mainStore.toggleLang()" class="space-x-2 text-neutral-700 fixed top-2 right-5">
           <span :class="{ 'text-white': mainStore.lang === 'en-gb' }"> EN </span>
@@ -35,6 +39,7 @@ const year = date.getFullYear();
       </header>
 
       <main class="relative flex-1 w-full max-w-4xl">
+        <h1 class="uppercase text-blue-500 font-bold text-2xl mb-2">{{ $t(`pages.${$route.name}.title`) }}</h1>
         <router-view v-slot="{ Component, route }">
           <component :is="Component" :key="route.path" />
         </router-view>

@@ -9,7 +9,7 @@ const { credentials } = storeToRefs(authStore);
 </script>
 
 <template>
-  <nav class="flex text-lg justify-between w-[300px] m-auto space-x-6">
+  <nav class="flex text-lg justify-between space-x-6">
     <RouterLink :to="{ path: '/', query: { lang: mainStore.lang } }">movies</RouterLink>
     <RouterLink v-if="credentials" :to="{ path: '/ratings', query: { lang: mainStore.lang } }">ratings</RouterLink>
     <template v-if="!credentials">

@@ -71,7 +71,6 @@ const handleDeleteRating = () => {
           type="number"
           id="score"
           name="score"
-          step="10"
           min="0"
           max="100"
         />

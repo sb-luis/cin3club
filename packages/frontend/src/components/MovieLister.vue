@@ -11,7 +11,7 @@ const route = useRoute();
 const movieStore = useMovieStore();
 const { searchQuery, searchQueryError } = storeToRefs(movieStore);
 
-const debounceApiCalls = debounce(async () => {
+const getMoviesDebounced = debounce(async () => {
   await movieStore.getMovies();
 }, 1000);
 
@@ -24,7 +24,7 @@ watch(searchQuery, () => {
   movieStore.isLoading = true;
   movieStore.searchQueryError = '';
   debounceValidation();
-  debounceApiCalls();
+  getMoviesDebounced();
 });
 
 onMounted(() => {
@@ -37,7 +37,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <h1 class="text-4xl pt-2 pb-5">{{ $t('pages.movies.title') }}</h1>
     <div>
       <label for="movie_query" class="hidden">{{ $t('pages.movies.searchLabel') }}</label>
       <input
