@@ -11,7 +11,6 @@ export default [
     method: 'GET',
     path: '/api/ratings',
     handler: async (request, h) => {
-      console.log('GET ALL RTINGS');
       const { ratingService } = request.services();
       const userId = request.auth.credentials.userId;
       try {
@@ -27,7 +26,6 @@ export default [
     method: 'GET',
     path: '/api/ratings/{movieId}',
     handler: async (request, h) => {
-      console.log('GET SOME RATINGS');
       const { ratingService } = request.services();
       const userId = request.auth.credentials.userId;
       const { movieId } = request.params;
@@ -51,7 +49,6 @@ export default [
     method: 'POST',
     path: '/api/ratings',
     handler: async (request, h) => {
-      console.log('CREATE RATING');
       try {
         const { ratingService } = request.services();
         const userId = request.auth.credentials.userId;
@@ -90,7 +87,6 @@ export default [
     method: 'PUT',
     path: '/api/ratings/{id}',
     handler: async (request, h) => {
-      console.log('UPDATE RATING');
       const { ratingService } = request.services();
       const userId = request.auth.credentials.userId;
       const { id } = request.params;
@@ -119,11 +115,9 @@ export default [
     method: 'DELETE',
     path: '/api/ratings/{id}',
     handler: async (request, h) => {
-      console.log('DELETE RATING');
       const { ratingService } = request.services();
       const userId = request.auth.credentials.userId;
       const { id } = request.params;
-      const { score, dateSeen } = request.payload;
       try {
         const rating = await ratingService.deleteRating({ userId, id });
         return rating;

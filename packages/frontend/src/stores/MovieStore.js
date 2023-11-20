@@ -48,7 +48,6 @@ export const useMovieStore = defineStore('MovieStore', {
       try {
         const res = await this.$axios.get(`/api/movies?s=${s}&lang=${mainStore.lang}`);
         this.movies = res.data;
-        console.log(this.movies);
       } catch (err) {
         console.error(err);
       }
@@ -61,24 +60,29 @@ export const useMovieStore = defineStore('MovieStore', {
       try {
         // GET MOVIE DETAILS
         const url = `/api/movies/${id}?lang=${mainStore.lang}`;
-        console.log(url);
         const res = await this.$axios.get(url);
         this.selectedMovie = res.data;
-        console.log(this.selectedMovie);
-        await this.getMovieRatings();
+        await this.refreshRatings();
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
     },
     //  --- RATINGS ---
+    async refreshRatings() {
+      if (this.$router.currentRoute.path.startsWith('/movies')) {
+        // Re-fetch movie ratings (movie details)
+        await this.getMovieRatings();
+      } else {
+        // Re-fetch movie ratings (rating lister)
+        await this.getAllRatings();
+      }
+    },
     async getAllRatings() {
       try {
         // GET MOVIE RATINGS
-        console.log('GETTING ALL RATINGS...');
         const res = await this.$axios.get(`/api/ratings`);
         this.ratings = res.data;
-        console.log(this.selectedMovieRatings);
       } catch (err) {
         console.error(err);
       }
@@ -86,12 +90,10 @@ export const useMovieStore = defineStore('MovieStore', {
     },
     async getMovieRatings() {
       this.selectedMovieRatings = {};
-      this.selectedRating = {};
       this.isLoading = true;
       try {
         // GET MOVIE RATINGS
         const res = await this.$axios.get(`/api/ratings/${this.selectedMovie.tmdbId}`);
-        console.log(res.data);
         this.selectedMovieRatings = res.data;
       } catch (err) {
         console.error(err);
@@ -126,7 +128,7 @@ export const useMovieStore = defineStore('MovieStore', {
         const res = await this.$axios.post(`/api/ratings`, data);
 
         mainStore.hideModal();
-        await this.getMovieRatings(); // Re-fetch ratings
+        await this.refreshRatings();
       } catch (err) {
         console.error(err);
       }
@@ -144,14 +146,7 @@ export const useMovieStore = defineStore('MovieStore', {
         });
 
         mainStore.hideModal();
-
-        if (this.$router.currentRoute.path.startsWith('/movies')) {
-          // Re-fetch movie ratings (movie details)
-          await this.getMovieRatings();
-        } else {
-          // Re-fetch movie ratings (rating lister)
-          await this.getAllRatings();
-        }
+        await this.refreshRatings();
       } catch (err) {
         console.error(err);
       }
@@ -165,7 +160,7 @@ export const useMovieStore = defineStore('MovieStore', {
         const res = await this.$axios.delete(`/api/ratings/${this.selectedRating.id}`);
 
         mainStore.hideModal();
-        await this.getMovieRatings(); // Re-fetch ratings
+        await this.refreshRatings();
       } catch (err) {
         console.error(err);
       }

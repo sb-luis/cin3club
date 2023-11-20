@@ -17,7 +17,6 @@ const sortedRatings = computed(() => {
 });
 
 const handleUpateRating = (rating) => {
-  movieStore.selectedMovie = rating.movie;
   movieStore.selectedRating = rating;
   mainStore.setCurrentContext('updateRating');
 };

@@ -2,7 +2,7 @@
 import NavBar from '../components/NavBar.vue';
 import { useAuthStore } from '../stores/AuthStore';
 import { useMainStore } from '../stores/MainStore';
-import MovieDetailsRatingsForm from '../components/MovieDetailsRatingsForm.vue';
+import RatingsForm from '../components/RatingsForm.vue';
 
 const mainStore = useMainStore();
 
@@ -16,7 +16,7 @@ const year = date.getFullYear();
   <div class="w-full h-full z-10 relative">
     <!-- MODAL -->
     <div v-if="mainStore.renderModal" class="bg-slate-800 fixed w-full h-full top-0 left-0 z-10 opacity-90">
-      <MovieDetailsRatingsForm
+      <RatingsForm
         v-if="mainStore.currentContext === 'createRating' || mainStore.currentContext === 'updateRating'"
         class="m-auto mt-20 max-w-[400px] p-10 rounded-2xl"
       />

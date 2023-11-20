@@ -49,20 +49,11 @@ const moviePosterUrl = computed(() => {
     imdbId
     tmdbId
 */
-
-watch(
-  props.movie,
-  (newVal) => {
-    console.log('value changed!');
-    console.log(newVal);
-  },
-  { deep: true },
-);
 </script>
 
 <template>
   <div
-    v-if="!movieStore.isLoading && Object.keys(movie).length > 0"
+    v-if="!movieStore.isLoading && movie && Object.keys(movie).length > 0"
     class="p-5 mt-10 bg-slate-900 md:p-6 rounded-2xl w-full shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)]"
   >
     <div class="flex justify-between pb-5">
