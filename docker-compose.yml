@@ -27,7 +27,7 @@ services:
       - BCRYPT_SALT_ROUNDS=11
       - COOKIE_KEY=1111111111111111111111111111111111
       - CLIENT_URL=http://localhost:8000
-      - LOG_LEVEL=info
+      - LOG_LEVEL=debug
     volumes:
       - ./packages/backend/lib/:/app/lib
       - ./packages/backend/server/:/app/server

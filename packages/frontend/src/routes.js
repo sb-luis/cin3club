@@ -4,47 +4,41 @@ import { useMainStore } from './stores/MainStore';
 import Layout from './layouts/Layout.vue';
 
 // Pages
-import Home from './pages/Home.vue';
-import Profile from './pages/Profile.vue';
 import Movies from './pages/Movies.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
-
-// Profile Pages
-import UserProfile from './components/UserProfile.vue';
-import UserRatings from './components/UserRatings.vue';
+import RatingLister from './components/RatingLister.vue';
 
 // Movie Pages
 import MovieLister from './components/MovieLister.vue';
 import MovieDetails from './components/MovieDetails.vue';
 
 export const routes = [
-  { path: '/', component: Home },
   {
-    path: '/movies',
+    path: '/',
     component: Movies,
     children: [
       { path: '', component: MovieLister },
-      { path: ':id', component: MovieDetails },
+      { path: '/movies/:id', component: MovieDetails },
     ],
+    meta: { public: true },
   },
   {
-    path: '/me',
-    component: Profile,
-    children: [
-      { path: '', component: UserProfile },
-      { path: 'ratings', component: UserRatings },
-    ],
+    path: '/ratings',
+    component: RatingLister,
+    meta: { public: false },
   },
   {
     path: '/login',
     component: Auth,
     props: { authPage: 'login' },
+    meta: { public: true },
   },
   {
     path: '/register',
     component: Auth,
     props: { authPage: 'register' },
+    meta: { public: true },
   },
 ];
 
@@ -55,23 +49,25 @@ const router = createRouter({
       path: '/',
       component: Layout,
       children: routes,
+      meta: { public: true },
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: NotFound,
+      meta: { public: true },
     },
   ],
 });
 
 // https://router.vuejs.org/guide/advanced/navigation-guards.html
 router.beforeEach(async (to) => {
-  const publicPaths = ['/', '/login', '/register'];
   const authStore = useAuthStore();
   const mainStore = useMainStore();
+  const isPublic = to.meta.public === true;
 
   // If user is not authenticated...
-  if (!publicPaths.includes(to.path) && !authStore.credentials) {
+  if (!isPublic && !authStore.credentials) {
     // Try loading the credentials
     await authStore.loadCredentials();
 

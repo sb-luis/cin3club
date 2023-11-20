@@ -20,6 +20,15 @@ export const en = {
         searchPlaceholder: 'search',
         welcomeMessage: 'The place where your favourite movies live!',
       },
+      ratings: {
+        title: 'ratings',
+      },
+      movieDetails: {
+        title: 'movie details',
+        directorListHeading: 'Directed by',
+        actorListHeading: 'with',
+        actorListRole: "as '{{ role }}'",
+      },
       login: {
         title: 'login',
         aliasLabel: 'Alias',
@@ -39,10 +48,10 @@ export const en = {
     },
     components: {
       ratingForm: {
-        title: 'Rate this movie',
-        ratingLabel: 'Score (0-100)',
+        createRating: { title: 'Rate this movie', submitButton: 'Rate' },
+        updateRating: { title: 'Edit your rating', submitButton: 'Update' },
+        scoreLabel: 'Score (0-100)',
         dateSeenLabel: 'Date Seen',
-        submitButton: 'Rate',
       },
     },
   },

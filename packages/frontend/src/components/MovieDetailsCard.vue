@@ -2,8 +2,11 @@
 import { SelfBuildingSquareSpinner } from 'epic-spinners';
 import { computed, watch } from 'vue';
 import { useMovieStore } from '../stores/MovieStore';
+import { useAuthStore } from '../stores/AuthStore';
+import MovieDetailsRatings from './MovieDetailsRatings.vue';
 
 const movieStore = useMovieStore();
+const authStore = useAuthStore();
 
 const props = defineProps({
   movie: {
@@ -79,26 +82,33 @@ watch(
         </div>
         <!-- DIRECTORS -->
         <div class="pb-4 md:flex md:space-x-2 text-lg">
-          <p>Direction:</p>
-          <p>{{ directorsStr }}</p>
+          <h4>{{ $t('pages.movieDetails.directorListHeading') }}</h4>
+          <p v-for="director in movie.directors" class="space-x-2">
+            <span>{{ director }}</span>
+          </p>
+        </div>
+        <!-- CAST -->
+        <div class="pb-4 hidden md:block md:space-x-2 text-lg">
+          <h4>{{ $t('pages.movieDetails.actorListHeading') }}</h4>
+          <p v-for="actor in movie.cast" class="space-x-2">
+            <span>{{ actor.name }}</span
+            ><span class="text-slate-500 text-sm"
+              >{{ $t('pages.movieDetails.actorListRole', { role: actor.character }) }}
+            </span>
+          </p>
         </div>
         <!-- PRODUCTION COUNTRIES -->
-        <div class="pb-4 md:flex md:space-x-2 text-lg">
+        <div class="pt-5 md:flex md:space-x-2 text-lg">
           <ul class="space-y-3">
             <li class="text-sm font-bold text-blue-500 uppercase" v-for="country in movie.productionCountries">
-              {{ country.name }}
+              {{ country }}
             </li>
           </ul>
         </div>
-        <p class="text-lg hidden md:block py-10">{{ movie.description }}</p>
       </div>
       <!-- POSTER -->
       <div>
-        <img
-          v-show="moviePosterUrl"
-          :src="moviePosterUrl"
-          class="shadow-sm rounded-2xl md:mr-5 w-[220px] md:w-[300px]"
-        />
+        <img v-show="moviePosterUrl" :src="moviePosterUrl" class="shadow-sm rounded-2xl w-[220px] md:w-[300px]" />
       </div>
     </div>
     <!-- GENRES -->
@@ -110,7 +120,13 @@ watch(
         {{ genre }}
       </li>
     </ul>
-    <p class="pt-5 text-lg md:hidden">{{ movie.description }}</p>
+    <!-- RATINGS -->
+    <div class="pt-5 md:flex">
+      <p class="text-lg pb-5 md:pr-20">{{ movie.description }}</p>
+      <div v-if="authStore.credentials">
+        <MovieDetailsRatings />
+      </div>
+    </div>
   </div>
   <SelfBuildingSquareSpinner v-else class="mt-20 m-auto" :animation-duration="2000" :size="48" />
 </template>

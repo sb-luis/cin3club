@@ -5,9 +5,9 @@ import axios from 'axios';
 
 // Rate Limit: 1000 request per day
 
-export default class OmdbApi extends Schmervice.Service {
+export default class OmdbService extends Schmervice.Service {
   async getMovies(searchQuery) {
-    this.server.log(['info', 'omdb-api'], `GET movies named '${searchQuery}'`);
+    this.server.log(['info', 'omdb-service'], `GET movies named '${searchQuery}'`);
 
     // Fetch movies from OMDB
     const res = await axios.get(`${process.env.OMDB_ENDPOINT}/?s=${searchQuery}&page=1&apikey=${process.env.OMDB_KEY}`);
@@ -30,7 +30,7 @@ export default class OmdbApi extends Schmervice.Service {
   }
 
   async getMovieDetails(id) {
-    this.server.log(['info', 'omdb-api'], `GET movie details for '${id}'`);
+    this.server.log(['info', 'omdb-service'], `GET movie details for '${id}'`);
 
     // Fetch movie details from OMDB
     const res = await axios.get(`${process.env.OMDB_ENDPOINT}/?i=${id}&apikey=${process.env.OMDB_KEY}`);

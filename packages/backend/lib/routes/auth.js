@@ -1,6 +1,8 @@
 import Bcrypt from 'bcrypt';
 import Boom from '@hapi/boom';
 
+// --- PROTECTED AUTH ENDPOINTS ---
+
 // Set expiry date to be tomorrow
 const SESSION_EXPIRY_TIME = 1;
 
@@ -43,6 +45,8 @@ export default [
         // Create session
         let date = new Date();
         date.setDate(date.getDate() + SESSION_EXPIRY_TIME);
+
+        // user.createSession({ expires: date }, { transaction });
         const session = await Session.create(
           {
             userId: user.id,
@@ -63,6 +67,9 @@ export default [
         transaction.rollback();
         return Boom.badImplementation();
       }
+    },
+    options: {
+      auth: false,
     },
   },
   {
@@ -133,6 +140,9 @@ export default [
         return Boom.badImplementation();
       }
     },
+    options: {
+      auth: false,
+    },
   },
   {
     method: 'GET',
@@ -148,9 +158,6 @@ export default [
       });
 
       return h.response('OK').code(200);
-    },
-    options: {
-      auth: 'session',
     },
   },
   {
@@ -168,9 +175,6 @@ export default [
       });
 
       return user.toJSON();
-    },
-    options: {
-      auth: 'session',
     },
   },
   {
@@ -219,9 +223,6 @@ export default [
       await user.save();
 
       return h.response('OK').status(200);
-    },
-    options: {
-      auth: 'session',
     },
   },
   {
@@ -274,9 +275,6 @@ export default [
         transaction.rollback();
         return Boom.badImplementation();
       }
-    },
-    options: {
-      auth: 'session',
     },
   },
 ];

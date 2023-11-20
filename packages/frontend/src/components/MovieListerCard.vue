@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import { useMainStore } from '../stores/MainStore';
 import { useMovieStore } from '../stores/MovieStore';
-import RatingForm from './RatingForm.vue';
 
 const props = defineProps({
   movie: {
@@ -21,11 +20,6 @@ const dateStrToYear = (str) => {
 const fullPosterUrl = (path) => {
   return `https://image.tmdb.org/t/p/w220_and_h330_face${path}`;
 };
-
-const movieDetails = computed(() => {
-  const details = movieStore.movieDetailsCache[props.movie.id];
-  return details ? details : null;
-});
 </script>
 
 <template>

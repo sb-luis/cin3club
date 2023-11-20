@@ -9,25 +9,25 @@ import { DataTypes } from 'sequelize';
 export default {
   name: 'Movie',
   schema: {
+    // The basics
     englishTitle: DataTypes.STRING,
     originalTitle: DataTypes.STRING,
-    releaseDate: DataTypes.INTEGER,
+    releaseDate: DataTypes.STRING,
     posterPath: DataTypes.STRING,
-    direction: DataTypes.ARRAY(DataTypes.STRING), // Max 50
-    // IDs
-    tmdbId: DataTypes.INTEGER,
+    directors: DataTypes.ARRAY(DataTypes.STRING), // Max 50
     imdbId: DataTypes.STRING,
+    // Useful for stats
+    genres: DataTypes.ARRAY(DataTypes.STRING), // Max 50
+    productionCountries: DataTypes.ARRAY(DataTypes.STRING), // Max 50
+    budget: DataTypes.INTEGER,
+    revenue: DataTypes.INTEGER,
+    runningTime: DataTypes.INTEGER,
   },
 };
 
 /* EXTRA FIELDS (lazy load from tmdb API instead) 
 
 - Movie Details 
-    runningTime: DataTypes.INTEGER,
-    budget: DataTypes.INTEGER,
-    revenue: DataTypes.INTEGER,
-    genres: DataTypes.ARRAY(DataTypes.STRING), // Max 50
-    productionCountries: DataTypes.ARRAY(DataTypes.STRING), // Max 50
 
 - Movie Credits
     music: DataTypes.ARRAY(DataTypes.STRING), // Max 5

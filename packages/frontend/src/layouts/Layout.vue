@@ -2,6 +2,7 @@
 import NavBar from '../components/NavBar.vue';
 import { useAuthStore } from '../stores/AuthStore';
 import { useMainStore } from '../stores/MainStore';
+import MovieDetailsRatingsForm from '../components/MovieDetailsRatingsForm.vue';
 
 const mainStore = useMainStore();
 
@@ -13,19 +14,27 @@ const year = date.getFullYear();
 
 <template>
   <div class="w-full h-full z-10 relative">
-    <div class="h-full py-3 px-6 m-auto flex flex-col items-center">
+    <!-- MODAL -->
+    <div v-if="mainStore.renderModal" class="bg-slate-800 fixed w-full h-full top-0 left-0 z-10 opacity-90">
+      <MovieDetailsRatingsForm
+        v-if="mainStore.currentContext === 'createRating' || mainStore.currentContext === 'updateRating'"
+        class="m-auto mt-20 max-w-[400px] p-10 rounded-2xl"
+      />
+      <button @click="() => mainStore.hideModal()" class="top-5 absolute right-5 border px-2 rounded">BACK</button>
+    </div>
+    <div class="h-full py-3 px-6 m-auto flex flex-col items-center" :class="{ blur: mainStore.renderModal }">
       <header class="text-center w-full relative">
         <h1 class="text-8xl font-kaushan">{{ $t('app.title') }}</h1>
         <NavBar class="pt-2" />
         <!-- TOGGLE LOCALE -->
-        <button @click="() => mainStore.toggleLang()" class="space-x-2 text-neutral-700 absolute top-2 right-2">
+        <button @click="() => mainStore.toggleLang()" class="space-x-2 text-neutral-700 fixed top-2 right-5">
           <span :class="{ 'text-white': mainStore.lang === 'en-gb' }"> EN </span>
           <span>/</span>
           <span :class="{ 'text-white': mainStore.lang === 'es-spa' }"> ES </span>
         </button>
       </header>
 
-      <main class="flex-1 w-full max-w-4xl">
+      <main class="relative flex-1 w-full max-w-4xl">
         <router-view v-slot="{ Component, route }">
           <component :is="Component" :key="route.path" />
         </router-view>

@@ -3,14 +3,18 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 export const useMainStore = defineStore('MainStore', {
   state: () => {
     return {
-      lang: 'es-spa', // en-gb / es-spa
+      renderModal: false,
+      currentContext: '',
+      lang: 'en-gb', // en-gb / es-spa
       theme: 'dark', // dark / light
     };
   },
   actions: {
     async setLang(lang) {
-      this.lang = lang;
-      this.$i18next.changeLanguage(lang);
+      if (lang === 'en-gb' || lang === 'es-spa') {
+        this.lang = lang;
+        this.$i18next.changeLanguage(lang);
+      }
     },
     async toggleLang() {
       this.lang = this.lang === 'en-gb' ? 'es-spa' : 'en-gb';
@@ -19,6 +23,18 @@ export const useMainStore = defineStore('MainStore', {
     },
     async toggleTheme() {
       this.lang = this.lang === 'dark' ? 'light' : 'dark';
+    },
+    async setCurrentContext(context) {
+      this.currentContext = context;
+
+      // context that are handled by modals
+      if (context === 'createRating' || context === 'updateRating') {
+        this.renderModal = true;
+      }
+    },
+    async hideModal() {
+      this.modalAction = '';
+      this.renderModal = false;
     },
   },
 });

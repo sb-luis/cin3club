@@ -7,9 +7,9 @@ import axios from 'axios';
 // Will return HTTP 429 'Too Many Requests' if surpassed
 // https://developer.themoviedb.org/docs/rate-limiting
 
-export default class TmdbApi extends Schmervice.Service {
+export default class TmdbService extends Schmervice.Service {
   async getMovies({ s, lang }) {
-    this.server.log(['info', 'tmdb-api'], `GET movies named '${s}' in lang '${lang}'`);
+    this.server.log(['info', 'tmdb-service'], `GET movies named '${s}' in lang '${lang}'`);
 
     // Fetch data from TMDB
     const url = `${process.env.TMDB_ENDPOINT}/search/movie?query=${s}&language=${lang}&page=1`;
@@ -49,7 +49,7 @@ export default class TmdbApi extends Schmervice.Service {
   }
 
   async getMovieDetails({ id, lang = 'en-GB' }) {
-    this.server.log(['info', 'tmdb-api'], `GET movie details for '${id}' in lang '${lang}'`);
+    this.server.log(['info', 'tmdb-service'], `GET movie details for '${id}' in lang '${lang}'`);
 
     // Fetch data from TMDB
     const httpOptions = {
@@ -75,7 +75,7 @@ export default class TmdbApi extends Schmervice.Service {
       description: data.overview,
       runningTime: data.runtime, // minutes
       genres: data.genres.map((i) => i.name),
-      productionCountries: data.production_countries.map((i) => ({ name: i.name, code: i.iso_3166_1 })),
+      productionCountries: data.production_countries.map((i) => i.name),
       productionCompanies: data.production_companies.map((i) => ({
         name: i.name,
         country: i.origin_country,
@@ -87,6 +87,7 @@ export default class TmdbApi extends Schmervice.Service {
       imdbId: data.imdb_id,
       tmdbId: data.id,
       directors: data.crew.filter((i) => i.job === 'Director').map((i) => i.original_name),
+      cast: data.cast.slice(0, 5).map((i) => ({ name: i.original_name, character: i.character })),
     };
 
     return movieDetails;

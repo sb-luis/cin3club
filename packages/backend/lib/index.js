@@ -67,8 +67,21 @@ export const plugin = {
     server.log('info', 'Composing Hapi server with HauteCouture...');
     await HauteCouture.compose(server, options);
 
-    // Sync database after all models have been created by Haute Couture
+    // Set up Sequelize associations
+    // After all models have been created by Haute Couture
+    // https://sequelize.org/docs/v6/core-concepts/assocs/
+    const { User, Session, Movie, Rating } = server.app.models;
+    // Add `userId` foreign key in Session and Rating
+    Session.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    Rating.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    // Add `movieId` foreign key in Session
+    Rating.belongsTo(Movie, { as: 'movie', foreignKey: 'movieId' });
+
+    // Sync database
     await server.app.connection.sync();
+
     server.log('info', 'All Sequelize models synchronized successfully!');
+
+    server.auth.default('session');
   },
 };

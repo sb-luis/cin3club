@@ -21,24 +21,11 @@ body,
 }
 
 a {
-  text-decoration: none;
-  white-space: nowrap;
-  position: relative;
+  text-decoration: underline;
 }
 
-a::after {
-  content: '';
-  position: absolute;
-  top: 66%;
-  z-index: -1;
-  left: -0.1em;
-  right: -0.1em;
-  bottom: 0;
-  transition: top 200ms cubic-bezier(0, 0.8, 0.13, 1);
-  background-color: rgba(252, 252, 252, 0.5);
-}
-a:hover:after {
-  top: 0%;
+a:hover {
+  text-decoration: none;
 }
 
 input:autofill {

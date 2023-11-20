@@ -3,9 +3,9 @@ import { DataTypes } from 'sequelize';
 export default {
   name: 'Rating',
   schema: {
-    userId: DataTypes.INTEGER,
-    movieId: DataTypes.INTEGER,
+    // userId - FOREIGN KEY
+    // movieId - FOREIGN KEY (i.e. tmdbId)
     dateSeen: DataTypes.DATE,
-    rating: DataTypes.INTEGER,
+    score: DataTypes.INTEGER,
   },
 };

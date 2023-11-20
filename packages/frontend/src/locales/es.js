@@ -40,7 +40,7 @@ export const es = {
     components: {
       ratingForm: {
         title: 'Califica esta película',
-        ratingLabel: 'Puntuación (0-100)',
+        scoreLabel: 'Puntuación (0-100)',
         dateSeenLabel: 'Fecha de visualización',
         submitButton: 'Calificar',
       },

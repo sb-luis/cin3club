@@ -1,3 +1,5 @@
+// --- PUBLIC HEALTHCHECK ENDPOINT ---
+
 export default {
   method: 'get',
   path: '/healthcheck',
@@ -6,5 +8,6 @@ export default {
       request.log('info', 'healthcheck heartbeat');
       return h.response('OK').code(200);
     },
+    auth: false,
   },
 };

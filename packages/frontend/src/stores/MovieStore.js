@@ -6,19 +6,23 @@ export const useMovieStore = defineStore('MovieStore', {
   state: () => {
     return {
       isLoading: false,
+      selectedRating: {},
+      selectedMovie: {},
+      selectedMovieRatings: [],
       movies: [],
-      movieDetails: {},
+      ratings: [],
       searchQuery: '',
       searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
       searchQueryError: '',
     };
   },
   actions: {
+    //  --- MOVIES ---
     async validateQuery() {
       this.searchQueryError = '';
 
       // Update router with last query
-      this.$router.replace({ path: '/movies', query: { s: this.searchQuery } });
+      this.$router.replace({ path: '/', query: { s: this.searchQuery } });
 
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
@@ -50,30 +54,118 @@ export const useMovieStore = defineStore('MovieStore', {
       }
       this.isLoading = false;
     },
-    async rateMovie({ id, rating, dateSeen }) {
+    async getMovieDetails(id) {
+      const mainStore = useMainStore();
+
       this.isLoading = true;
-      // Send request
       try {
-        const res = await this.$axios.post(`/api/ratings/${id}`, { dateSeen, rating });
-        console.log('movie rated!');
-        console.log(res.data);
-        //this.movieDetailsCache[id] = res.data;
+        // GET MOVIE DETAILS
+        const url = `/api/movies/${id}?lang=${mainStore.lang}`;
+        console.log(url);
+        const res = await this.$axios.get(url);
+        this.selectedMovie = res.data;
+        console.log(this.selectedMovie);
+        await this.getMovieRatings();
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
     },
-    async getMovieDetails(id) {
-      const mainStore = useMainStore();
-
-      this.isLoading = true;
-      // Send request
+    //  --- RATINGS ---
+    async getAllRatings() {
       try {
-        const url = `/api/movies/${id}?lang=${mainStore.lang}`;
-        console.log(url);
-        const res = await this.$axios.get(url);
-        this.movieDetails = res.data;
-        console.log(this.movieDetails);
+        // GET MOVIE RATINGS
+        console.log('GETTING ALL RATINGS...');
+        const res = await this.$axios.get(`/api/ratings`);
+        this.ratings = res.data;
+        console.log(this.selectedMovieRatings);
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async getMovieRatings() {
+      this.selectedMovieRatings = {};
+      this.selectedRating = {};
+      this.isLoading = true;
+      try {
+        // GET MOVIE RATINGS
+        const res = await this.$axios.get(`/api/ratings/${this.selectedMovie.tmdbId}`);
+        console.log(res.data);
+        this.selectedMovieRatings = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async createRating({ dateSeen, score }) {
+      const mainStore = useMainStore();
+      this.isLoading = true;
+      try {
+        // CREATE MOVIE RATING
+        const movie = this.selectedMovie;
+        const data = {
+          score: score,
+          dateSeen: dateSeen,
+          movie: {
+            englishTitle: movie.englishTitle,
+            originalTitle: movie.originalTitle,
+            releaseDate: movie.releaseDate,
+            posterPath: movie.posterPath,
+            directors: movie.directors,
+            tmdbId: movie.tmdbId,
+            imdbId: movie.imdbId,
+            genres: movie.genres,
+            productionCountries: movie.productionCountries,
+            budget: movie.budget,
+            revenue: movie.revenue,
+            runningTime: movie.runningTime,
+          },
+        };
+
+        const res = await this.$axios.post(`/api/ratings`, data);
+
+        mainStore.hideModal();
+        await this.getMovieRatings(); // Re-fetch ratings
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async updateRating({ dateSeen, score }) {
+      const mainStore = useMainStore();
+      this.isLoading = true;
+
+      try {
+        // CREATE MOVIE RATING
+        const res = await this.$axios.put(`/api/ratings/${this.selectedRating.id}`, {
+          score: score,
+          dateSeen: dateSeen,
+        });
+
+        mainStore.hideModal();
+
+        if (this.$router.currentRoute.path.startsWith('/movies')) {
+          // Re-fetch movie ratings (movie details)
+          await this.getMovieRatings();
+        } else {
+          // Re-fetch movie ratings (rating lister)
+          await this.getAllRatings();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async deleteRating() {
+      const mainStore = useMainStore();
+      this.isLoading = true;
+      try {
+        // DELETE MOVIE RATING
+        const res = await this.$axios.delete(`/api/ratings/${this.selectedRating.id}`);
+
+        mainStore.hideModal();
+        await this.getMovieRatings(); // Re-fetch ratings
       } catch (err) {
         console.error(err);
       }

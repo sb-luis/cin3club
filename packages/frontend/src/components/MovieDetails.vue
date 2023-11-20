@@ -26,14 +26,13 @@ watch(
   () => {
     // re-fetch movie details if language changes
     movieStore.isLoading = true;
-    console.log('language changed!');
     getMovieDetailsDebounced();
   },
 );
 </script>
 
 <template>
-  <MovieDetailsCard :movie="movieStore.movieDetails" />
+  <MovieDetailsCard :movie="movieStore.selectedMovie" />
 </template>
 
 <style scoped></style>
