@@ -1,25 +1,14 @@
 <script setup>
-import { useMainStore } from '../stores/MainStore';
-import { useMovieStore } from '../stores/MovieStore';
-
 const props = defineProps({
   rating: {
     type: Object,
     required: true,
   },
 });
-const mainStore = useMainStore();
-const movieStore = useMovieStore();
 
 const dateStrToYear = (str) => {
   const d = new Date(str);
   return d.getFullYear();
-};
-
-const handleUpateRating = (rating) => {
-  movieStore.selectedMovie = rating.movie;
-  movieStore.selectedRating = rating;
-  mainStore.setCurrentContext('updateRating');
 };
 
 const fullPosterUrl = (path) => {
@@ -30,35 +19,30 @@ const fullPosterUrl = (path) => {
 <template>
   <div
     v-if="rating.movie"
-    @click="() => handleUpateRating(rating)"
-    class="bg-slate-900 hover:bg-slate-800 p-5 md:p-6 rounded-2xl w-full flex justify-between shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)]"
+    class="flex w-full justify-between rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] hover:bg-neutral-200 md:p-6"
   >
     <div class="max-w-[480px] text-start">
       <div class="pb-2">
-        <p class="text-2xl break-words md:text-3xl">{{ rating.movie.englishTitle }}</p>
+        <p class="break-words text-2xl md:text-3xl">{{ rating.movie.englishTitle }}</p>
         <p
           v-if="rating.movie.originalTitle !== rating.movie.englishTitle"
-          class="text-sm text-blue-400 italic md:text-xl pt-1"
+          class="text-primary-900 pt-1 text-sm italic md:text-xl"
         >
           {{ rating.movie.originalTitle }}
         </p>
       </div>
-      <div class="md:text-lg flex items-center space-x-2 md:space-x-4">
+      <div class="flex items-center space-x-2 md:space-x-4 md:text-lg">
         <p>{{ dateStrToYear(rating.movie.releaseDate) }}</p>
       </div>
-      <div class="pt-10 flex">
-        <p class="text-center text-4xl mb-3 whitespace-nowrap flex flex-col bg-blue-900 p-3 rounded-xl">
-          <span class="text-sm font-bold mb-2 uppercase">your score</span>
+      <div class="flex pt-10">
+        <p class="bg-primary-700 mb-3 flex flex-col whitespace-nowrap rounded-xl p-3 text-center text-4xl">
+          <span class="mb-2 text-sm font-bold uppercase">your score</span>
           <span>
             {{ rating.score }}
           </span>
         </p>
       </div>
     </div>
-    <img
-      :src="fullPosterUrl(rating.movie.posterPath)"
-      class="shadow-sm rounded-2xl ml-2 w-[200px]"
-      :class="{ 'blur-xl opacity-50': movieStore.selectedMovie === rating.movie.id }"
-    />
+    <img :src="fullPosterUrl(rating.movie.posterPath)" class="ml-2 w-[200px] rounded-2xl shadow-sm" />
   </div>
 </template>

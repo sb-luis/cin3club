@@ -34,36 +34,34 @@ watch([() => currentPage.value, () => totalPages], () => {
 </script>
 
 <template>
-  <div class="text-lg select-none">
-    <ul class="flex justify-between">
+  <div class="select-none text-lg">
+    <ul class="flex justify-between space-x-1 text-xl">
       <li
         @click="goToPage(1)"
-        class="py-1 cursor-pointer hover:text-blue-300"
-        :class="{ '!cursor-not-allowed text-neutral-800 hover:text-neutral-800': currentPage === 1 }"
+        class="cursor-pointer p-3 hover:text-neutral-300"
+        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
       >
         <span>First</span>
       </li>
       <li
         @click="goToPage(currentPage - 1)"
-        class="py-1 cursor-pointer hover:text-blue-300"
-        :class="{ '!cursor-not-allowed text-neutral-800 hover:text-neutral-800': currentPage === 1 }"
+        class="cursor-pointer p-3 hover:text-neutral-300"
+        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
       >
         <span>Back</span>
       </li>
-      <li class="py-1 bg-blue-500 rounded-xl px-5 w-[170px] text-center">
-        <span class="pr-2">Page</span><span>{{ currentPage }} / {{ totalPages }}</span>
-      </li>
+      <p class="flex-1"></p>
       <li
-        class="py-1 cursor-pointer hover:text-blue-300"
-        :class="{ '!cursor-not-allowed text-neutral-800 hover:text-neutral-800': currentPage === totalPages }"
+        class="cursor-pointer p-3 hover:text-neutral-300"
+        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
         @click="goToPage(currentPage + 1)"
       >
         <span>Next</span>
       </li>
       <li
         @click="goToPage(totalPages)"
-        class="py-1 cursor-pointer hover:text-blue-300"
-        :class="{ '!cursor-not-allowed text-neutral-800 hover:text-neutral-800': currentPage === totalPages }"
+        class="cursor-pointer p-3 hover:text-neutral-300"
+        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
       >
         <span>Last</span>
       </li>

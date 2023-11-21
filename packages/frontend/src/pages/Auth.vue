@@ -1,4 +1,6 @@
 <script setup>
+import TwInput from '../components/base/TwInput.vue';
+import TwButton from '../components/base/TwButton.vue';
 import { ref } from 'vue';
 import { useAuthStore } from '../stores/AuthStore';
 
@@ -24,37 +26,33 @@ const handleAuth = async (event) => {
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent="handleAuth">
-      <div>
-        <label for="alias" class="hidden">{{ $t(`pages.${authPage}.aliasLabel`) }}</label>
-        <input
-          v-model="alias"
-          type="text"
-          id="alias"
-          name="alias"
-          class="w-full p-3 mb-3 text-2xl rounded-lg bg-gray-700 autofill:bg-gray-700 border border-gray-600 placeholder-gray-400 text-white"
-          :placeholder="$t(`pages.${authPage}.aliasPlaceholder`)"
-          required
-        />
-      </div>
-      <div class="mt-2">
-        <label for="password" class="hidden">{{ $t(`pages.${authPage}.passwordLabel`) }}</label>
-        <input
-          v-model="password"
-          type="password"
-          id="password"
-          name="password"
-          class="w-full p-3 text-2xl rounded-lg bg-gray-700 autofill:bg-gray-700 border border-gray-600 placeholder-gray-400 text-white"
-          :placeholder="$t(`pages.${authPage}.passwordPlaceholder`)"
-          required
-        />
-      </div>
-      <button class="mt-3 p-1 rounded bg-green-800" type="submit">
-        {{ $t(`pages.${authPage}.submitButton`) }}
-      </button>
-    </form>
-  </div>
+  <form class="flex flex-col items-center" @submit.prevent="handleAuth">
+    <div class="">
+      <label for="alias" class="hidden">{{ $t(`pages.${authPage}.aliasLabel`) }}</label>
+      <TwInput
+        v-model="alias"
+        type="text"
+        id="alias"
+        name="alias"
+        :placeholder="$t(`pages.${authPage}.aliasPlaceholder`)"
+        required
+      />
+    </div>
+    <div class="mt-2">
+      <label for="password" class="hidden">{{ $t(`pages.${authPage}.passwordLabel`) }}</label>
+      <TwInput
+        v-model="password"
+        type="password"
+        id="password"
+        name="password"
+        :placeholder="$t(`pages.${authPage}.passwordPlaceholder`)"
+        required
+      />
+    </div>
+    <TwButton class="mt-2">
+      {{ $t(`pages.${authPage}.submitButton`) }}
+    </TwButton>
+  </form>
 </template>
 
 <style scoped></style>

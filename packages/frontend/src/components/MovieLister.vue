@@ -1,5 +1,6 @@
 <script setup>
 import { LoopingRhombusesSpinner } from 'epic-spinners';
+import TwInput from './base/TwInput.vue';
 import MovieListerCard from './MovieListerCard.vue';
 import { onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -39,17 +40,16 @@ onMounted(() => {
   <div>
     <div>
       <label for="movie_query" class="hidden">{{ $t('pages.movies.searchLabel') }}</label>
-      <input
+      <TwInput
         v-model="searchQuery"
+        class="w-full"
         type="text"
         id="first_name"
-        class="w-full p-3 text-2xl rounded-lg bg-gray-700 border border-gray-600 placeholder-gray-400 text-white"
         :placeholder="$t('pages.movies.searchPlaceholder')"
-        required
       />
     </div>
     <div class="m-auto py-4">
-      <p class="text-red-500 text-center text-2xl">
+      <p class="text-center text-2xl text-red-500">
         {{ searchQueryError }}
       </p>
       <ul v-if="movieStore.movies?.length && !movieStore.isLoading">
@@ -57,7 +57,7 @@ onMounted(() => {
       </ul>
       <LoopingRhombusesSpinner
         v-else-if="movieStore.isLoading && !searchQueryError"
-        class="mt-6 m-auto"
+        class="m-auto mt-6"
         :animation-duration="5000"
         :size="48"
       />

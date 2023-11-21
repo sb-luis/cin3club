@@ -6,53 +6,16 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  position: relative;
   font-weight: normal;
+}
+
+*:focus {
+  @apply outline-none ring duration-300;
 }
 
 html,
 body,
 #app {
-  width: 100%;
-  height: 100%;
-  background-color: rgb(20, 24, 24);
-  color: white;
-}
-
-a {
-  text-decoration: underline;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-input:autofill {
-  background: none;
-}
-
-body {
-  min-height: 100vh;
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
+  @apply m-0 h-full min-h-full w-full bg-neutral-200 p-0 text-neutral-800;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

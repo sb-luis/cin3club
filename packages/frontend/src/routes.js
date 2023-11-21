@@ -69,6 +69,9 @@ router.beforeEach(async (to) => {
   const mainStore = useMainStore();
   const isPublic = to.meta.public === true;
 
+  // Initilise app state
+  mainStore.populateAppStateFromQuery(to.query);
+
   // If user is not authenticated...
   if (!isPublic && !authStore.credentials) {
     // Try loading the credentials
@@ -77,7 +80,7 @@ router.beforeEach(async (to) => {
     if (!authStore.credentials) {
       console.log('Redirecting to /login page');
       // Redirect to login if credentials are invalid
-      return { path: '/login', query: { lang: mainStore.lang }, replace: true };
+      return { path: '/login', replace: true };
     }
   }
 });

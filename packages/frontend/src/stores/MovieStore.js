@@ -27,9 +27,10 @@ export const useMovieStore = defineStore('MovieStore', {
     //  --- MOVIES ---
     async validateQuery() {
       this.searchQueryError = '';
+      const mainStore = useMainStore();
 
       // Update router with last query
-      this.$router.replace({ path: '/', query: { s: this.searchQuery } });
+      mainStore.navigate({ path: '/', query: { s: this.searchQuery }, replace: true });
 
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
@@ -144,7 +145,6 @@ export const useMovieStore = defineStore('MovieStore', {
 
         const res = await this.$axios.post(`/api/ratings`, data);
 
-        mainStore.hideModal();
         await this.refreshRatings();
       } catch (err) {
         console.error(err);
@@ -162,7 +162,6 @@ export const useMovieStore = defineStore('MovieStore', {
           dateSeen: dateSeen,
         });
 
-        mainStore.hideModal();
         await this.refreshRatings();
       } catch (err) {
         console.error(err);
@@ -175,8 +174,6 @@ export const useMovieStore = defineStore('MovieStore', {
       try {
         // DELETE MOVIE RATING
         const res = await this.$axios.delete(`/api/ratings/${this.selectedRating.id}`);
-
-        mainStore.hideModal();
         await this.refreshRatings();
       } catch (err) {
         console.error(err);

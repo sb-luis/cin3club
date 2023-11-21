@@ -16,7 +16,8 @@ export const useAuthStore = defineStore('AuthStore', {
       try {
         const res = await this.$axios.post('/auth/register', { alias, password });
         await this.loadCredentials();
-        this.$router.replace({ path: '/', query: { lang: mainStore.lang } });
+        // Redirect to home
+        mainStore.navigate({ path: '/', replace: true });
       } catch (err) {
         console.error(err);
       }
@@ -25,6 +26,7 @@ export const useAuthStore = defineStore('AuthStore', {
     },
     async login(alias, password) {
       this.isLoading = true;
+      this.isLoading = true;
       const mainStore = useMainStore();
 
       const res = await this.$axios.post('/auth/login', { alias, password });
@@ -32,7 +34,7 @@ export const useAuthStore = defineStore('AuthStore', {
       await this.loadCredentials();
 
       // Redirect to home
-      this.$router.replace({ path: '/', query: { lang: mainStore.lang } });
+      mainStore.navigate({ path: '/', replace: true });
       this.isLoading = false;
     },
     async logout() {
@@ -47,10 +49,11 @@ export const useAuthStore = defineStore('AuthStore', {
       // Remove credentials from store
       this.credentials = null;
       // Redirect to home
-      this.$router.replace({ path: '/', query: { lang: mainStore.lang } });
+      mainStore.navigate({ path: '/', replace: true });
       this.isLoading = false;
     },
     async loadCredentials() {
+      console.log('Loading credentials!');
       this.isLoading = true;
       const mainStore = useMainStore();
 
@@ -62,7 +65,7 @@ export const useAuthStore = defineStore('AuthStore', {
         // Store credentials
         this.credentials = res.data;
         // Redirect to entry location
-        this.$router.replace({ path: entryPath, query: { lang: mainStore.lang } });
+        mainStore.navigate({ path: entryPath, replace: true });
       } catch (err) {
         console.error(err);
       }

@@ -50,8 +50,8 @@ export const en = {
     },
     components: {
       ratingForm: {
-        createRating: { title: 'Rate this movie', submitButton: 'Rate' },
-        updateRating: { title: 'Edit your rating', submitButton: 'Update', deleteButton: 'Delete Rating' },
+        create: { title: 'Rate this movie', submitButton: 'Rate' },
+        update: { title: 'Edit your rating', submitButton: 'Update', deleteButton: 'Delete Rating' },
         scoreLabel: 'Score (0-100)',
         dateSeenLabel: 'Date Seen',
       },

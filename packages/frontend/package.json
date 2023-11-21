@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.6.1",
     "axios": "^1.6.2",
     "epic-spinners": "^2.0.0",
     "i18next": "^23.7.6",
@@ -35,7 +36,9 @@
     "nodemon": "^3.0.1",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.7",
     "tailwindcss": "^3.3.5",
+    "tailwindcss-theme-swapper": "^0.8.0",
     "vite": "^4.5.0"
   },
   "engines": {

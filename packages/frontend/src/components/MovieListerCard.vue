@@ -25,12 +25,12 @@ const fullPosterUrl = (path) => {
 <template>
   <div
     v-if="movie"
-    @click="() => $router.push({ path: `movies/${movie.id}`, query: { lang: mainStore.lang } })"
-    class="bg-slate-900 hover:bg-slate-800 px-2 py-5 md:p-6 rounded-2xl w-full flex justify-between shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)]"
+    @click="() => mainStore.navigate({ path: `movies/${movie.id}` })"
+    class="bg-neutral-100 hover:bg-neutral-200 px-2 py-5 md:p-6 rounded-2xl w-full flex justify-between shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)]"
   >
     <div class="max-w-[480px] text-start">
       <p class="text-2xl break-words md:text-3xl py-2">{{ movie.englishTitle }}</p>
-      <p v-if="movie.originalTitle !== movie.englishTitle" class="text-sm text-blue-400 italic md:text-xl py-2">
+      <p v-if="movie.originalTitle !== movie.englishTitle" class="text-sm text-primary-900 italic md:text-xl py-2">
         {{ movie.originalTitle }}
       </p>
       <div class="md:text-lg flex items-center space-x-2 md:space-x-4">

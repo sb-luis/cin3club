@@ -1,7 +1,16 @@
 <script setup>
+import TwInput from './base/TwInput.vue';
+import TwButton from './base/TwButton.vue';
 import { ref, onMounted } from 'vue';
 import { useMovieStore } from '../stores/MovieStore';
 import { useMainStore } from '../stores/MainStore';
+
+const props = defineProps({
+  update: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const mainStore = useMainStore();
 const movieStore = useMovieStore();
@@ -22,39 +31,40 @@ const tempDate = ref(null);
 const tempScore = ref(null);
 
 onMounted(() => {
-  if (mainStore.currentContext === 'createRating') {
-    tempDate.value = today;
-    tempScore.value = 100;
-  } else {
+  if (props.update) {
+    // updating rating
     const d = new Date(movieStore.selectedRating.dateSeen);
     tempDate.value = formatDate(d);
     tempScore.value = movieStore.selectedRating.score;
+  } else {
+    // creating new rating
+    const d = new Date(movieStore.selectedRating.dateSeen);
+    tempDate.value = today;
+    tempScore.value = 50;
   }
 });
 
 const handleSubmitRating = () => {
-  if (mainStore.currentContext === 'createRating') {
-    movieStore.createRating({ dateSeen: tempDate.value, score: tempScore.value });
-  } else {
+  if (props.update) {
     movieStore.updateRating({ dateSeen: tempDate.value, score: tempScore.value });
+  } else {
+    movieStore.createRating({ dateSeen: tempDate.value, score: tempScore.value });
   }
 };
 
-const handleDeleteRating = () => {
-  movieStore.deleteRating();
-};
+const i18nRatingFormKey = props.update ? 'update' : 'create';
 </script>
 
 <template>
   <div>
     <form @submit.prevent="handleSubmitRating">
-      <h4 class="text-4xl pb-5">{{ $t(`components.ratingForm.${mainStore.currentContext}.title`) }}</h4>
+      <h4 class="pb-5 text-4xl">{{ $t(`components.ratingForm.${i18nRatingFormKey}.title`) }}</h4>
       <!-- Date Seen -->
       <div class="mb-10">
         <label for="dateSeen" class="text-2xl"> {{ $t('components.ratingForm.dateSeenLabel') }}</label>
-        <input
+        <TwInput
           v-model="tempDate"
-          class="bg-gray-700 rounded-2xl mt-2 w-full p-2 text-2xl"
+          class="mt-2 w-full"
           type="date"
           id="dateSeen"
           name="dateSeen"
@@ -65,32 +75,16 @@ const handleDeleteRating = () => {
       <!-- Score -->
       <div class="mb-10">
         <label for="score" class="text-2xl">{{ $t('components.ratingForm.scoreLabel') }}</label>
-        <input
-          v-model="tempScore"
-          class="bg-gray-700 w-full rounded-2xl p-2 mt-2 text-2xl"
-          type="number"
-          id="score"
-          name="score"
-          min="0"
-          max="100"
-        />
+        <TwInput v-model="tempScore" class="mt-2 w-full" type="number" id="score" name="score" min="0" max="100" />
       </div>
 
-      <div class="flex flex-col space-y-4 items-end">
-        <button
-          type="submit"
-          class="text-2xl p-2 rounded-2xl block w-[220px] bg-slate-700 border border-slate-800 hover:bg-slate-800 hover:border-blue-500 hover:text-blue-500 transition-border duration-500"
-        >
-          {{ $t(`components.ratingForm.${mainStore.currentContext}.submitButton`) }}
-        </button>
-        <button
-          type="button"
-          @click="handleDeleteRating"
-          v-if="mainStore.currentContext === 'updateRating'"
-          class="text-2xl p-2 rounded-2xl block w-[220px] bg-slate-700 border border-slate-800 hover:bg-slate-800 hover:border-blue-500 hover:text-blue-500 transition-border duration-500"
-        >
-          {{ $t(`components.ratingForm.${mainStore.currentContext}.deleteButton`) }}
-        </button>
+      <div class="flex flex-col items-end space-y-4">
+        <TwButton type="submit">
+          {{ $t(`components.ratingForm.${i18nRatingFormKey}.submitButton`) }}
+        </TwButton>
+        <TwButton type="button" @click="movieStore.deleteRating" v-if="props.update">
+          {{ $t(`components.ratingForm.${i18nRatingFormKey}.deleteButton`) }}
+        </TwButton>
       </div>
     </form>
   </div>
