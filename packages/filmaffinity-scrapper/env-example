@@ -1,0 +1,4 @@
+FILMAFFINITY_ENDPOINT=https://www.filmaffinity.com/uk
+USER_ID=foo
+TMDB_ENDPOINT=https://api.themoviedb.org/3
+TMDB_KEY=bar

@@ -8,7 +8,7 @@ import axios from 'axios';
 // https://developer.themoviedb.org/docs/rate-limiting
 
 export default class TmdbService extends Schmervice.Service {
-  async getMovies({ s, lang }) {
+  async getMovies({ s, lang = 'en-GB' }) {
     this.server.log(['info', 'tmdb-service'], `GET movies named '${s}' in lang '${lang}'`);
 
     // Fetch data from TMDB

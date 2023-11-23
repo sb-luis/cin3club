@@ -9,10 +9,6 @@
   font-weight: normal;
 }
 
-*:focus {
-  @apply outline-none ring duration-300;
-}
-
 html,
 body,
 #app {
