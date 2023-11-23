@@ -137,8 +137,6 @@ export const useMovieStore = defineStore('MovieStore', {
             imdbId: movie.imdbId,
             genres: movie.genres,
             productionCountries: movie.productionCountries,
-            budget: movie.budget,
-            revenue: movie.revenue,
             runningTime: movie.runningTime,
           },
         };

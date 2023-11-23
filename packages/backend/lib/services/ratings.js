@@ -85,8 +85,6 @@ export default class RatingService extends Schmervice.Service {
             imdbId: movie.imdbId,
             genres: movie.genres,
             productionCountries: movie.productionCountries,
-            budget: movie.budget,
-            revenue: movie.revenue,
             runningTime: movie.runningTime,
           },
           { transaction },

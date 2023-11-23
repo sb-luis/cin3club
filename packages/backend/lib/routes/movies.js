@@ -1,7 +1,7 @@
 // ESM doesn't support JSON imports
 import axios from 'axios';
 import Joi from 'joi';
-import { URL_QUERY_STR_MIN, URL_QUERY_STR_MAX } from '../constants.js';
+import { URL_QUERY_STR_MIN, URL_QUERY_STR_MAX } from '../../server/constants.js';
 
 // --- PUBLIC MOVIE ENDPOINTS ---
 

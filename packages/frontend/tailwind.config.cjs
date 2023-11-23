@@ -116,13 +116,6 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     // https://tailwindcss.com/docs/theme
-    extend: {
-      fontFamily: {
-        neonderthaw: ['"Neonderthaw"', 'monospace'],
-        'slackside-one': ['"Slackside One"', 'monospace'],
-        kaushan: ['"Kaushan Script"', 'monospace'],
-      },
-    },
   },
   // Plugin DOCS
   // https://github.com/crswll/tailwindcss-theme-swapper

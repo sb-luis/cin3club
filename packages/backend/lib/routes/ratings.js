@@ -1,7 +1,6 @@
 // ESM doesn't support JSON imports
 import Joi from 'joi';
 import Boom from '@hapi/boom';
-import { URL_QUERY_STR_MIN, URL_QUERY_STR_MAX } from '../constants.js';
 
 // --- PROTECTED USER RATINGS ENDPOINTS ---
 
@@ -81,8 +80,6 @@ export default [
             imdbId: Joi.string(),
             genres: Joi.array().items(Joi.string()), // Max 50
             productionCountries: Joi.array().items(Joi.string()), // Max 50
-            budget: Joi.number(),
-            revenue: Joi.number(),
             runningTime: Joi.number(),
           }),
           score: Joi.number(),

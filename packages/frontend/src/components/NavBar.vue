@@ -96,7 +96,7 @@ const hideNavDrawer = () => {
             <div class="flex flex-col space-y-2 p-5">
               <NavLink @click="hideNavDrawer" path="/">movies</NavLink>
               <template v-if="authStore.credentials">
-                <NavLink @click="hideNavDrawer" path="ratings">ratings</NavLink>
+                <NavLink @click="hideNavDrawer" path="/ratings">ratings</NavLink>
                 <NavLink @click="hideNavDrawer" path="/logout">logout</NavLink>
               </template>
               <template v-else>

@@ -14,4 +14,5 @@ body,
 #app {
   @apply m-0 h-full min-h-full w-full bg-neutral-200 p-0 text-neutral-800;
   text-rendering: optimizeLegibility;
+  font-family: 'Nanum Gothic', sans-serif;
 }

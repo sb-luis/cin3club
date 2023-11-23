@@ -19,8 +19,6 @@ export default {
     // Useful for stats
     genres: DataTypes.ARRAY(DataTypes.STRING), // Max 50
     productionCountries: DataTypes.ARRAY(DataTypes.STRING), // Max 50
-    budget: DataTypes.INTEGER,
-    revenue: DataTypes.INTEGER,
     runningTime: DataTypes.INTEGER,
   },
 };
@@ -28,6 +26,8 @@ export default {
 /* EXTRA FIELDS (lazy load from tmdb API instead) 
 
 - Movie Details 
+    budget: DataTypes.BIGINT,
+    revenue: DataTypes.BIGINT,
 
 - Movie Credits
     music: DataTypes.ARRAY(DataTypes.STRING), // Max 5
