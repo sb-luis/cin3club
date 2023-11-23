@@ -4,20 +4,20 @@ services:
   frontend:
     container_name: kino-frontend
     build:
-      context: ./packages/frontend
+      context: ./packages/app-frontend
       dockerfile: Dockerfile
       target: dev
     volumes:
-      - ./packages/frontend/src/:/app/src
-      - ./packages/frontend/package.json/:/app/package.json
-      - ./packages/frontend/tailwind.config.cjs/:/app/tailwind.config.cjs
-      - ./packages/frontend/index.html/:/app/index.html
+      - ./packages/app-frontend/src/:/app/src
+      - ./packages/app-frontend/package.json/:/app/package.json
+      - ./packages/app-frontend/tailwind.config.cjs/:/app/tailwind.config.cjs
+      - ./packages/app-frontend/index.html/:/app/index.html
     ports:
       - '8000:8000'
   backend:
     container_name: kino-backend
     build:
-      context: ./packages/backend
+      context: ./packages/app-backend
       dockerfile: Dockerfile
       target: dev
     env_file:
@@ -29,9 +29,9 @@ services:
       - CLIENT_URL=http://localhost:8000
       - LOG_LEVEL=debug
     volumes:
-      - ./packages/backend/lib/:/app/lib
-      - ./packages/backend/server/:/app/server
-      - ./packages/backend/package.json/:/app/package.json
+      - ./packages/app-backend/lib/:/app/lib
+      - ./packages/app-backend/server/:/app/server
+      - ./packages/app-backend/package.json/:/app/package.json
     ports:
       - '3000:3000'
     depends_on:

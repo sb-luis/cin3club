@@ -93,6 +93,7 @@ export default [
     method: 'PUT',
     path: '/api/ratings/{id}',
     handler: async (request, h) => {
+      console.log('getting ratings!');
       const { ratingService } = request.services();
       const userId = request.auth.credentials.userId;
       const { id } = request.params;
