@@ -48,13 +48,17 @@ const hideNavDrawer = () => {
     <div class="flex w-60 items-center justify-between">
       <!-- TOGGLE LOCALE -->
       <details ref="langMenu" :open="langMenuIsOpen" @click="toggleLangMenu" class="mr-2">
-        <summary>LANG</summary>
+        <summary>{{ $t('app.nav.langSelectionLabel') }}</summary>
         <ul class="rounded-box absolute z-[1] mt-2 w-40 space-y-2 rounded-2xl bg-neutral-100 p-3 shadow">
-          <li :class="{ '!text-primary-900': mainStore.lang === 'en-gb' }">
-            <button class="w-full text-start" @click="(e) => handleLangChange(e, 'en-gb')">English</button>
+          <li :class="{ '!text-primary-900': mainStore.lang === 'en' }">
+            <button class="w-full text-start" @click="(e) => handleLangChange(e, 'en')">
+              {{ $t('app.nav.englishOptionLabel') }}
+            </button>
           </li>
-          <li :class="{ 'text-primary-900': mainStore.lang === 'es-spa' }">
-            <button class="w-full text-start" @click="(e) => handleLangChange(e, 'es-spa')">Spanish</button>
+          <li :class="{ 'text-primary-900': mainStore.lang === 'es' }">
+            <button class="w-full text-start" @click="(e) => handleLangChange(e, 'es')">
+              {{ $t('app.nav.spanishOptionLabel') }}
+            </button>
           </li>
         </ul>
       </details>
@@ -94,14 +98,14 @@ const hideNavDrawer = () => {
           <div class="space-y-3 overflow-hidden">
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
-              <NavLink @click="hideNavDrawer" path="/">movies</NavLink>
+              <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
               <template v-if="authStore.credentials">
-                <NavLink @click="hideNavDrawer" path="/ratings">ratings</NavLink>
-                <NavLink @click="hideNavDrawer" path="/logout">logout</NavLink>
+                <NavLink @click="hideNavDrawer" path="/ratings"> {{ $t('app.nav.ratingsLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
               </template>
               <template v-else>
-                <NavLink @click="hideNavDrawer" path="/login">login</NavLink>
-                <NavLink @click="hideNavDrawer" path="/register">register</NavLink>
+                <NavLink @click="hideNavDrawer" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" path="/register">{{ $t('app.nav.registerLink') }}</NavLink>
               </template>
             </div>
           </div>

@@ -56,9 +56,9 @@ watch(modalIsOpen, (newVal) => {
     </TwModal>
 
     <!-- RATINGS -->
-    <h3 v-if="sortedRatings.length" class="pb-5 font-bold uppercase">Your Ratings</h3>
+    <h3 v-if="sortedRatings.length" class="pb-5 font-bold uppercase">{{ $t('pages.movieDetails.ratingsTitle') }}</h3>
     <h3 v-else class="mb-2 flex flex-col space-y-2 text-center font-bold">
-      <span> Have you seen this movie? </span>
+      <span> {{ $t(`pages.movieDetails.emptyRatingsLabel`) }} </span>
     </h3>
     <ul v-if="sortedRatings.length" class="mb-5">
       <li v-for="(rating, i) in sortedRatings">
@@ -80,7 +80,7 @@ watch(modalIsOpen, (newVal) => {
       @click="handleCreateRating"
       class="hover:border-primary-900 hover:text-primary-900 m-auto block w-[220px] rounded-2xl border border-neutral-200 bg-neutral-300 p-2 transition-all duration-500 hover:bg-neutral-200"
     >
-      {{ sortedRatings.length ? 'New' : 'Rate it!' }}
+      {{ $t(`pages.movieDetails.newRatingButton`, { count: sortedRatings.length }) }}
     </button>
   </div>
 </template>

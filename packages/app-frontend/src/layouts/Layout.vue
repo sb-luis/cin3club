@@ -24,7 +24,6 @@ onMounted(() => {
 
       <!-- MAIN -->
       <main class="relative mt-14 w-full max-w-4xl flex-1">
-        <h1 class="text-primary-900 mb-2 text-2xl font-bold uppercase">{{ $t(`pages.${$route.name}.title`) }}</h1>
         <router-view v-slot="{ Component, route }">
           <component :is="Component" :key="route.path" />
         </router-view>

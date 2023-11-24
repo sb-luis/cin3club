@@ -35,7 +35,7 @@ const main = async () => {
 
     // search for a movie with filmaffinity's title
     await pause(DEBOUNCING_TIME);
-    const tmdbData = await getMovies({ s, lang: 'en-gb' });
+    const tmdbData = await getMovies({ s, lang: 'en' });
 
     // check if filmaffinity and tmdb movie detail's match
     let match = false;

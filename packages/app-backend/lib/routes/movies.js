@@ -1,7 +1,7 @@
 // ESM doesn't support JSON imports
 import axios from 'axios';
 import Joi from 'joi';
-import { URL_QUERY_STR_MIN, URL_QUERY_STR_MAX } from '../../server/constants.js';
+import { URL_QUERY_STR_MAX } from '../../server/constants.js';
 
 // --- PUBLIC MOVIE ENDPOINTS ---
 
@@ -24,8 +24,8 @@ export default [
       auth: false,
       validate: {
         query: Joi.object({
-          s: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
-          lang: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
+          s: Joi.string().max(URL_QUERY_STR_MAX).required(),
+          lang: Joi.string().max(URL_QUERY_STR_MAX).required(),
         }).options({ stripUnknown: true }),
       },
     },
@@ -50,10 +50,10 @@ export default [
       auth: false,
       validate: {
         query: Joi.object({
-          lang: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
+          lang: Joi.string().max(URL_QUERY_STR_MAX).required(),
         }).options({ stripUnknown: true }),
         params: Joi.object({
-          id: Joi.string().min(URL_QUERY_STR_MIN).max(URL_QUERY_STR_MAX).required(),
+          id: Joi.string().max(URL_QUERY_STR_MAX).required(),
         }),
       },
     },

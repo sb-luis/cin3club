@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getMovies = async ({ s, lang = 'en-GB' }) => {
+export const getMovies = async ({ s, lang = 'en' }) => {
   // Search films data from TMDB@3
   const url = `${process.env.TMDB_ENDPOINT}/search/movie?query=${s}&language=${lang}&page=1`;
 
@@ -38,7 +38,7 @@ export const getMovies = async ({ s, lang = 'en-GB' }) => {
   return data;
 };
 
-export const getMovieDetails = async ({ id, lang = 'en-GB' }) => {
+export const getMovieDetails = async ({ id, lang = 'en' }) => {
   // Fetch film details from TMDB@3
   const httpOptions = {
     headers: {
@@ -82,7 +82,7 @@ export const getMovieDetails = async ({ id, lang = 'en-GB' }) => {
   return movieDetails;
 };
 
-export const getTvShows = async ({ s, lang = 'en-GB' }) => {
+export const getTvShows = async ({ s, lang = 'en' }) => {
   // Fetch TV data
   const tvUrl = `${process.env.TMDB_ENDPOINT}/search/tv?query=${s}&language=${lang}&page=1`;
 
@@ -120,7 +120,7 @@ export const getTvShows = async ({ s, lang = 'en-GB' }) => {
   return tvData;
 };
 
-export const getTvShowDetails = async ({ id, lang = 'en-GB' }) => {
+export const getTvShowDetails = async ({ id, lang = 'en' }) => {
   // Fetch TV Show Details from TMDB
   const httpOptions = {
     headers: {

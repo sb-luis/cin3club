@@ -38,6 +38,7 @@ onMounted(() => {
 
 <template>
   <div>
+    <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.movies.title`) }}</h1>
     <div>
       <label for="movie_query" class="hidden">{{ $t('pages.movies.searchLabel') }}</label>
       <TwInput
@@ -49,19 +50,22 @@ onMounted(() => {
       />
     </div>
     <div class="m-auto py-4">
-      <p class="text-center text-2xl text-red-500">
+      <p v-if="searchQueryError" class="text-center text-2xl text-red-500">
         {{ searchQueryError }}
       </p>
-      <ul v-if="movieStore.movies?.length && !movieStore.isLoading">
-        <MovieListerCard class="my-5" v-for="movie in movieStore.movies" :movie="movie"> </MovieListerCard>
-      </ul>
       <LoopingRhombusesSpinner
-        v-else-if="movieStore.isLoading && !searchQueryError"
+        v-else-if="movieStore.isLoading"
         class="m-auto mt-6"
         :animation-duration="5000"
         :size="48"
       />
-      <p v-else-if="!searchQueryError" class="text-center text-2xl">{{ $t('pages.movies.welcomeMessage') }}</p>
+      <ul v-else-if="movieStore.movies?.length && !movieStore.isLoading">
+        <MovieListerCard class="my-5" v-for="movie in movieStore.movies" :movie="movie"> </MovieListerCard>
+      </ul>
+      <p v-else-if="searchQuery !== ''" class="text-center text-2xl text-red-500">
+        {{ $t('pages.movies.movieNotFound', { query: searchQuery }) }}
+      </p>
+      <p v-else class="text-center text-2xl">{{ $t('pages.movies.welcomeMessage') }}</p>
     </div>
   </div>
 </template>

@@ -29,7 +29,10 @@ watch(
 </script>
 
 <template>
-  <MovieDetailsCard :movie="movieStore.selectedMovie" />
+  <div>
+    <h1 class="text-primary-900 text-2xl font-bold uppercase">{{ $t(`pages.movieDetails.title`) }}</h1>
+    <MovieDetailsCard :movie="movieStore.selectedMovie" />
+  </div>
 </template>
 
 <style scoped></style>

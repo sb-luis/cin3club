@@ -54,7 +54,7 @@ const moviePosterUrl = computed(() => {
 <template>
   <div
     v-if="!movieStore.isLoading && movie && Object.keys(movie).length > 0"
-    class="mt-10 w-full rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] md:p-6"
+    class="mt-4 w-full rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] md:p-8"
   >
     <div class="flex justify-between pb-5">
       <div class="max-w-[440px] pr-4">

@@ -69,6 +69,19 @@ watch(
 
 <template>
   <div>
+    <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.ratings.title`) }}</h1>
+
+    <TwPagination
+      class="mb-2"
+      v-if="movieStore.ratings.length"
+      v-model="movieStore.ratingsPageCurrent"
+      :total-pages="movieStore.ratingsPageTotal"
+    >
+      <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
+      <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
+      <template v-slot:next>{{ $t('pages.ratings.pagination.nextButton') }}</template>
+      <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
+    </TwPagination>
     <div>
       <!-- RATING LISTER MODAL -->
       <TwModal v-model="ratingsModalIsOpen">
@@ -76,17 +89,12 @@ watch(
       </TwModal>
 
       <!-- SORT & PAGINATION CONTROLS -->
-      <TwPagination
-        v-if="movieStore.ratings.length"
-        v-model="movieStore.ratingsPageCurrent"
-        :total-pages="movieStore.ratingsPageTotal"
-      />
-      <div v-if="movieStore.ratings.length" class="flex justify-between px-3">
+      <div v-if="movieStore.ratings.length" class="flex justify-between">
         <p class="mr-5 text-xl">
           {{ $t('pages.ratings.totalCount', { count: movieStore.ratingsItemsTotal }) }}
         </p>
         <p class="text-xl">
-          <span class="pr-2">Page</span
+          <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span
           ><span>{{ movieStore.ratingsPageCurrent }} / {{ movieStore.ratingsPageTotal }}</span>
         </p>
         <button
@@ -128,6 +136,6 @@ watch(
         />
       </div>
     </div>
-    <p v-else>You currently don't have any ratings</p>
+    <p v-else>{{ $t('pages.ratings.noRatingsText') }}</p>
   </div>
 </template>

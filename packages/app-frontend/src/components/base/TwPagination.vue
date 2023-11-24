@@ -35,35 +35,35 @@ watch([() => currentPage.value, () => totalPages], () => {
 
 <template>
   <div class="select-none text-lg">
-    <ul class="flex justify-between space-x-1 text-xl">
+    <ul class="flex justify-between space-x-4 text-xl">
       <li
         @click="goToPage(1)"
-        class="cursor-pointer p-3 hover:text-neutral-300"
+        class="cursor-pointer hover:text-neutral-300"
         :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
       >
-        <span>First</span>
+        <slot name="first"></slot>
       </li>
       <li
         @click="goToPage(currentPage - 1)"
-        class="cursor-pointer p-3 hover:text-neutral-300"
+        class="cursor-pointer hover:text-neutral-300"
         :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
       >
-        <span>Back</span>
+        <slot name="back"></slot>
       </li>
       <p class="flex-1"></p>
       <li
-        class="cursor-pointer p-3 hover:text-neutral-300"
+        class="cursor-pointer hover:text-neutral-300"
         :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
         @click="goToPage(currentPage + 1)"
       >
-        <span>Next</span>
+        <slot name="next"></slot>
       </li>
       <li
         @click="goToPage(totalPages)"
-        class="cursor-pointer p-3 hover:text-neutral-300"
+        class="cursor-pointer hover:text-neutral-300"
         :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
       >
-        <span>Last</span>
+        <slot name="last"></slot>
       </li>
     </ul>
   </div>

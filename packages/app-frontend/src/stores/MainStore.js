@@ -3,7 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 export const useMainStore = defineStore('MainStore', {
   state: () => {
     return {
-      lang: 'en-gb', // en-gb / es-spa
+      lang: 'en', // english / spanish
       theme: 'light', // dark / light
     };
   },
@@ -38,7 +38,7 @@ export const useMainStore = defineStore('MainStore', {
     },
     async setLang(lang) {
       console.log(`Setting lang to '${lang}'`);
-      if (lang === 'en-gb' || lang === 'es-spa') {
+      if (lang === 'en' || lang === 'es') {
         this.lang = lang;
         this.$i18next.changeLanguage(this.lang);
       }
