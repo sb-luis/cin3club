@@ -1,29 +1,25 @@
 <script setup>
-import TwModal from '../components/base/TwModal.vue';
-import { ref, watch, onMounted, computed } from 'vue';
-import { useMovieStore } from '../stores/MovieStore';
+import { watch, onMounted, computed } from 'vue';
+import { useRatingStore } from '../stores/RatingStore';
 import { LoopingRhombusesSpinner } from 'epic-spinners';
 import RatingListerCard from './RatingListerCard.vue';
-import RatingsForm from './RatingsForm.vue';
 import TwPagination from './base/TwPagination.vue';
 import debounce from 'lodash.debounce';
 
-const movieStore = useMovieStore();
-
-const ratingsModalIsOpen = ref(false);
+const ratingStore = useRatingStore();
 
 const getRatingsDebounced = debounce(async () => {
-  await movieStore.getAllRatings();
+  await ratingStore.getAllRatings();
 }, 1000);
 
 const groupedRatings = computed(() => {
-  if (movieStore.ratings) {
-    let lastDate = new Date(movieStore.ratings[0].dateSeen);
+  if (ratingStore.ratings) {
+    let lastDate = new Date(ratingStore.ratings[0].dateSeen);
     let lastDateIndex = 0;
 
-    const result = [{ dateSeen: lastDate, ratings: [movieStore.ratings[0]] }];
-    for (let i = 1; i < movieStore.ratings.length; i++) {
-      const rating = movieStore.ratings[i];
+    const result = [{ dateSeen: lastDate, ratings: [ratingStore.ratings[0]] }];
+    for (let i = 1; i < ratingStore.ratings.length; i++) {
+      const rating = ratingStore.ratings[i];
       const date = new Date(rating.dateSeen);
       if (date.toDateString() === lastDate.toDateString()) {
         result[lastDateIndex].ratings.push(rating);
@@ -39,29 +35,23 @@ const groupedRatings = computed(() => {
   }
 });
 
-const handleUpateRating = (rating) => {
-  movieStore.selectedMovie = rating.movie;
-  movieStore.selectedRating = rating;
-  ratingsModalIsOpen.value = true;
-};
-
 onMounted(() => {
-  movieStore.isLoading = true;
+  ratingStore.isLoading = true;
   getRatingsDebounced();
 });
 
 watch(
-  () => movieStore.ratingsPageCurrent,
+  () => ratingStore.currentPage,
   (newVal) => {
-    movieStore.isLoading = true;
+    ratingStore.isLoading = true;
     getRatingsDebounced();
   },
 );
 
 watch(
-  () => movieStore.ratingsSortOrder,
+  () => ratingStore.sortOrder,
   (newVal) => {
-    movieStore.isLoading = true;
+    ratingStore.isLoading = true;
     getRatingsDebounced();
   },
 );
@@ -73,9 +63,9 @@ watch(
 
     <TwPagination
       class="mb-2"
-      v-if="movieStore.ratings.length"
-      v-model="movieStore.ratingsPageCurrent"
-      :total-pages="movieStore.ratingsPageTotal"
+      v-if="ratingStore.ratings.length"
+      v-model="ratingStore.currentPage"
+      :total-pages="ratingStore.totalPages"
     >
       <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
       <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
@@ -83,56 +73,46 @@ watch(
       <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
     </TwPagination>
     <div>
-      <!-- RATING LISTER MODAL -->
-      <TwModal v-model="ratingsModalIsOpen">
-        <RatingsForm v-if="ratingsModalIsOpen" update class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
-      </TwModal>
-
       <!-- SORT & PAGINATION CONTROLS -->
-      <div v-if="movieStore.ratings.length" class="flex justify-between">
+      <div v-if="ratingStore.ratings.length" class="flex justify-between">
         <p class="mr-5 text-xl">
-          {{ $t('pages.ratings.totalCount', { count: movieStore.ratingsItemsTotal }) }}
+          {{ $t('pages.ratings.totalCount', { count: ratingStore.ratingsTotal }) }}
         </p>
         <p class="text-xl">
           <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span
-          ><span>{{ movieStore.ratingsPageCurrent }} / {{ movieStore.ratingsPageTotal }}</span>
+          ><span>{{ ratingStore.currentPage }} / {{ ratingStore.totalPages }}</span>
         </p>
         <button
-          @click="movieStore.toggleRatingsSort"
+          @click="ratingStore.toggleRatingsSort"
           class="bg-primary-700 hover:bg-primary-800 flex w-[100px] justify-end rounded-xl pr-5 text-lg transition-all duration-500"
-          :class="{ '!w-[90px]': movieStore.ratingsSortOrder === 'ASC' }"
+          :class="{ '!w-[90px]': ratingStore.sortOrder === 'ASC' }"
         >
           <span
             class="rotate-90 px-2 text-2xl font-bold transition-transform duration-500"
-            :class="{ 'rotate-[-450deg]': movieStore.ratingsSortOrder === 'ASC' }"
+            :class="{ 'rotate-[-450deg]': ratingStore.sortOrder === 'ASC' }"
           >
             &gt;
           </span>
-          <span class="pl-1 lowercase">{{ movieStore.ratingsSortOrder }}</span>
+          <span class="pl-1 lowercase">{{ ratingStore.sortOrder }}</span>
         </button>
       </div>
     </div>
-    <LoopingRhombusesSpinner v-if="movieStore.isLoading" class="m-auto mt-20" :animation-duration="5000" :size="48" />
-    <div v-else-if="movieStore.ratings.length">
+    <LoopingRhombusesSpinner v-if="ratingStore.isLoading" class="m-auto mt-20" :animation-duration="5000" :size="48" />
+    <div v-else-if="ratingStore.ratings.length">
       <div class="m-auto">
         <button></button>
-        <ul v-if="groupedRatings?.length && !movieStore.isLoading">
+        <ul v-if="groupedRatings?.length && !ratingStore.isLoading">
           <li v-for="group in groupedRatings">
             <p class="border-b-4 border-neutral-300 p-2 px-4 text-2xl">
               {{ group.dateSeen.toDateString() }}
             </p>
-            <RatingListerCard
-              @click="() => handleUpateRating(rating)"
-              class="my-5"
-              v-for="rating in group.ratings"
-              :rating="rating"
-            />
+            <RatingListerCard class="my-5" v-for="rating in group.ratings" :rating="rating" />
           </li>
         </ul>
         <TwPagination
-          v-if="movieStore.ratings.length > 3"
-          v-model="movieStore.ratingsPageCurrent"
-          :total-pages="movieStore.ratingsPageTotal"
+          v-if="ratingStore.ratings.length > 3"
+          v-model="ratingStore.currentPage"
+          :total-pages="ratingStore.totalPages"
         />
       </div>
     </div>

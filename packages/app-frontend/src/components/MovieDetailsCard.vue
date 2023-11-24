@@ -8,24 +8,21 @@ import MovieDetailsRatings from './MovieDetailsRatings.vue';
 const movieStore = useMovieStore();
 const authStore = useAuthStore();
 
-const props = defineProps({
-  movie: {
-    type: Object,
-    required: true,
-  },
+const movie = computed(() => {
+  return movieStore.selectedMovie ?? {};
 });
 
 const movieYear = computed(() => {
-  const d = new Date(props.movie.releaseDate);
+  const d = new Date(movie.value.releaseDate);
   return d.getFullYear();
 });
 
 const directorsStr = computed(() => {
-  return props.movie.directors?.join(',');
+  return movie.value.directors?.join(',');
 });
 
 const moviePosterUrl = computed(() => {
-  return `https://image.tmdb.org/t/p/w300_and_h450_face${props.movie.posterPath}`;
+  return `https://image.tmdb.org/t/p/w300_and_h450_face${movie.value.posterPath}`;
 });
 
 /*

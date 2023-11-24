@@ -1,4 +1,8 @@
 <script setup>
+import { useMainStore } from '../stores/MainStore';
+
+const mainStore = useMainStore();
+
 const props = defineProps({
   rating: {
     type: Object,
@@ -18,6 +22,7 @@ const fullPosterUrl = (path) => {
 
 <template>
   <div
+    @click="() => mainStore.navigate({ path: `movies/${rating.movie.id}` })"
     v-if="rating.movie"
     class="flex w-full justify-between rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] hover:bg-neutral-200 md:p-6"
   >

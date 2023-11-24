@@ -2,11 +2,15 @@
 import { ref, computed, watch } from 'vue';
 import { useMainStore } from '../stores/MainStore';
 import { useMovieStore } from '../stores/MovieStore';
+import { useRatingStore } from '../stores/RatingStore';
 import TwModal from './base/TwModal.vue';
 import RatingsForm from './RatingsForm.vue';
 
 const mainStore = useMainStore();
 const movieStore = useMovieStore();
+const ratingStore = useRatingStore();
+
+const movie = computed(() => movieStore.selectedMovie);
 
 const modalIsOpen = ref(false);
 const updateRatingFormIsOpen = ref(false);
@@ -28,7 +32,7 @@ const handleCreateRating = () => {
 };
 
 const handleUpdateRating = (rating) => {
-  movieStore.selectedRating = rating;
+  ratingStore.selectedRating = rating;
   updateRatingFormIsOpen.value = true;
   modalIsOpen.value = true;
 };
@@ -41,6 +45,7 @@ const formatDate = (dateStr) => {
 watch(modalIsOpen, (newVal) => {
   if (!newVal) {
     // Closing rating modal
+    ratingStore.selectedRating = {};
     updateRatingFormIsOpen.value = false;
     createRatingFormIsOpen.value = false;
   }
@@ -51,8 +56,17 @@ watch(modalIsOpen, (newVal) => {
   <div class="rounded-2xl bg-neutral-200 p-3 text-xl md:max-w-[250px] md:text-neutral-500">
     <!-- RATINGS MODAL -->
     <TwModal v-model="modalIsOpen">
-      <RatingsForm v-if="updateRatingFormIsOpen" update class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
-      <RatingsForm v-else-if="createRatingFormIsOpen" class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
+      <RatingsForm
+        :movie="movie"
+        v-if="movie && updateRatingFormIsOpen"
+        update
+        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10"
+      />
+      <RatingsForm
+        v-else-if="movie && createRatingFormIsOpen"
+        :movie="movie"
+        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10"
+      />
     </TwModal>
 
     <!-- RATINGS -->

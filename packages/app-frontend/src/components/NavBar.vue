@@ -32,7 +32,6 @@ const handleLangChange = (e, lang) => {
 const navbarDrawerIsOpen = ref(false);
 
 const hideNavDrawer = () => {
-  console.log('hidden nav drawer!');
   navbarDrawerIsOpen.value = false;
 };
 </script>
@@ -44,8 +43,23 @@ const hideNavDrawer = () => {
       <h1 class="text-primary-950 text-2xl font-bold">{{ $t('app.title') }}</h1>
     </div>
 
+    <!-- DESKTOP NAV -->
+    <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
+      <div class="space-x-2">
+        <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
+        <NavLink @click="hideNavDrawer" path="/ratings"> {{ $t('app.nav.ratingsLink') }}</NavLink>
+      </div>
+      <template v-if="authStore.credentials">
+        <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
+      </template>
+      <template v-else>
+        <NavLink @click="hideNavDrawer" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
+        <NavLink @click="hideNavDrawer" path="/register">{{ $t('app.nav.registerLink') }}</NavLink>
+      </template>
+    </div>
+
     <!-- NAVBAR END -->
-    <div class="flex w-60 items-center justify-between">
+    <div class="flex w-44 items-center justify-between md:w-32">
       <!-- TOGGLE LOCALE -->
       <details ref="langMenu" :open="langMenuIsOpen" @click="toggleLangMenu" class="mr-2">
         <summary>{{ $t('app.nav.langSelectionLabel') }}</summary>
@@ -81,7 +95,7 @@ const hideNavDrawer = () => {
       </button>
 
       <!-- NAVBAR DRAWER -->
-      <button @click="() => (navbarDrawerIsOpen = true)">
+      <button class="block md:hidden" @click="() => (navbarDrawerIsOpen = true)">
         <GoIcon class="cursor-pointer p-2" name="more_vert" />
       </button>
 
@@ -98,14 +112,18 @@ const hideNavDrawer = () => {
           <div class="space-y-3 overflow-hidden">
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
-              <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
+              <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
               <template v-if="authStore.credentials">
-                <NavLink @click="hideNavDrawer" path="/ratings"> {{ $t('app.nav.ratingsLink') }}</NavLink>
-                <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" class="text-xl" path="/ratings">
+                  {{ $t('app.nav.ratingsLink') }}</NavLink
+                >
+                <NavLink @click="hideNavDrawer" class="text-xl" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
               </template>
               <template v-else>
-                <NavLink @click="hideNavDrawer" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
-                <NavLink @click="hideNavDrawer" path="/register">{{ $t('app.nav.registerLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" class="text-xl" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" class="text-xl" path="/register">{{
+                  $t('app.nav.registerLink')
+                }}</NavLink>
               </template>
             </div>
           </div>

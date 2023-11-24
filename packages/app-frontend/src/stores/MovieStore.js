@@ -6,22 +6,13 @@ export const useMovieStore = defineStore('MovieStore', {
   state: () => {
     return {
       isLoading: false,
-      selectedRating: {},
       selectedMovie: {},
       selectedMovieRatings: [],
       movies: [],
-      ratings: [],
-      ratingsSortOrder: 'DESC',
-      ratingsItemsTotal: 0,
-      ratingsPageCurrent: 1,
-      ratingsPageSize: 10,
       searchQuery: '',
       searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
       searchQueryError: '',
     };
-  },
-  getters: {
-    ratingsPageTotal: (state) => Math.ceil(state.ratingsItemsTotal / state.ratingsPageSize),
   },
   actions: {
     //  --- MOVIES ---
@@ -70,39 +61,19 @@ export const useMovieStore = defineStore('MovieStore', {
         const url = `/api/movies/${id}?lang=${mainStore.lang}`;
         const res = await this.$axios.get(url);
         this.selectedMovie = res.data;
-        await this.refreshRatings();
+        await this.refreshMovieRatings();
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
     },
-    //  --- RATINGS ---
-    async toggleRatingsSort() {
-      // if changing sort order, reset page
-      this.ratingsPageCurrent = 1;
-      this.ratingsSortOrder = this.ratingsSortOrder === 'DESC' ? 'ASC' : 'DESC';
-    },
-    async refreshRatings() {
-      this.isLoading = true;
-      if (this.$router.currentRoute.path.startsWith('/movies')) {
-        // Re-fetch movie ratings (movie details)
-        await this.getMovieRatings();
-      } else {
-        // Re-fetch movie ratings (rating lister)
-        await this.getAllRatings();
-      }
-      this.isLoading = false;
-    },
-    async getAllRatings() {
+    //  --- MOVIE RATINGS ---
+    async refreshMovieRatings() {
       this.isLoading = true;
       try {
-        // GET ALL RATINGS
-        const res = await this.$axios.get(`/api/ratings?page=${this.ratingsPageCurrent}&sort=${this.ratingsSortOrder}`);
-        console.log(res.data);
-        this.ratings = res.data.ratings;
-        this.ratingsItemsTotal = res.data.total;
+        await this.getMovieRatings();
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
       this.isLoading = false;
     },
@@ -113,66 +84,6 @@ export const useMovieStore = defineStore('MovieStore', {
         // GET MOVIE RATINGS
         const res = await this.$axios.get(`/api/ratings/${this.selectedMovie.tmdbId}`);
         this.selectedMovieRatings = res.data;
-      } catch (err) {
-        console.error(err);
-      }
-      this.isLoading = false;
-    },
-    async createRating({ dateSeen, score }) {
-      const mainStore = useMainStore();
-      this.isLoading = true;
-      try {
-        // CREATE MOVIE RATING
-        const movie = this.selectedMovie;
-        const data = {
-          score: score,
-          dateSeen: dateSeen,
-          movie: {
-            englishTitle: movie.englishTitle,
-            originalTitle: movie.originalTitle,
-            releaseDate: movie.releaseDate,
-            posterPath: movie.posterPath,
-            directors: movie.directors,
-            tmdbId: movie.tmdbId,
-            imdbId: movie.imdbId,
-            genres: movie.genres,
-            productionCountries: movie.productionCountries,
-            runningTime: movie.runningTime,
-          },
-        };
-
-        const res = await this.$axios.post(`/api/ratings`, data);
-
-        await this.refreshRatings();
-      } catch (err) {
-        console.error(err);
-      }
-      this.isLoading = false;
-    },
-    async updateRating({ dateSeen, score }) {
-      const mainStore = useMainStore();
-      this.isLoading = true;
-
-      try {
-        // CREATE MOVIE RATING
-        const res = await this.$axios.put(`/api/ratings/${this.selectedRating.id}`, {
-          score: score,
-          dateSeen: dateSeen,
-        });
-
-        await this.refreshRatings();
-      } catch (err) {
-        console.error(err);
-      }
-      this.isLoading = false;
-    },
-    async deleteRating() {
-      const mainStore = useMainStore();
-      this.isLoading = true;
-      try {
-        // DELETE MOVIE RATING
-        const res = await this.$axios.delete(`/api/ratings/${this.selectedRating.id}`);
-        await this.refreshRatings();
       } catch (err) {
         console.error(err);
       }

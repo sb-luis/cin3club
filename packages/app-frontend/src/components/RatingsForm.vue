@@ -2,10 +2,15 @@
 import TwInput from './base/TwInput.vue';
 import TwButton from './base/TwButton.vue';
 import { ref, onMounted } from 'vue';
+import { useRatingStore } from '../stores/RatingStore';
 import { useMovieStore } from '../stores/MovieStore';
 import { useMainStore } from '../stores/MainStore';
 
 const props = defineProps({
+  movie: {
+    type: Object,
+    required: true,
+  },
   update: {
     type: Boolean,
     default: false,
@@ -14,6 +19,7 @@ const props = defineProps({
 
 const mainStore = useMainStore();
 const movieStore = useMovieStore();
+const ratingStore = useRatingStore();
 
 const formatDate = (d) => {
   let day = ('0' + d.getDate()).slice(-2);
@@ -33,23 +39,31 @@ const tempScore = ref(null);
 onMounted(() => {
   if (props.update) {
     // updating rating
-    const d = new Date(movieStore.selectedRating.dateSeen);
+    const d = new Date(ratingStore.selectedRating.dateSeen);
     tempDate.value = formatDate(d);
-    tempScore.value = movieStore.selectedRating.score;
+    tempScore.value = ratingStore.selectedRating.score;
   } else {
     // creating new rating
-    const d = new Date(movieStore.selectedRating.dateSeen);
+    const d = new Date(ratingStore.selectedRating.dateSeen);
     tempDate.value = today;
     tempScore.value = 50;
   }
 });
 
-const handleSubmitRating = () => {
+const handleSubmitRating = async () => {
   if (props.update) {
-    movieStore.updateRating({ dateSeen: tempDate.value, score: tempScore.value });
+    await ratingStore.updateRating({ dateSeen: tempDate.value, score: tempScore.value });
+    await movieStore.refreshMovieRatings();
   } else {
-    movieStore.createRating({ dateSeen: tempDate.value, score: tempScore.value });
+    console.log(props.movie);
+    await ratingStore.createRating({ dateSeen: tempDate.value, score: tempScore.value, movie: props.movie });
+    await movieStore.refreshMovieRatings();
   }
+};
+
+const handleDeleteRating = async () => {
+  await ratingStore.deleteRating();
+  await movieStore.refreshMovieRatings();
 };
 
 const i18nRatingFormKey = props.update ? 'update' : 'create';
@@ -82,7 +96,7 @@ const i18nRatingFormKey = props.update ? 'update' : 'create';
         <TwButton type="submit">
           {{ $t(`components.ratingForm.${i18nRatingFormKey}.submitButton`) }}
         </TwButton>
-        <TwButton type="button" @click="movieStore.deleteRating" v-if="props.update">
+        <TwButton type="button" @click="handleDeleteRating" v-if="props.update">
           {{ $t(`components.ratingForm.${i18nRatingFormKey}.deleteButton`) }}
         </TwButton>
       </div>

@@ -32,7 +32,7 @@ const handleNavigation = () => {
 
 <template>
   <a
-    class="hover:text-primary-900 cursor-pointer rounded-xl bg-neutral-200 p-2 text-center text-2xl hover:bg-neutral-300"
+    class="hover:text-primary-900 cursor-pointer rounded-xl bg-neutral-200 p-2 text-center hover:bg-neutral-300"
     @click="handleNavigation"
     ><slot></slot
   ></a>

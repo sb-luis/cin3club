@@ -15,6 +15,7 @@ const getMovieDetailsDebounced = debounce(async () => {
 }, 1000);
 
 onMounted(() => {
+  movieStore.selectedMovie = {};
   getMovieDetailsDebounced();
 });
 
@@ -31,7 +32,7 @@ watch(
 <template>
   <div>
     <h1 class="text-primary-900 text-2xl font-bold uppercase">{{ $t(`pages.movieDetails.title`) }}</h1>
-    <MovieDetailsCard :movie="movieStore.selectedMovie" />
+    <MovieDetailsCard />
   </div>
 </template>
 
