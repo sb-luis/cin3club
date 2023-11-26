@@ -64,8 +64,6 @@ export const useAuthStore = defineStore('AuthStore', {
         if (![200, 204].includes(res.status)) return console.log(`Authentication request failed: ${res.status}`);
         // Store credentials
         this.credentials = res.data;
-        // Redirect to entry location
-        mainStore.navigate({ path: entryPath, replace: true });
       } catch (err) {
         console.error(err);
       }

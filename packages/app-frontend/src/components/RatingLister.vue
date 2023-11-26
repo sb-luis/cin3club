@@ -5,8 +5,12 @@ import { LoopingRhombusesSpinner } from 'epic-spinners';
 import RatingListerCard from './RatingListerCard.vue';
 import TwPagination from './base/TwPagination.vue';
 import debounce from 'lodash.debounce';
+import { useRoute } from 'vue-router';
+import { useMainStore } from '../stores/MainStore';
 
+const mainStore = useMainStore();
 const ratingStore = useRatingStore();
+const route = useRoute();
 
 const getRatingsDebounced = debounce(async () => {
   await ratingStore.getAllRatings();
@@ -36,23 +40,36 @@ const groupedRatings = computed(() => {
 });
 
 onMounted(() => {
+  ratingStore.currentPage = parseInt(route.query.page) ?? 1;
+  ratingStore.sortOrder = route.query.sort ?? 'DESC';
+
   ratingStore.isLoading = true;
   getRatingsDebounced();
 });
 
 watch(
   () => ratingStore.currentPage,
-  (newVal) => {
+  async (newVal) => {
     ratingStore.isLoading = true;
-    getRatingsDebounced();
+    mainStore.navigate({
+      path: route.path,
+      query: { ...route.query, page: ratingStore.currentPage, sort: ratingStore.sortOrder },
+      replace: true,
+    });
+    await getRatingsDebounced();
   },
 );
 
 watch(
   () => ratingStore.sortOrder,
-  (newVal) => {
+  async (newVal) => {
     ratingStore.isLoading = true;
-    getRatingsDebounced();
+    mainStore.navigate({
+      path: route.path,
+      query: { ...route.query, page: ratingStore.currentPage, sort: ratingStore.sortOrder },
+      replace: true,
+    });
+    await getRatingsDebounced();
   },
 );
 </script>
@@ -63,7 +80,7 @@ watch(
 
     <TwPagination
       class="mb-2"
-      v-if="ratingStore.ratings.length"
+      v-if="ratingStore.totalPages"
       v-model="ratingStore.currentPage"
       :total-pages="ratingStore.totalPages"
     >

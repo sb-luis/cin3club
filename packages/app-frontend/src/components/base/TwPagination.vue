@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed, watch, defineProps, defineEmits } from 'vue';
+import { computed, onMounted, defineProps, defineEmits } from 'vue';
 
-const { modelValue, totalPages } = defineProps({
+const props = defineProps({
   modelValue: {
     type: Number,
     required: true,
@@ -14,22 +14,30 @@ const { modelValue, totalPages } = defineProps({
 
 const emit = defineEmits();
 
-const currentPage = ref(modelValue);
+const currentPage = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    let legalPage = value;
+    if (value < 1) {
+      legalPage = 1;
+    } else if (value > props.totalPages) {
+      legalPage = props.totalPages;
+    }
+    emit('update:modelValue', legalPage);
+  },
+});
 
 const goToPage = (pageNumber) => {
-  if (pageNumber >= 1 && pageNumber <= totalPages && pageNumber !== currentPage.value) {
+  if (pageNumber >= 1 && pageNumber <= props.totalPages && pageNumber !== currentPage.value) {
     currentPage.value = pageNumber;
-    emit('update:modelValue', currentPage.value);
   }
 };
 
-// Watch for changes in currentPage or totalPages and ensure currentPage is valid
-watch([() => currentPage.value, () => totalPages], () => {
-  if (currentPage.value < 1) {
-    goToPage(1);
-  } else if (currentPage.value > totalPages) {
-    goToPage(totalPages);
-  }
+onMounted(() => {
+  // Reset current page to make initial page value legal
+  currentPage.value = currentPage.value;
 });
 </script>
 

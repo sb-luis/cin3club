@@ -47,15 +47,17 @@ const hideNavDrawer = () => {
     <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
       <div class="space-x-2">
         <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
-        <NavLink @click="hideNavDrawer" path="/ratings"> {{ $t('app.nav.ratingsLink') }}</NavLink>
+        <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/ratings">
+          {{ $t('app.nav.ratingsLink') }}</NavLink
+        >
       </div>
       <template v-if="authStore.credentials">
         <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
       </template>
-      <template v-else>
+      <div class="space-x-2" v-else>
         <NavLink @click="hideNavDrawer" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
         <NavLink @click="hideNavDrawer" path="/register">{{ $t('app.nav.registerLink') }}</NavLink>
-      </template>
+      </div>
     </div>
 
     <!-- NAVBAR END -->
