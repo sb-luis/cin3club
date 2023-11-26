@@ -35,6 +35,13 @@ export const es = {
         title: 'valoraciones',
         totalCount_one: '{{count}} valoración',
         totalCount_other: '{{count}} valoraciones',
+        sort: {
+          sortTypeLabel: 'Ordernar por',
+          sortByScoreLabel: 'Puntuación',
+          sortByDateLabel: 'Fecha',
+          sortOrderAscendingLabel: 'asc',
+          sortOrderDescendingLabel: 'desc',
+        },
         pagination: {
           pageLabel: 'Página',
           nextButton: 'Siguiente',

@@ -1,7 +1,7 @@
 import Schmervice from '@hapipal/schmervice';
 
 export default class RatingService extends Schmervice.Service {
-  async getAllRatings({ userId, page = 1, sort = 'DESC' }) {
+  async getAllRatings({ userId, page = 1, sortOrder = 'desc', sortType = 'dateSeen' }) {
     this.server.log(['info', 'rating-service'], `READ user ratings`);
 
     const { Rating, Movie } = this.server.app.models;
@@ -21,7 +21,7 @@ export default class RatingService extends Schmervice.Service {
       },
       offset: offset,
       limit: 10,
-      order: [['dateSeen', sort]],
+      order: [[sortType, sortOrder]],
     });
 
     const total = await Rating.count({
@@ -45,7 +45,7 @@ export default class RatingService extends Schmervice.Service {
         movieId,
       },
       attributes: ['id', 'dateSeen', 'score'],
-      order: [['dateSeen', 'DESC']],
+      order: [['dateSeen', 'desc']],
     });
 
     return ratings;

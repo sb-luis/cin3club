@@ -11,10 +11,10 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       const { ratingService } = request.services();
-      const { page, sort } = request.query;
+      const { page, sortOrder, sortType } = request.query;
       const userId = request.auth.credentials.userId;
       try {
-        const ratings = await ratingService.getAllRatings({ userId, page, sort });
+        const ratings = await ratingService.getAllRatings({ userId, page, sortOrder, sortType });
         return ratings;
       } catch (err) {
         return Boom.boomify(err);
@@ -24,7 +24,8 @@ export default [
       validate: {
         query: Joi.object({
           page: Joi.number(),
-          sort: Joi.string(),
+          sortType: Joi.string(),
+          sortOrder: Joi.string(),
         }),
       },
     },

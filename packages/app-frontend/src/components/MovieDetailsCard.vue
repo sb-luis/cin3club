@@ -109,8 +109,8 @@ const moviePosterUrl = computed(() => {
       </li>
     </ul>
     <!-- RATINGS -->
-    <div class="pt-5 md:flex">
-      <p class="pb-5 text-lg md:pr-20">{{ movie.description }}</p>
+    <div class="justify-end pt-5 md:flex">
+      <p v-if="movie.description" class="pb-5 text-lg md:pr-20">{{ movie.description }}</p>
       <div v-if="authStore.credentials">
         <MovieDetailsRatings />
       </div>

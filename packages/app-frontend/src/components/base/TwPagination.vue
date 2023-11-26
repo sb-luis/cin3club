@@ -46,30 +46,30 @@ onMounted(() => {
     <ul class="flex justify-between space-x-4 text-xl">
       <li
         @click="goToPage(1)"
-        class="cursor-pointer hover:text-neutral-300"
-        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
+        class="cursor-pointer hover:text-neutral-400"
+        :class="{ '!cursor-not-allowed text-neutral-400 hover:text-neutral-400': currentPage === 1 }"
       >
         <slot name="first"></slot>
       </li>
       <li
         @click="goToPage(currentPage - 1)"
-        class="cursor-pointer hover:text-neutral-300"
-        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === 1 }"
+        class="cursor-pointer hover:text-neutral-400"
+        :class="{ '!cursor-not-allowed text-neutral-400 hover:text-neutral-400': currentPage === 1 }"
       >
         <slot name="back"></slot>
       </li>
-      <p class="flex-1"></p>
+      <p class="flex-1"><slot></slot></p>
       <li
-        class="cursor-pointer hover:text-neutral-300"
-        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
+        class="cursor-pointer hover:text-neutral-400"
+        :class="{ '!cursor-not-allowed text-neutral-400 hover:text-neutral-400': currentPage === totalPages }"
         @click="goToPage(currentPage + 1)"
       >
         <slot name="next"></slot>
       </li>
       <li
         @click="goToPage(totalPages)"
-        class="cursor-pointer hover:text-neutral-300"
-        :class="{ '!cursor-not-allowed text-neutral-300 hover:text-neutral-300': currentPage === totalPages }"
+        class="cursor-pointer hover:text-neutral-400"
+        :class="{ '!cursor-not-allowed text-neutral-400 hover:text-neutral-400': currentPage === totalPages }"
       >
         <slot name="last"></slot>
       </li>

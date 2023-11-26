@@ -35,6 +35,13 @@ export const en = {
         title: 'ratings',
         totalCount_one: '{{count}} rating',
         totalCount_other: '{{count}} ratings',
+        sort: {
+          sortTypeLabel: 'Sort by',
+          sortByScoreLabel: 'Score',
+          sortByDateLabel: 'Date',
+          sortOrderAscendingLabel: 'asc',
+          sortOrderDescendingLabel: 'desc',
+        },
         pagination: {
           pageLabel: 'Page',
           nextButton: 'Next',

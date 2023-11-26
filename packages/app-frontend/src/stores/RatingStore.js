@@ -9,7 +9,8 @@ export const useRatingStore = defineStore('RatingStore', {
       selectedRating: {},
       ratings: [],
       ratingsTotal: 0,
-      sortOrder: 'DESC',
+      sortType: 'score', // score / dateSeen
+      sortOrder: 'desc', // asc / desc
       currentPage: 1,
       pageSize: 10,
     };
@@ -18,17 +19,40 @@ export const useRatingStore = defineStore('RatingStore', {
     totalPages: (state) => Math.ceil(state.ratingsTotal / state.pageSize),
   },
   actions: {
+    async populateRatingStoreFromQuery(query) {
+      console.log('Populating query state from query');
+
+      if (!query.page) {
+        console.log("No 'page' query param, using default page");
+      } else {
+        this.currentPage = parseInt(query.page);
+      }
+
+      if (!query.sortOrder) {
+        console.log("No 'sortOrder' query param, using default sort order");
+      } else {
+        this.sortOrder = query.sortOrder;
+      }
+
+      if (!query.sortType) {
+        console.log("No 'sortType' query param, using default sort type");
+      } else {
+        this.sortType = query.sortType;
+      }
+    },
     //  --- RATINGS ---
     async toggleRatingsSort() {
       // if changing sort order, reset page
       this.currentPage = 1;
-      this.sortOrder = this.sortOrder === 'DESC' ? 'ASC' : 'DESC';
+      this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc';
     },
     async getAllRatings() {
       this.isLoading = true;
       try {
         // GET ALL RATINGS
-        const res = await this.$axios.get(`/api/ratings?page=${this.currentPage}&sort=${this.sortOrder}`);
+        const url = `/api/ratings?page=${this.currentPage}&sortOrder=${this.sortOrder}&sortType=${this.sortType}`;
+        console.log(`GET ${url}`);
+        const res = await this.$axios.get(url);
         console.log(res.data);
         this.ratings = res.data.ratings;
         this.ratingsTotal = res.data.total;
