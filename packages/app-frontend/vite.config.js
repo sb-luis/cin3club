@@ -3,7 +3,10 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const BASE_URL = import.meta.env.MODE === 'production' ? 'https://kino-app.onrender.com/' : 'http://localhost:3000/';
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://kino-app.onrender.com/' : 'http://localhost:3000/';
+
+console.log('Printing Base URL');
+console.log(BASE_URL);
 
 // https://vitejs.dev/config/
 export default defineConfig({
