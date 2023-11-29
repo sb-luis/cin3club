@@ -11,7 +11,7 @@ export const app = createApp(App);
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
-  timeout: 1000,
+  timeout: 10000, // 10s
 });
 app.config.globalProperties.$axios = axiosInstance;
 app.provide('$axios', axiosInstance);
