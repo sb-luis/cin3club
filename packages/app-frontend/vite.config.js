@@ -9,15 +9,8 @@ const BACKEND_ENDPOINT =
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
+    base: BACKEND_ENDPOINT,
     port: 8000,
-    proxy: {
-      '/api': {
-        target: BACKEND_ENDPOINT,
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
   },
   plugins: [vue()],
   resolve: {
