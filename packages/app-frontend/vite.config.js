@@ -15,6 +15,7 @@ export default defineConfig({
         target: BACKEND_ENDPOINT,
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
