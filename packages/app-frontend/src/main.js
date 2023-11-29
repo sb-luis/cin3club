@@ -9,7 +9,7 @@ export const app = createApp(App);
 
 // --- axios HTTP client ---
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
   timeout: 1000,
 });
