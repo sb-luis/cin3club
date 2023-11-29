@@ -74,13 +74,13 @@ export default class TmdbService extends Schmervice.Service {
       // additional
       description: data.overview,
       runningTime: data.runtime, // minutes
-      genres: data.genres.map((i) => i.name),
-      productionCountries: data.production_countries.map((i) => i.name),
+      genres: data.genres, // { id, name }
+      productionCountries: data.production_countries.map((i) => i.iso_3166_1), // Country Codes https://www.iso.org/iso-3166-country-codes.html
       productionCompanies: data.production_companies.map((i) => ({
         name: i.name,
         country: i.origin_country,
       })),
-      languages: data.spoken_languages.map((item) => item.iso_639_1),
+      languages: data.spoken_languages.map((item) => item.iso_639_1), // Language Codes https://www.iso.org/iso-639-language-code
       status: data.status,
       budget: data.budget,
       revenue: data.revenue,
