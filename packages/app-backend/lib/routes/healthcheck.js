@@ -5,7 +5,7 @@ export default {
   path: '/healthcheck',
   options: {
     handler(request, h) {
-      request.log('info', 'healthcheck heartbeat');
+      request.log('debug', 'healthcheck heartbeat');
       return h.response('OK').code(200);
     },
     auth: false,
