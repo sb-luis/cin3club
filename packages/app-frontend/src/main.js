@@ -9,7 +9,7 @@ export const app = createApp(App);
 
 // --- axios HTTP client ---
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: '/api',
   withCredentials: true,
   timeout: 1000,
 });

@@ -3,16 +3,23 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://kino-app.onrender.com/' : 'http://localhost:3000/';
+const BACKEND_ENDPOINT =
+  process.env.NODE_ENV === 'production' ? 'https://kino-app.onrender.com/' : 'http://localhost:3000/';
 
 console.log('Printing Base URL');
 console.log(BASE_URL);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: BASE_URL,
   server: {
     port: 8000,
+    proxy: {
+      '/api': {
+        target: BACKEND_ENDPOINT,
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [vue()],
   resolve: {
