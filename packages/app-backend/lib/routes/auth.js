@@ -20,11 +20,14 @@ export default [
 
       try {
         // Make sure the given 'alias' is not in use
-        let user = await User.findOne({
-          where: {
-            alias,
+        let user = await User.findOne(
+          {
+            where: {
+              alias,
+            },
           },
-        });
+          { transaction },
+        );
 
         if (user) {
           return Boom.badRequest("User 'alias' already exists");
@@ -85,11 +88,14 @@ export default [
 
       try {
         // Validate user alias
-        let user = await User.findOne({
-          where: {
-            alias,
+        let user = await User.findOne(
+          {
+            where: {
+              alias,
+            },
           },
-        });
+          { transaction },
+        );
 
         // Validate user password
         if (!user || !(await Bcrypt.compare(password, user.password))) {
@@ -97,11 +103,14 @@ export default [
         }
 
         // Check if there is an existing session for this user
-        let session = await Session.findOne({
-          where: {
-            userId: user.id,
+        let session = await Session.findOne(
+          {
+            where: {
+              userId: user.id,
+            },
           },
-        });
+          { transaction },
+        );
 
         // If session found but expired...
         if (session && session.expires <= date) {
@@ -128,10 +137,11 @@ export default [
           );
         }
 
-        // If all db interactions went well...
-        transaction.commit();
         // Add session to cookies and return
         request.cookieAuth.set(session);
+
+        // If all db interactions went well...
+        transaction.commit();
         return h.response('OK').code(200);
       } catch (err) {
         // If anything went wrong...
@@ -237,11 +247,14 @@ export default [
 
       try {
         // Validate user password
-        let user = await User.findOne({
-          where: {
-            userId,
+        let user = await User.findOne(
+          {
+            where: {
+              userId,
+            },
           },
-        });
+          { transaction },
+        );
         if (!(await Bcrypt.compare(password, user.password))) {
           return Boom.unauthorized();
         }
