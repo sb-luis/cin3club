@@ -35,7 +35,7 @@ export default function () {
       name: 'x-session-cookie',
       password: process.env.COOKIE_KEY,
       isSecure: process.env.NODE_ENV === 'production',
-      isSameSte: 'None',
+      isSameSite: false,
     },
     //redirectTo: '/api/login',
     validate,
