@@ -4,9 +4,6 @@ import { Sequelize } from 'sequelize';
 import pino from 'hapi-pino';
 import HauteCouture from '@hapipal/haute-couture';
 
-import { SEED_EXISTS } from '../server/constants.js';
-import { seed } from '../server/seed.js';
-
 // ESM doesn't support JSON imports
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
@@ -83,11 +80,6 @@ export const plugin = {
     // Sync database
     await server.app.connection.sync();
     server.log('info', 'All Sequelize models synchronized successfully!');
-
-    if (SEED_EXISTS) {
-      // Seed database with initial data
-      await seed(server);
-    }
 
     server.auth.default('session');
   },
