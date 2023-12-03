@@ -37,7 +37,7 @@ const hideNavDrawer = () => {
 </script>
 
 <template>
-  <nav class="fixed left-0 top-0 z-10 flex w-full items-center justify-between bg-neutral-100/90 px-3 py-1">
+  <nav class="fixed left-0 top-0 z-10 flex w-full select-none items-center justify-between bg-neutral-100/90 px-3 py-1">
     <!-- NAVBAR START -->
     <div class="flex items-center space-x-2">
       <h1 class="bg-primary-950 px-2 text-2xl font-black uppercase text-neutral-200">{{ $t('app.title') }}</h1>
