@@ -17,7 +17,7 @@ export default {
     directors: DataTypes.ARRAY(DataTypes.STRING), // Max 50
     imdbId: DataTypes.STRING,
     // Useful for stats
-    genres: DataTypes.ARRAY(DataTypes.STRING), // Max 50
+    genres: DataTypes.ARRAY(DataTypes.JSON), // Max 50
     productionCountries: DataTypes.ARRAY(DataTypes.STRING), // Max 50
     runningTime: DataTypes.INTEGER,
   },

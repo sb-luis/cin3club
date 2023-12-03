@@ -79,7 +79,7 @@ export default [
             directors: Joi.array().items(Joi.string()),
             tmdbId: Joi.number(),
             imdbId: Joi.string(),
-            genres: Joi.array().items(Joi.string()), // Max 50
+            genres: Joi.array().items(Joi.object({ name: Joi.string(), id: Joi.number() })), // Max 50
             productionCountries: Joi.array().items(Joi.string()), // Max 50
             runningTime: Joi.number(),
           }),
