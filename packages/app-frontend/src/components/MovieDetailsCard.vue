@@ -53,15 +53,27 @@ const moviePosterUrl = computed(() => {
     v-if="!movieStore.isLoading && movie && Object.keys(movie).length > 0"
     class="mt-4 w-full rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] md:p-8"
   >
-    <div class="flex justify-between pb-5">
-      <div class="max-w-[440px] pr-4">
+    <div class="flex pb-2 md:justify-between">
+      <div class="max-w-[440px] md:pr-4">
         <!-- TITLE -->
-        <div class="flex items-center justify-between space-x-5">
-          <p class="break-words text-2xl md:text-3xl">{{ movie.englishTitle }}</p>
+        <div class="mb-5">
+          <div class="flex items-center justify-between space-x-5">
+            <h3 class="break-words text-3xl">{{ movie.englishTitle }}</h3>
+          </div>
+          <p v-if="movie.originalTitle !== movie.englishTitle" class="text-primary-900 text-sm italic md:text-xl">
+            {{ movie.originalTitle }}
+          </p>
         </div>
-        <p v-if="movie.originalTitle !== movie.englishTitle" class="text-primary-900 text-sm italic md:text-xl">
-          {{ movie.originalTitle }}
-        </p>
+
+        <!-- POSTER MOBILE -->
+        <div>
+          <img
+            v-show="moviePosterUrl"
+            :src="moviePosterUrl"
+            class="w-[200px] rounded-2xl object-contain shadow-sm md:hidden md:w-[300px]"
+          />
+        </div>
+
         <!-- YEAR and RUNNING TIME -->
         <div class="flex items-center space-x-4 py-5 text-lg">
           <p>{{ movieYear }}</p>
@@ -69,7 +81,7 @@ const moviePosterUrl = computed(() => {
           <p>{{ movie.runningTime }}min</p>
         </div>
         <!-- DIRECTORS -->
-        <div class="pb-4 text-lg md:flex md:space-x-2">
+        <div class="pb-4 md:flex md:space-x-2 md:text-lg">
           <h4>{{ $t('pages.movieDetails.directorListHeading') }}</h4>
           <p v-for="director in movie.directors" class="space-x-2">
             <span>{{ director }}</span>
@@ -86,26 +98,26 @@ const moviePosterUrl = computed(() => {
           </p>
         </div>
         <!-- PRODUCTION COUNTRIES -->
-        <div class="pt-5 text-lg md:flex md:space-x-2">
-          <ul class="space-y-3">
-            <li class="text-primary-900 text-sm font-bold uppercase" v-for="country in movie.productionCountries">
+        <div class="flex text-lg md:space-x-2 md:pt-5">
+          <ul class="flex space-x-3">
+            <li class="text-primary-900 m-2 text-sm font-bold uppercase" v-for="country in movie.productionCountries">
               {{ country }}
             </li>
           </ul>
         </div>
       </div>
-      <!-- POSTER -->
-      <div>
+      <!-- POSTER TABLET/DESKTOP -->
+      <div class="hidden md:block">
         <img v-show="moviePosterUrl" :src="moviePosterUrl" class="w-[220px] rounded-2xl shadow-sm md:w-[300px]" />
       </div>
     </div>
     <!-- GENRES -->
-    <ul class="flex flex-wrap justify-end space-x-2">
+    <ul class="flex flex-wrap space-x-2 md:justify-end">
       <li
         class="bg-primary-200 mb-3 whitespace-nowrap rounded-xl p-2 text-sm uppercase md:px-4"
         v-for="genre in movie.genres"
       >
-        {{ genre }}
+        {{ genre.name }}
       </li>
     </ul>
     <!-- RATINGS -->

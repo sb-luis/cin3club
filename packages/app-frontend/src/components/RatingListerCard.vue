@@ -26,7 +26,7 @@ const fullPosterUrl = (path) => {
     v-if="rating.movie"
     class="flex w-full justify-between rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] hover:bg-neutral-200 md:p-6"
   >
-    <div class="max-w-[480px] text-start">
+    <div class="max-w-[50%] text-start md:max-w-[480px]">
       <div class="pb-2">
         <p class="break-words text-2xl md:text-3xl">{{ rating.movie.englishTitle }}</p>
         <p
@@ -48,6 +48,11 @@ const fullPosterUrl = (path) => {
         </p>
       </div>
     </div>
-    <img :src="fullPosterUrl(rating.movie.posterPath)" class="ml-2 w-[200px] rounded-2xl shadow-sm" />
+    <div>
+      <img
+        :src="fullPosterUrl(rating.movie.posterPath)"
+        class="ml-2 w-[150px] rounded-2xl object-contain shadow-sm md:w-[200px]"
+      />
+    </div>
   </div>
 </template>

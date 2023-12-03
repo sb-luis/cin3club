@@ -116,6 +116,13 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     // https://tailwindcss.com/docs/theme
+    extend: {
+      screens: {
+        sm: '480px', // was 640
+        md: '640px', // was 768
+        lg: '1024px',
+      },
+    },
   },
   // Plugin DOCS
   // https://github.com/crswll/tailwindcss-theme-swapper

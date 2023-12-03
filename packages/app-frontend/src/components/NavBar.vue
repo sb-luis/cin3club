@@ -40,7 +40,7 @@ const hideNavDrawer = () => {
   <nav class="fixed left-0 top-0 z-10 flex w-full items-center justify-between bg-neutral-100/90 px-3 py-1">
     <!-- NAVBAR START -->
     <div class="flex items-center space-x-2">
-      <h1 class="text-primary-950 text-2xl font-bold">{{ $t('app.title') }}</h1>
+      <h1 class="bg-primary-950 px-2 text-2xl font-black uppercase text-neutral-200">{{ $t('app.title') }}</h1>
     </div>
 
     <!-- DESKTOP NAV -->
@@ -63,7 +63,7 @@ const hideNavDrawer = () => {
     <!-- NAVBAR END -->
     <div class="flex w-44 items-center justify-between md:w-32">
       <!-- TOGGLE LOCALE -->
-      <details ref="langMenu" :open="langMenuIsOpen" @click="toggleLangMenu" class="mr-2">
+      <details ref="langMenu" :open="langMenuIsOpen" @click="toggleLangMenu" class="mr-2 w-60">
         <summary>{{ $t('app.nav.langSelectionLabel') }}</summary>
         <ul class="rounded-box absolute z-[1] mt-2 w-40 space-y-2 rounded-2xl bg-neutral-100 p-3 shadow">
           <li :class="{ '!text-primary-900': mainStore.lang === 'en' }">
