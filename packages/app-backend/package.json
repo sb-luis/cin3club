@@ -14,7 +14,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@hapi/basic": "^7.0.2",
     "@hapi/boom": "^10.0.1",
     "@hapi/cookie": "^12.0.1",
     "@hapi/glue": "^9.0.1",

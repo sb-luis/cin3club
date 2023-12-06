@@ -17,10 +17,10 @@ export const useMainStore = defineStore('MainStore', {
         this.setLang(query.lang);
       }
 
-      if (!query.theme) {
-        console.log("No 'theme' query param, using default theme");
+      if (query?.theme === 'dark' || query?.theme === 'light') {
+        this.theme = query.theme;
       } else {
-        this.setTheme(query.theme);
+        console.log("No 'theme' query param, using default theme");
       }
     },
     async navigate({ path, query = {}, replace = false }) {
@@ -43,13 +43,11 @@ export const useMainStore = defineStore('MainStore', {
         this.$i18next.changeLanguage(this.lang);
       }
     },
-    async setTheme(theme) {
-      console.log(`Setting theme to '${theme}'`);
-      if (theme === 'dark') {
-        this.theme = theme;
+    async applyTheme() {
+      console.log(`Setting theme to '${this.theme}'`);
+      if (this.theme === 'dark') {
         document.body.classList.add('dark');
-      } else if (theme === 'light') {
-        this.theme = theme;
+      } else if (this.theme === 'light') {
         document.body.classList.remove('dark');
       }
     },
@@ -61,7 +59,8 @@ export const useMainStore = defineStore('MainStore', {
     async toggleTheme() {
       console.log(`Updating theme`);
       const theme = this.theme === 'dark' ? 'light' : 'dark';
-      this.setTheme(theme);
+      this.theme = theme;
+      this.applyTheme(theme);
       this.retriggerNavigation();
     },
   },

@@ -14,7 +14,6 @@ services:
       - ./packages/app-frontend/index.html/:/app/index.html
     ports:
       - '8000:8000'
-      - '8080:80'
   backend:
     container_name: kino-backend
     build:

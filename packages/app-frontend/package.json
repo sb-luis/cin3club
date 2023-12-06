@@ -6,19 +6,26 @@
   "author": "Luis Sanchez Barranquero <luis.sb.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "node server",
+    "dev": "node server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.2",
+    "compression": "^1.7.4",
     "epic-spinners": "^2.0.0",
+    "express": "^4.18.2",
     "i18next": "^23.7.6",
     "i18next-vue": "^3.0.0",
     "joi": "^17.11.0",
     "lodash.debounce": "^4.0.8",
     "pinia": "^2.1.7",
+    "sirv": "^2.0.3",
     "vue": "^3.2.45",
     "vue-router": "^4.2.5"
   },
@@ -33,7 +40,6 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.18.1",
-    "nodemon": "^3.0.1",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.7",
