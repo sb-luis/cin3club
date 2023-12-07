@@ -30,6 +30,7 @@ export default [
         );
 
         if (user) {
+          transaction.rollback();
           return Boom.badRequest("User 'alias' already exists");
         }
 
@@ -256,6 +257,7 @@ export default [
           { transaction },
         );
         if (!(await Bcrypt.compare(password, user.password))) {
+          transaction.rollback();
           return Boom.unauthorized();
         }
 
