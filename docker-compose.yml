@@ -7,6 +7,8 @@ services:
       context: ./packages/app-frontend
       dockerfile: Dockerfile
       target: dev
+    environment:
+      - BACKEND_URL=http://cin3club-backend:3000
     volumes:
       - ./packages/app-frontend/src/:/app/src
       - ./packages/app-frontend/package.json/:/app/package.json
@@ -26,7 +28,7 @@ services:
       - DATABASE_URL=postgres://user:pass@db:5432/cin3club
       - BCRYPT_SALT_ROUNDS=11
       - COOKIE_KEY=1111111111111111111111111111111111
-      - CLIENT_URL=http://localhost:8000
+      - FRONTEND_URL=http://cin3club-frontend:8000
       - LOG_LEVEL=debug
     volumes:
       - ./packages/app-backend/lib/:/app/lib

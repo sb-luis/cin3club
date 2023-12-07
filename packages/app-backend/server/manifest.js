@@ -15,7 +15,7 @@ export default new Confidence.Store({
     routes: {
       cors: {
         // an array of origins or '*' or 'ignore'
-        origin: [process.env.CLIENT_URL],
+        origin: [process.env.FRONTEND_URL],
         // boolean - 'Access-Control-Allow-Credentials'
         credentials: true,
       },

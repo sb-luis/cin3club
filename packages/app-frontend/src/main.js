@@ -18,7 +18,7 @@ export function createApp(options = {}) {
 
   // --- axios HTTP client ---
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: '/',
     withCredentials: true,
     timeout: 10000, // 10s
   });

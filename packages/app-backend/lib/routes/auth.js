@@ -9,7 +9,7 @@ const SESSION_EXPIRY_TIME = 1;
 export default [
   {
     method: 'POST',
-    path: '/auth/register',
+    path: '/api/auth/register',
     handler: async (request, h) => {
       const { User, Session } = request.server.app.models;
       const { alias, password } = request.payload;
@@ -77,7 +77,7 @@ export default [
   },
   {
     method: 'POST',
-    path: '/auth/login',
+    path: '/api/auth/login',
     handler: async (request, h) => {
       const { User, Session } = request.server.app.models;
       const { alias, password } = request.payload;
@@ -156,7 +156,7 @@ export default [
   },
   {
     method: 'GET',
-    path: '/auth/logout',
+    path: '/api/auth/logout',
     handler: async (request, h) => {
       request.log('debug', 'Logging out!');
       const { Session } = request.server.app.models;
@@ -172,7 +172,7 @@ export default [
   },
   {
     method: 'GET',
-    path: '/auth/me',
+    path: '/api/auth/me',
     handler: async (request, h) => {
       const { User } = request.server.app.models;
       const userId = request.auth.credentials.userId;
@@ -189,7 +189,7 @@ export default [
   },
   {
     method: 'PUT',
-    path: '/auth/me',
+    path: '/api/auth/me',
     handler: async (request, h) => {
       const { User } = request.server.app.models;
       const { password, newEmail, newAlias, newPassword } = request.payload;
@@ -237,7 +237,7 @@ export default [
   },
   {
     method: 'POST',
-    path: '/auth/delete-me',
+    path: '/api/auth/delete-me',
     handler: async (request, h) => {
       const { User, Session } = request.server.app.models;
       const { password } = request.payload;

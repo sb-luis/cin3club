@@ -6,6 +6,7 @@
 
 import fs from 'node:fs/promises';
 import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
@@ -36,6 +37,16 @@ if (!isProduction) {
   app.use(compression());
   app.use(base, sirv('./dist/client', { extensions: [] }));
 }
+
+// Proxy middleware for the Backend API
+// For all routes starting with /api
+const apiProxy = createProxyMiddleware('/api', {
+  target: `${process.env.BACKEND_URL}`,
+  // Changes the origin of the host header to the target URL
+  changeOrigin: true,
+});
+
+app.use('/api', apiProxy);
 
 // Serve HTML
 app.use('*', async (req, res) => {

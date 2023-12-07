@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('AuthStore', {
       const mainStore = useMainStore();
 
       try {
-        const res = await this.$axios.post('/auth/register', { alias, password });
+        const res = await this.$axios.post('/api/auth/register', { alias, password });
         await this.loadCredentials();
         // Redirect to home
         mainStore.navigate({ path: '/', replace: true });
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('AuthStore', {
       this.isLoading = true;
       const mainStore = useMainStore();
 
-      const res = await this.$axios.post('/auth/login', { alias, password });
+      const res = await this.$axios.post('/api/auth/login', { alias, password });
 
       await this.loadCredentials();
 
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('AuthStore', {
       this.isLoading = true;
       const mainStore = useMainStore();
       // Send logout request to the server
-      const res = await this.$axios.get('/auth/logout');
+      const res = await this.$axios.get('/api/auth/logout');
       if (res.status !== 200) {
         return console.log(`Authentication request failed: ${res.status}`);
       }
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore('AuthStore', {
       try {
         const entryPath = this.$router.options.history.state.current;
         // Get credentials from the server
-        const res = await this.$axios.get('/auth/me');
+        const res = await this.$axios.get('/api/auth/me');
         if (![200, 204].includes(res.status)) return console.log(`Authentication request failed: ${res.status}`);
         // Store credentials
         this.credentials = res.data;
