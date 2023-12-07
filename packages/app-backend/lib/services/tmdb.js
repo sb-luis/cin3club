@@ -23,7 +23,7 @@ export default class TmdbService extends Schmervice.Service {
 
     let data = [];
 
-    // Data schema mappings (TMDB@3 to Kino)
+    // Data schema mappings (TMDB@3 to Cin3club)
     if (res.data?.results?.length) {
       data = res.data.results
         .filter(

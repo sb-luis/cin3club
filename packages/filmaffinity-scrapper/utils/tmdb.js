@@ -94,7 +94,7 @@ export const getTvShows = async ({ s, lang = 'en' }) => {
   });
   let tvData = [];
 
-  // Data schema mappings (TMDB@3 to Kino)
+  // Data schema mappings (TMDB@3 to Cin3club)
   if (tvResponse.data?.results?.length) {
     tvData = tvResponse.data.results
       .filter(

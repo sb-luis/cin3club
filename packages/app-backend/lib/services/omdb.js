@@ -14,7 +14,7 @@ export default class OmdbService extends Schmervice.Service {
 
     let data = [];
 
-    // Data schema mappings (OMDB to Kino)
+    // Data schema mappings (OMDB to Cin3club)
     if (res.data?.Search?.length) {
       data = res.data.Search.filter((item) => item.Poster && item.Poster !== 'N/A').map((item) => {
         return {

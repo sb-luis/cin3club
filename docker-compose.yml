@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    container_name: kino-frontend
+    container_name: cin3club-frontend
     build:
       context: ./packages/app-frontend
       dockerfile: Dockerfile
@@ -15,7 +15,7 @@ services:
     ports:
       - '8000:8000'
   backend:
-    container_name: kino-backend
+    container_name: cin3club-backend
     build:
       context: ./packages/app-backend
       dockerfile: Dockerfile
@@ -23,7 +23,7 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgres://user:pass@db:5432/kino
+      - DATABASE_URL=postgres://user:pass@db:5432/cin3club
       - BCRYPT_SALT_ROUNDS=11
       - COOKIE_KEY=1111111111111111111111111111111111
       - CLIENT_URL=http://localhost:8000
@@ -37,12 +37,12 @@ services:
     depends_on:
       - db
   db:
-    container_name: database-docker
+    container_name: cin3club-db
     image: postgres:11.6-alpine
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=kino
+      - POSTGRES_DB=cin3club
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
     ports:

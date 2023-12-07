@@ -1,7 +1,7 @@
 export const es = {
   translation: {
     app: {
-      title: 'kino',
+      title: 'cin3club',
       footer: {
         license: 'Publicado bajo la Licencia MIT',
         copyright: 'Derechos de autor © {{year}} Luis Sánchez Barranquero',
