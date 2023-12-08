@@ -15,6 +15,19 @@
 //  - HatTip (https://github.com/hattipjs/hattip)
 //    - You can use Bati (https://batijs.github.io/) to scaffold a Vike + HatTip app. Note that Bati generates apps that use the V1 design (https://vike.dev/migration/v1-design) and Vike packages (https://vike.dev/vike-packages)
 
+// --- START CSS flicker bug on production ---
+
+// Related to the flash of unstyled css
+// https://github.com/vitejs/vite/issues/2013
+// https://discord.com/channels/804011606160703521/804061937029218334/814909610372366346
+// Discussion with Evan Yu and Rich Harris - https://discord.com/channels/804011606160703521/804061937029218334/810901252862509067
+
+// Also relevant the `getPreloadTags` function exported here: https://github.com/vikejs/vike/blob/9e0b1771baa0234aef0ea10605e4a48702806bd3/src/getPreloadTags.node.ts - but this is quite outdated...
+
+// Relevant about Vike's preloading strategies: https://vike.dev/preload
+
+// --- END CSS flicker bug on production ---
+
 import express from 'express';
 import compression from 'compression';
 import { renderPage } from 'vike/server';
