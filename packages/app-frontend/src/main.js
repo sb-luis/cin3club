@@ -4,7 +4,7 @@
 import { createSSRApp } from 'vue';
 import { createPinia } from 'pinia';
 import './assets/main.css';
-import router from '../renderer/routes';
+import router from './routes';
 import axios from 'axios';
 import App from './App.vue';
 import i18next from 'i18next';
