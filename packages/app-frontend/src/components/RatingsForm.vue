@@ -7,7 +7,7 @@ import { useMovieStore } from '../stores/MovieStore';
 import { useMainStore } from '../stores/MainStore';
 
 const props = defineProps({
-  movie: {
+  mediaItem: {
     type: Object,
     required: true,
   },
@@ -53,17 +53,17 @@ onMounted(() => {
 const handleSubmitRating = async () => {
   if (props.update) {
     await ratingStore.updateRating({ dateSeen: tempDate.value, score: tempScore.value });
-    await movieStore.refreshMovieRatings();
+    await movieStore.refreshMediaItemRatings();
   } else {
-    console.log(props.movie);
-    await ratingStore.createRating({ dateSeen: tempDate.value, score: tempScore.value, movie: props.movie });
-    await movieStore.refreshMovieRatings();
+    console.log(props.mediaItem);
+    await ratingStore.createRating({ dateSeen: tempDate.value, score: tempScore.value, mediaItem: props.mediaItem });
+    await movieStore.refreshMediaItemRatings();
   }
 };
 
 const handleDeleteRating = async () => {
   await ratingStore.deleteRating();
-  await movieStore.refreshMovieRatings();
+  await movieStore.refreshMediaItemRatings();
 };
 
 const i18nRatingFormKey = props.update ? 'update' : 'create';

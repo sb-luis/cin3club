@@ -19,7 +19,8 @@ export const routes = [
     component: Movies,
     children: [
       { path: '', name: 'movies', component: MovieLister },
-      { path: '/movies/:id', name: 'movieDetails', component: MovieDetails },
+      { path: '/movie/:id', name: 'movieDetails', component: MovieDetails, meta: { mediaType: 'movie' } },
+      { path: '/tv/:id', name: 'tvDetails', component: MovieDetails, meta: { mediaType: 'tv' } },
     ],
     meta: { public: true },
   },

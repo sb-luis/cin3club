@@ -1,4 +1,5 @@
 // ESM doesn't support JSON imports
+import { URL_QUERY_STR_MAX } from '../../server/constants.js';
 import Joi from 'joi';
 import Boom from '@hapi/boom';
 
@@ -11,10 +12,26 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       const { ratingService } = request.services();
-      const { page, sortOrder, sortType } = request.query;
+      const { lang, page, sortOrder, sortType, mediaItemId } = request.query;
       const userId = request.auth.credentials.userId;
+
       try {
-        const ratings = await ratingService.getAllRatings({ userId, page, sortOrder, sortType });
+        let ratings = [];
+        if (!mediaItemId) {
+          console.log(`Getting all user ratings with locale = '${lang}'`);
+          // GET all user ratings
+          ratings = await ratingService.getAllRatings({ userId, page, sortOrder, sortType, limit: 10, lang });
+        } else {
+          console.log('Getting mediaItem user ratings');
+          // GET mediaItem user ratings
+          ratings = await ratingService.getMediaItemRatings({
+            userId,
+            mediaItemId,
+            sortOrder,
+            sortType,
+            limit: 50,
+          });
+        }
         return ratings;
       } catch (err) {
         return Boom.boomify(err);
@@ -23,32 +40,11 @@ export default [
     options: {
       validate: {
         query: Joi.object({
-          page: Joi.number(),
-          sortType: Joi.string(),
-          sortOrder: Joi.string(),
-        }),
-      },
-    },
-  },
-  // GET user ratings for one movie
-  {
-    method: 'GET',
-    path: '/api/ratings/{movieId}',
-    handler: async (request, h) => {
-      const { ratingService } = request.services();
-      const userId = request.auth.credentials.userId;
-      const { movieId } = request.params;
-      try {
-        const ratings = await ratingService.getMovieRatings({ userId, movieId });
-        return ratings;
-      } catch (err) {
-        return Boom.boomify(err);
-      }
-    },
-    options: {
-      validate: {
-        params: Joi.object({
-          movieId: Joi.number(),
+          lang: Joi.string().max(URL_QUERY_STR_MAX).default('en'),
+          page: Joi.number().default(1),
+          sortType: Joi.string().default('dateSeen'),
+          sortOrder: Joi.string().default('desc'),
+          mediaItemId: Joi.number().default(null),
         }),
       },
     },
@@ -59,10 +55,11 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       try {
+        console.log('craeting user rating');
         const { ratingService } = request.services();
         const userId = request.auth.credentials.userId;
-        const { movie, score, dateSeen } = request.payload;
-        const rating = await ratingService.createRating({ userId, movie, score, dateSeen });
+        const { mediaItem, score, dateSeen } = request.payload;
+        const rating = await ratingService.createRating({ userId, mediaItem, score, dateSeen });
         return rating;
       } catch (err) {
         return Boom.boomify(err);
@@ -71,17 +68,9 @@ export default [
     options: {
       validate: {
         payload: Joi.object({
-          movie: Joi.object({
-            englishTitle: Joi.string(),
-            originalTitle: Joi.string(),
-            releaseDate: Joi.string(),
-            posterPath: Joi.string(),
-            directors: Joi.array().items(Joi.string()),
+          mediaItem: Joi.object({
+            mediaType: Joi.string(),
             tmdbId: Joi.number(),
-            imdbId: Joi.string(),
-            genres: Joi.array().items(Joi.object({ name: Joi.string(), id: Joi.number() })), // Max 50
-            productionCountries: Joi.array().items(Joi.string()), // Max 50
-            runningTime: Joi.number(),
           }),
           score: Joi.number(),
           dateSeen: Joi.string(),

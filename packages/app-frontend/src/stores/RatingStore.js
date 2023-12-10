@@ -47,10 +47,12 @@ export const useRatingStore = defineStore('RatingStore', {
       this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc';
     },
     async getAllRatings() {
+      const mainStore = useMainStore();
       this.isLoading = true;
+
       try {
         // GET ALL RATINGS
-        const url = `/api/ratings?page=${this.currentPage}&sortOrder=${this.sortOrder}&sortType=${this.sortType}`;
+        const url = `/api/ratings?page=${this.currentPage}&sortOrder=${this.sortOrder}&sortType=${this.sortType}&lang=${mainStore.lang}`;
         console.log(`GET ${url}`);
         const res = await this.$axios.get(url);
         console.log(res.data);
@@ -61,25 +63,21 @@ export const useRatingStore = defineStore('RatingStore', {
       }
       this.isLoading = false;
     },
-    async createRating({ dateSeen, score, movie }) {
+    async createRating({ dateSeen, score, mediaItem }) {
       const mainStore = useMainStore();
       this.isLoading = true;
+
+      console.log('Creating Rating!');
+      console.log(mediaItem);
+
       try {
         // CREATE MOVIE RATING
         const data = {
           score: score,
           dateSeen: dateSeen,
-          movie: {
-            englishTitle: movie.englishTitle,
-            originalTitle: movie.originalTitle,
-            releaseDate: movie.releaseDate,
-            posterPath: movie.posterPath,
-            directors: movie.directors,
-            tmdbId: movie.tmdbId,
-            imdbId: movie.imdbId,
-            genres: movie.genres,
-            productionCountries: movie.productionCountries,
-            runningTime: movie.runningTime,
+          mediaItem: {
+            mediaType: mediaItem.mediaType,
+            tmdbId: mediaItem.tmdbId,
           },
         };
 

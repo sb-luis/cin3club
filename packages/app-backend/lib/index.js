@@ -70,12 +70,17 @@ export const plugin = {
     // Set up Sequelize associations
     // After all models have been created by Haute Couture
     // https://sequelize.org/docs/v6/core-concepts/assocs/
-    const { User, Session, Movie, Rating } = server.app.models;
+    const { User, Session, Rating, MediaItem, MediaItemLang } = server.app.models;
     // Add `userId` foreign key in Session and Rating
     Session.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     Rating.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-    // Add `movieId` foreign key in Session
-    Rating.belongsTo(Movie, { as: 'movie', foreignKey: 'movieId' });
+
+    // Add `mediaItemId` foreign key in Rating
+    Rating.belongsTo(MediaItem, { as: 'mediaItem', foreignKey: 'mediaItemId' });
+
+    // Add `mediaItemLangId` foreign key in MediaItem
+    MediaItem.hasMany(MediaItemLang, { as: 'mediaItemLangs', foreignKey: 'mediaItemId' });
+    MediaItemLang.belongsTo(MediaItem, { foreignKey: 'mediaItemId' });
 
     // Sync database
     await server.app.connection.sync();

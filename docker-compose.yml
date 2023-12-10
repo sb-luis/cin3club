@@ -8,12 +8,12 @@ services:
       dockerfile: Dockerfile
       target: dev
     environment:
+      - VITE_BASE_URL=http://localhost:3000
       - BACKEND_URL=http://cin3club-backend:3000
     volumes:
-      - ./packages/app-frontend/src/:/app/src
-      - ./packages/app-frontend/package.json/:/app/package.json
-      - ./packages/app-frontend/tailwind.config.cjs/:/app/tailwind.config.cjs
-      - ./packages/app-frontend/index.html/:/app/index.html
+      - ./packages/app-frontend/src/:/home/node/src
+      - ./packages/app-frontend/index.html/:/home/node/index.html
+      - /home/node/node_modules
     ports:
       - '8000:8000'
   backend:
@@ -29,6 +29,7 @@ services:
       - BCRYPT_SALT_ROUNDS=11
       - COOKIE_KEY=1111111111111111111111111111111111
       - FRONTEND_URL=http://cin3club-frontend:8000
+      - FRONTEND_URL_DEV=http://localhost:8000
       - LOG_LEVEL=debug
     volumes:
       - ./packages/app-backend/lib/:/app/lib

@@ -9,12 +9,12 @@ export const seed = async (server) => {
   const { User, Rating } = server.app.models;
   const alias = 'test';
 
-  const createRating = async ({ userId, score, dateSeen, movie }) => {
-    server.log('debug', `Creating rating for '${movie.englishTitle}'...`);
+  const createRating = async ({ userId, score, dateSeen, mediaItem }) => {
+    server.log('debug', `Creating rating for '${mediaItem.title}'...`);
     const { Rating, Movie } = server.app.models;
 
     // Look for movie in DB
-    let existingMovie = await Movie.findOne({
+    let existingMediaItem = await MediaItem.findOne({
       where: {
         id: movie.tmdbId,
       },
@@ -42,7 +42,7 @@ export const seed = async (server) => {
     const date = new Date(dateSeen);
     await Rating.create({
       userId,
-      movieId: existingMovie.id,
+      mediaItemId: existingMovie.id,
       score,
       dateSeen: date,
     });

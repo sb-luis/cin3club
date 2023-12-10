@@ -4,7 +4,9 @@ export default {
   name: 'Rating',
   schema: {
     // userId - FOREIGN KEY
-    // movieId - FOREIGN KEY (i.e. tmdbId)
+    // mediaItemId - FOREIGN KEY (i.e. tmdbId)
+    mediaType: DataTypes.STRING,
+    tmdbId: DataTypes.INTEGER,
     dateSeen: DataTypes.DATE,
     score: DataTypes.INTEGER,
   },

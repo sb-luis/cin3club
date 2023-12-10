@@ -11,11 +11,11 @@ const mainStore = useMainStore();
 const route = useRoute();
 
 const getMovieDetailsDebounced = debounce(async () => {
-  movieStore.getMovieDetails(route.params.id);
+  movieStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
 }, 1000);
 
 onMounted(() => {
-  movieStore.selectedMovie = {};
+  movieStore.selectedMediaItem = {};
   getMovieDetailsDebounced();
 });
 
@@ -31,8 +31,10 @@ watch(
 
 <template>
   <div>
-    <h1 class="text-primary-900 text-2xl font-bold uppercase">{{ $t(`pages.movieDetails.title`) }}</h1>
-    <MovieDetailsCard />
+    <h1 class="text-primary-900 text-2xl font-bold uppercase">
+      {{ $t(`pages.${route.meta.mediaType}Details.title`) }}
+    </h1>
+    <MovieDetailsCard tv />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <script setup>
 import { LoopingRhombusesSpinner } from 'epic-spinners';
 import TwInput from './base/TwInput.vue';
-import MovieListerCard from './MovieListerCard.vue';
+import MediaItemCard from './MediaItemCard.vue';
 import { onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMovieStore } from '../stores/MovieStore';
@@ -12,8 +12,8 @@ const route = useRoute();
 const movieStore = useMovieStore();
 const { searchQuery, searchQueryError } = storeToRefs(movieStore);
 
-const getMoviesDebounced = debounce(async () => {
-  await movieStore.getMovies();
+const getMediaItemsDebounced = debounce(async () => {
+  await movieStore.getMediaItems();
 }, 1000);
 
 const debounceValidation = debounce(async () => {
@@ -25,7 +25,7 @@ watch(searchQuery, () => {
   movieStore.isLoading = true;
   movieStore.searchQueryError = '';
   debounceValidation();
-  getMoviesDebounced();
+  getMediaItemsDebounced();
 });
 
 onMounted(() => {
@@ -59,8 +59,8 @@ onMounted(() => {
         :animation-duration="5000"
         :size="48"
       />
-      <ul v-else-if="movieStore.movies?.length && !movieStore.isLoading">
-        <MovieListerCard class="my-5" v-for="movie in movieStore.movies" :movie="movie"> </MovieListerCard>
+      <ul v-else-if="movieStore.searchItems?.length && !movieStore.isLoading">
+        <MediaItemCard class="my-5" v-for="item in movieStore.searchItems" :item="item"> </MediaItemCard>
       </ul>
       <p v-else-if="searchQuery !== ''" class="text-center text-2xl text-red-500">
         {{ $t('pages.movies.movieNotFound', { query: searchQuery }) }}

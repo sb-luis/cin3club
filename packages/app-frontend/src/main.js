@@ -16,9 +16,13 @@ export function createApp(options = {}) {
   const app = createSSRApp(App);
   const { lang = 'en' } = options;
 
+  const isSsr = import.meta.env.SSR;
+  const isDev = import.meta.env.DEV;
+  const baseURL = isDev ? import.meta.env.VITE_BASE_URL : '/';
+
   // --- axios HTTP client ---
   const axiosInstance = axios.create({
-    baseURL: '/',
+    baseURL,
     withCredentials: true,
     timeout: 10000, // 10s
   });

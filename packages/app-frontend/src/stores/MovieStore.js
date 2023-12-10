@@ -6,9 +6,9 @@ export const useMovieStore = defineStore('MovieStore', {
   state: () => {
     return {
       isLoading: false,
-      selectedMovie: {},
-      selectedMovieRatings: [],
-      movies: [],
+      selectedMediaItem: {},
+      selectedMediaItemRatings: [],
+      searchItems: [],
       searchQuery: '',
       searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
       searchQueryError: '',
@@ -29,7 +29,7 @@ export const useMovieStore = defineStore('MovieStore', {
         return (this.searchQueryError = error.message);
       }
     },
-    async getMovies() {
+    async getMediaItems() {
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
       if (error) {
@@ -45,45 +45,50 @@ export const useMovieStore = defineStore('MovieStore', {
 
       // Send request
       try {
-        const res = await this.$axios.get(`/api/movies?s=${s}&lang=${mainStore.lang}`);
-        this.movies = res.data;
+        const res = await this.$axios.get(`/api/media?s=${s}&lang=${mainStore.lang}`);
+        console.log(res.data);
+        this.searchItems = res.data;
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
     },
-    async getMovieDetails(id) {
+    async getMediaItemDetails(id, mediaType) {
+      console.log(`Getting ${mediaType} details`);
       const mainStore = useMainStore();
 
       this.isLoading = true;
       try {
         // GET MOVIE DETAILS
-        const url = `/api/movies/${id}?lang=${mainStore.lang}`;
+        const url = `/api/media/${mediaType}/${id}?lang=${mainStore.lang}`;
         const res = await this.$axios.get(url);
-        this.selectedMovie = res.data;
-        await this.refreshMovieRatings();
+        this.selectedMediaItem = { ...res.data, mediaType };
+        await this.refreshMediaItemRatings();
       } catch (err) {
         console.error(err);
       }
       this.isLoading = false;
     },
-    //  --- MOVIE RATINGS ---
-    async refreshMovieRatings() {
+    //  --- MEDIA ITEM RATINGS ---
+    async refreshMediaItemRatings() {
       this.isLoading = true;
       try {
-        await this.getMovieRatings();
+        await this.getMediaItemRatings();
       } catch (err) {
         console.log(err);
       }
       this.isLoading = false;
     },
-    async getMovieRatings() {
-      this.selectedMovieRatings = {};
+    async getMediaItemRatings() {
+      this.selectedMediaItemRatings = {};
       this.isLoading = true;
       try {
         // GET MOVIE RATINGS
-        const res = await this.$axios.get(`/api/ratings/${this.selectedMovie.tmdbId}`);
-        this.selectedMovieRatings = res.data;
+        console.log('fetching media item ratings');
+        const url = `/api/ratings?tmdbId=${this.selectedMediaItem.tmdbId}&mediaType=${this.selectedMediaItem.mediaType}`;
+        const res = await this.$axios.get(url);
+        console.log(res.data);
+        this.selectedMediaItemRatings = res.data;
       } catch (err) {
         console.error(err);
       }
