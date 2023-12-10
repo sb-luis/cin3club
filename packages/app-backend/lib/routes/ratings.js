@@ -12,12 +12,12 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       const { ratingService } = request.services();
-      const { lang, page, sortOrder, sortType, mediaItemId } = request.query;
+      const { lang, page, sortOrder, sortType, tmdbId, mediaType } = request.query;
       const userId = request.auth.credentials.userId;
 
       try {
         let ratings = [];
-        if (!mediaItemId) {
+        if (!tmdbId) {
           console.log(`Getting all user ratings with locale = '${lang}'`);
           // GET all user ratings
           ratings = await ratingService.getAllRatings({ userId, page, sortOrder, sortType, limit: 10, lang });
@@ -26,7 +26,8 @@ export default [
           // GET mediaItem user ratings
           ratings = await ratingService.getMediaItemRatings({
             userId,
-            mediaItemId,
+            tmdbId,
+            mediaType,
             sortOrder,
             sortType,
             limit: 50,
@@ -44,7 +45,8 @@ export default [
           page: Joi.number().default(1),
           sortType: Joi.string().default('dateSeen'),
           sortOrder: Joi.string().default('desc'),
-          mediaItemId: Joi.number().default(null),
+          tmdbId: Joi.number().default(null),
+          mediaType: Joi.string().default(''),
         }),
       },
     },

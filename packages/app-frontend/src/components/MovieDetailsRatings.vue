@@ -56,7 +56,6 @@ watch(modalIsOpen, (newVal) => {
 
 <template>
   <div class="rounded-2xl bg-neutral-200 p-3 text-xl md:max-w-[250px] md:text-neutral-500">
-    {{ movieStore.selectedMediaItemRatings }}
     <!-- RATINGS MODAL -->
     <TwModal v-model="modalIsOpen">
       <RatingsForm

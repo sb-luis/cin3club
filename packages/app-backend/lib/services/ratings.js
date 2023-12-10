@@ -62,20 +62,36 @@ export default class RatingService extends Schmervice.Service {
     return { ratings, total };
   }
 
-  async getMediaItemRatings({ userId, mediaItem }) {
-    this.server.log(['info', 'rating-service'], `READ user ratings for media item'${mediaItemId}'`);
+  async getMediaItemRatings({
+    userId,
+    page = 1,
+    sortOrder = 'desc',
+    sortType = 'dateSeen',
+    lang = 'en',
+    limit = 10,
+    tmdbId,
+    mediaType,
+  }) {
+    this.server.log(
+      ['info', 'rating-service'],
+      `READ user ratings for tmdbId: '${tmdbId}', mediaType: '${mediaType}', userId:'${userId}'`,
+    );
 
     const { Rating } = this.server.app.models;
+
+    const offset = parseInt(page - 1) * 10;
 
     // Fetch data from DB
     const ratings = await Rating.findAll({
       where: {
-        mediaType: mediaItem.mediaType,
-        tmdbId: mediaItem.tmdbId,
+        mediaType,
+        tmdbId,
         userId,
       },
       attributes: ['id', 'dateSeen', 'score'],
-      order: [['dateSeen', 'desc']],
+      offset: offset,
+      limit,
+      order: [[sortType, sortOrder]],
     });
 
     return ratings;
@@ -117,8 +133,10 @@ export default class RatingService extends Schmervice.Service {
       const date = new Date(dateSeen);
 
       const ratingData = {
-        userId,
-        mediaItemId: existingItem.id,
+        mediaItemId: existingItem.id, // FK
+        userId, // FK
+        tmdbId: existingItem.tmdbId,
+        mediaType: existingItem.mediaType,
         score,
         dateSeen: date,
       };
@@ -126,15 +144,7 @@ export default class RatingService extends Schmervice.Service {
       console.log('Rating data');
       console.log(ratingData);
 
-      const rating = await Rating.create(
-        {
-          userId,
-          mediaItemId: existingItem.id,
-          score,
-          dateSeen: date,
-        },
-        { transaction },
-      );
+      const rating = await Rating.create(ratingData, { transaction });
 
       // If transaction went well...
       transaction.commit();
