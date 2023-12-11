@@ -18,6 +18,7 @@ export const useMainStore = defineStore('MainStore', {
       }
 
       if (query?.theme === 'dark' || query?.theme === 'light') {
+        console.log(`Setting theme to '${query.theme}'`);
         this.theme = query.theme;
       } else {
         console.log("No 'theme' query param, using default theme");

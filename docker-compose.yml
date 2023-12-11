@@ -6,7 +6,7 @@ services:
     build:
       context: ./packages/app-frontend
       dockerfile: Dockerfile
-      target: dev
+      target: prod
     environment:
       - VITE_BASE_URL=http://localhost:3000
       - BACKEND_URL=http://cin3club-backend:3000

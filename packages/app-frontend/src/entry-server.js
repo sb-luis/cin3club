@@ -6,12 +6,17 @@ import { createApp } from './main.js';
 import { renderToString } from 'vue/server-renderer';
 
 export async function render(options = {}, ssrManifest) {
+  console.log(`Render SSR App with options:`);
+  console.log(options);
   const { app, router } = createApp(options);
-  const { path } = options;
 
   // set the router to the desired URL before rendering
-  router.push(path);
-  await router.isReady();
+  if (options.path) {
+    await router.push(options.path);
+    await router.isReady();
+  } else {
+    console.log("'path' is undefined. Vue Router set up failed before rendering the App HTML.");
+  }
 
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers

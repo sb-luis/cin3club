@@ -9,6 +9,7 @@ const date = new Date();
 const year = date.getFullYear();
 
 onMounted(() => {
+  console.log('Layout mounted');
   authStore.loadCredentials();
 });
 </script>

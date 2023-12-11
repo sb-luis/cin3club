@@ -31,6 +31,7 @@ watch(searchQuery, () => {
 });
 
 onMounted(() => {
+  console.log('MediaItemSearch page mounted');
   // Grab initial state from URL
   if (route.query.s) {
     mediaStore.searchQuery = route.query.s;

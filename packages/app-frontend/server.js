@@ -34,7 +34,7 @@ const app = express();
 // Add Vite or respective production middlewares
 let vite;
 if (!isProduction) {
-  console.log('Running developmetn vite server');
+  console.log('Running development vite server');
   const { createServer } = await import('vite');
   vite = await createServer({
     server: { middlewareMode: true },
@@ -68,11 +68,13 @@ app.use('*', async (req, res) => {
     let template;
     let render;
     if (!isProduction) {
+      console.log('Server Rendering Development App');
       // Always read fresh template in development
       template = await fs.readFile('./index.html', 'utf-8');
       template = await vite.transformIndexHtml(url, template);
       render = (await vite.ssrLoadModule('/src/entry-server.js')).render;
     } else {
+      console.log('Server Rendering Production App');
       template = templateHtml;
       render = (await import('./dist/server/entry-server.js')).render;
     }

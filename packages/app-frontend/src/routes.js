@@ -46,6 +46,7 @@ export const routes = [
   },
 ];
 
+console.log('Creating Vue Router');
 const router = createRouter({
   history: import.meta.env.SSR
     ? createMemoryHistory(import.meta.env.BASE_URL)
@@ -62,11 +63,13 @@ const router = createRouter({
 
 // https://router.vuejs.org/guide/advanced/navigation-guards.html
 router.beforeEach(async (to) => {
+  console.log('Vue router navigation guard run');
+
   const authStore = useAuthStore();
   const mainStore = useMainStore();
   const isPublic = to.meta.public === true;
 
-  // Initilise app state
+  // Initialise app state
   mainStore.populateAppStateFromQuery(to.query);
 
   // If user is not authenticated...

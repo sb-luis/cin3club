@@ -1,4 +1,10 @@
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  console.log('NotFound page mounted');
+});
+</script>
 
 <template>
   <div>

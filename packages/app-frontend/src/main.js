@@ -14,7 +14,10 @@ import * as locales from './locales';
 // SSR requires a fresh app instance per request, therefore we export a function that creates a fresh app instance. If using Pinia, we'd also be creating a fresh store here.
 export function createApp(options = {}) {
   const app = createSSRApp(App);
-  const { lang = 'en' } = options;
+  const { path, lang = 'en' } = options;
+
+  console.log(`'lang' is: '${lang}'`);
+  console.log(`'path' is: '${path}'`);
 
   const isSsr = import.meta.env.SSR;
   const isDev = import.meta.env.DEV;
