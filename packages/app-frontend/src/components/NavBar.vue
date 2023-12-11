@@ -114,7 +114,7 @@ const hideNavDrawer = () => {
           <div class="space-y-3 overflow-hidden">
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
-              <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
+              <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
               <template v-if="authStore.credentials">
                 <NavLink @click="hideNavDrawer" class="text-xl" path="/ratings">
                   {{ $t('app.nav.ratingsLink') }}</NavLink
