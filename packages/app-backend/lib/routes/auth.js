@@ -100,6 +100,7 @@ export default [
 
         // Validate user password
         if (!user || !(await Bcrypt.compare(password, user.password))) {
+          transaction.rollback();
           return Boom.unauthorized();
         }
 
