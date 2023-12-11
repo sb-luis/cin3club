@@ -13,28 +13,35 @@ import Ratings from './pages/Ratings.vue';
 export const routes = [
   {
     path: '/',
+    name: 'Home',
     component: MediaItemSearch,
   },
-  { path: '/tv/:id', name: 'tvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
-  { path: '/movie/:id', name: 'movieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
+  { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
+  { path: '/movie/:id', name: 'MovieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
   {
     path: '/ratings',
-    name: 'ratings',
+    name: 'Ratings',
     component: Ratings,
     meta: { public: false },
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Auth,
     props: { authPage: 'login' },
     meta: { public: true },
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Auth,
     props: { authPage: 'register' },
+    meta: { public: true },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
     meta: { public: true },
   },
 ];
@@ -45,15 +52,9 @@ const router = createRouter({
     : createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/:pathMatch(.*)*',
       component: Layout,
       children: routes,
-      meta: { public: true },
-    },
-    {
-      path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: NotFound,
       meta: { public: true },
     },
   ],
