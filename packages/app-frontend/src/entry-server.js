@@ -11,7 +11,7 @@ export async function render(options = {}, ssrManifest) {
   const { app, router } = createApp(options);
 
   // set the router to the desired URL before rendering
-  if (options.path) {
+  if (options.path !== undefined) {
     await router.push(options.path);
     await router.isReady();
   } else {
