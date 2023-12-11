@@ -10,7 +10,7 @@ export const es = {
         langSelectionLabel: 'Idioma',
         englishOptionLabel: 'Inglés',
         spanishOptionLabel: 'Español',
-        moviesLink: 'películas',
+        mediaItemSearchLink: 'buscar',
         ratingsLink: 'valoraciones',
         loginLink: 'inicio de sesión',
         logoutLink: 'cerrar sesión',
@@ -24,12 +24,12 @@ export const es = {
       profile: {
         title: 'perfil',
       },
-      movies: {
-        title: 'películas',
-        movieNotFound: 'No podemos encontrar ninguna película que coincida con ese nombre',
-        searchLabel: 'Buscar una película',
+      mediaItemSearch: {
+        title: 'buscar',
+        movieNotFound: 'No podemos encontrar ninguna película o serie que coincida con ese nombre',
+        searchLabel: 'Buscar una película o serie',
         searchPlaceholder: 'buscar',
-        welcomeMessage: '¡El lugar donde viven tus películas favoritas!',
+        welcomeMessage: '¡El lugar donde viven tus películas y series favoritas!',
       },
       ratings: {
         title: 'valoraciones',

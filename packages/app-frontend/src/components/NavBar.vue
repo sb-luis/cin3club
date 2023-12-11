@@ -46,7 +46,7 @@ const hideNavDrawer = () => {
     <!-- DESKTOP NAV -->
     <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
       <div class="space-x-2">
-        <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.moviesLink') }}</NavLink>
+        <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
         <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/ratings">
           {{ $t('app.nav.ratingsLink') }}</NavLink
         >

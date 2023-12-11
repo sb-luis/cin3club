@@ -40,15 +40,15 @@ onMounted(() => {
 
 <template>
   <section>
-    <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.movies.title`) }}</h1>
+    <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.mediaItemSearch.title`) }}</h1>
     <div>
-      <label for="movie_query" class="hidden">{{ $t('pages.movies.searchLabel') }}</label>
+      <label for="movie_query" class="hidden">{{ $t('pages.mediaItemSearch.searchLabel') }}</label>
       <TwInput
         v-model="searchQuery"
         class="w-full"
         type="text"
         id="first_name"
-        :placeholder="$t('pages.movies.searchPlaceholder')"
+        :placeholder="$t('pages.mediaItemSearch.searchPlaceholder')"
       />
     </div>
     <div class="m-auto py-4">
@@ -65,9 +65,9 @@ onMounted(() => {
         <MediaItemListerCard class="my-5" v-for="item in mediaStore.searchItems" :item="item"> </MediaItemListerCard>
       </ul>
       <p v-else-if="searchQuery !== ''" class="text-center text-2xl text-red-500">
-        {{ $t('pages.movies.movieNotFound', { query: searchQuery }) }}
+        {{ $t('pages.mediaItemSearch.movieNotFound', { query: searchQuery }) }}
       </p>
-      <p v-else class="text-center text-2xl">{{ $t('pages.movies.welcomeMessage') }}</p>
+      <p v-else class="text-center text-2xl">{{ $t('pages.mediaItemSearch.welcomeMessage') }}</p>
     </div>
   </section>
 </template>
