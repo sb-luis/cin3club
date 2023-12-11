@@ -4,30 +4,23 @@ import { useMainStore } from './stores/MainStore';
 import Layout from './layouts/Layout.vue';
 
 // Pages
-import Movies from './pages/Movies.vue';
+import MediaItemSearch from './pages/MediaItemSearch.vue';
+import MediaItemDetails from './pages/MediaItemDetails.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
-import RatingLister from './components/RatingLister.vue';
-
-// Movie Pages
-import MovieLister from './components/MovieLister.vue';
-import MovieDetails from './components/MovieDetails.vue';
+import Ratings from './pages/Ratings.vue';
 
 export const routes = [
   {
     path: '/',
-    component: Movies,
-    children: [
-      { path: '', name: 'movies', component: MovieLister },
-      { path: '/movie/:id', name: 'movieDetails', component: MovieDetails, meta: { mediaType: 'movie' } },
-      { path: '/tv/:id', name: 'tvDetails', component: MovieDetails, meta: { mediaType: 'tv' } },
-    ],
-    meta: { public: true },
+    component: MediaItemSearch,
   },
+  { path: '/tv/:id', name: 'tvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
+  { path: '/movie/:id', name: 'movieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
   {
     path: '/ratings',
     name: 'ratings',
-    component: RatingLister,
+    component: Ratings,
     meta: { public: false },
   },
   {

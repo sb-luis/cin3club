@@ -1,10 +1,12 @@
 <script setup>
-import { SelfBuildingSquareSpinner } from 'epic-spinners';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { SelfBuildingSquareSpinner } from 'epic-spinners';
+
+import MovieDetailsRatings from './MediaItemDetailsRatings.vue';
+
 import { useMovieStore } from '../stores/MovieStore';
 import { useAuthStore } from '../stores/AuthStore';
-import { useRoute } from 'vue-router';
-import MovieDetailsRatings from './MovieDetailsRatings.vue';
 
 const movieStore = useMovieStore();
 const authStore = useAuthStore();

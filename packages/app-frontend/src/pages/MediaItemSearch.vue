@@ -1,12 +1,14 @@
 <script setup>
-import { LoopingRhombusesSpinner } from 'epic-spinners';
-import TwInput from './base/TwInput.vue';
-import MediaItemCard from './MediaItemCard.vue';
 import { onMounted, watch } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useMovieStore } from '../stores/MovieStore';
-import debounce from 'lodash.debounce';
 import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import debounce from 'lodash.debounce';
+import { LoopingRhombusesSpinner } from 'epic-spinners';
+
+import TwInput from '../components/base/TwInput.vue';
+import MediaItemListerCard from '../components/MediaItemListerCard.vue';
+
+import { useMovieStore } from '../stores/MovieStore';
 
 const route = useRoute();
 const movieStore = useMovieStore();
@@ -37,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <section>
     <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.movies.title`) }}</h1>
     <div>
       <label for="movie_query" class="hidden">{{ $t('pages.movies.searchLabel') }}</label>
@@ -60,14 +62,14 @@ onMounted(() => {
         :size="48"
       />
       <ul v-else-if="movieStore.searchItems?.length && !movieStore.isLoading">
-        <MediaItemCard class="my-5" v-for="item in movieStore.searchItems" :item="item"> </MediaItemCard>
+        <MediaItemListerCard class="my-5" v-for="item in movieStore.searchItems" :item="item"> </MediaItemListerCard>
       </ul>
       <p v-else-if="searchQuery !== ''" class="text-center text-2xl text-red-500">
         {{ $t('pages.movies.movieNotFound', { query: searchQuery }) }}
       </p>
       <p v-else class="text-center text-2xl">{{ $t('pages.movies.welcomeMessage') }}</p>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped></style>

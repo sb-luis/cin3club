@@ -1,10 +1,12 @@
 <script setup>
 import { onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import debounce from 'lodash.debounce';
+
+import MediaItemDetailsCard from '../components/MediaItemDetailsCard.vue';
+
 import { useMainStore } from '../stores/MainStore';
 import { useMovieStore } from '../stores/MovieStore';
-import { useRoute } from 'vue-router';
-import MovieDetailsCard from './MovieDetailsCard.vue';
-import debounce from 'lodash.debounce';
 
 const movieStore = useMovieStore();
 const mainStore = useMainStore();
@@ -30,12 +32,12 @@ watch(
 </script>
 
 <template>
-  <div>
+  <section>
     <h1 class="text-primary-900 text-2xl font-bold uppercase">
       {{ $t(`pages.${route.meta.mediaType}Details.title`) }}
     </h1>
-    <MovieDetailsCard tv />
-  </div>
+    <MediaItemDetailsCard tv />
+  </section>
 </template>
 
 <style scoped></style>
