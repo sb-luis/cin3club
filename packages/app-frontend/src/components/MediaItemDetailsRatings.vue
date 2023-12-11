@@ -1,18 +1,18 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useMainStore } from '../stores/MainStore';
-import { useMovieStore } from '../stores/MovieStore';
+import { useMediaStore } from '../stores/MediaStore';
 import { useRatingStore } from '../stores/RatingStore';
 import TwModal from './base/TwModal.vue';
 import RatingsForm from './RatingsForm.vue';
 import { useRoute } from 'vue-router';
 
 const mainStore = useMainStore();
-const movieStore = useMovieStore();
+const mediaStore = useMediaStore();
 const ratingStore = useRatingStore();
 const route = useRoute();
 
-const mediaItem = computed(() => movieStore.selectedMediaItem);
+const mediaItem = computed(() => mediaStore.selectedMediaItem);
 
 const modalIsOpen = ref(false);
 const updateRatingFormIsOpen = ref(false);
@@ -20,7 +20,7 @@ const createRatingFormIsOpen = ref(false);
 
 const sortedRatings = computed(() => {
   return (
-    movieStore.selectedMediaItemRatings.sort(function (a, b) {
+    mediaStore.selectedMediaItemRatings.sort(function (a, b) {
       if (a < b) return -1;
       else if (a > b) return 1;
       return 0;

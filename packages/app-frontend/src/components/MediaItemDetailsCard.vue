@@ -5,17 +5,17 @@ import { SelfBuildingSquareSpinner } from 'epic-spinners';
 
 import MovieDetailsRatings from './MediaItemDetailsRatings.vue';
 
-import { useMovieStore } from '../stores/MovieStore';
+import { useMediaStore } from '../stores/MediaStore';
 import { useAuthStore } from '../stores/AuthStore';
 
-const movieStore = useMovieStore();
+const mediaStore = useMediaStore();
 const authStore = useAuthStore();
 const route = useRoute();
 
 const isTvShow = route.meta.mediaType === 'tv';
 
 const mediaItem = computed(() => {
-  return movieStore.selectedMediaItem ?? {};
+  return mediaStore.selectedMediaItem ?? {};
 });
 
 const productionCountries = computed(() => {
@@ -47,7 +47,7 @@ const moviePosterUrl = computed(() => {
 
 <template>
   <div
-    v-if="!movieStore.isLoading && mediaItem && Object.keys(mediaItem).length > 0"
+    v-if="!mediaStore.isLoading && mediaItem && Object.keys(mediaItem).length > 0"
     class="mt-4 w-full rounded-2xl bg-neutral-100 p-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] md:p-8"
   >
     <div class="flex pb-2 md:justify-between">

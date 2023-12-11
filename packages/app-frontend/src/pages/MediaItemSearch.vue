@@ -8,24 +8,24 @@ import { LoopingRhombusesSpinner } from 'epic-spinners';
 import TwInput from '../components/base/TwInput.vue';
 import MediaItemListerCard from '../components/MediaItemListerCard.vue';
 
-import { useMovieStore } from '../stores/MovieStore';
+import { useMediaStore } from '../stores/MediaStore';
 
 const route = useRoute();
-const movieStore = useMovieStore();
-const { searchQuery, searchQueryError } = storeToRefs(movieStore);
+const mediaStore = useMediaStore();
+const { searchQuery, searchQueryError } = storeToRefs(mediaStore);
 
 const getMediaItemsDebounced = debounce(async () => {
-  await movieStore.getMediaItems();
+  await mediaStore.getMediaItems();
 }, 1000);
 
 const debounceValidation = debounce(async () => {
-  movieStore.validateQuery();
+  mediaStore.validateQuery();
 }, 300);
 
 watch(searchQuery, () => {
   // some more stuff
-  movieStore.isLoading = true;
-  movieStore.searchQueryError = '';
+  mediaStore.isLoading = true;
+  mediaStore.searchQueryError = '';
   debounceValidation();
   getMediaItemsDebounced();
 });
@@ -33,7 +33,7 @@ watch(searchQuery, () => {
 onMounted(() => {
   // Grab initial state from URL
   if (route.query.s) {
-    movieStore.searchQuery = route.query.s;
+    mediaStore.searchQuery = route.query.s;
   }
 });
 </script>
@@ -56,13 +56,13 @@ onMounted(() => {
         {{ searchQueryError }}
       </p>
       <LoopingRhombusesSpinner
-        v-else-if="movieStore.isLoading"
+        v-else-if="mediaStore.isLoading"
         class="m-auto mt-6"
         :animation-duration="5000"
         :size="48"
       />
-      <ul v-else-if="movieStore.searchItems?.length && !movieStore.isLoading">
-        <MediaItemListerCard class="my-5" v-for="item in movieStore.searchItems" :item="item"> </MediaItemListerCard>
+      <ul v-else-if="mediaStore.searchItems?.length && !mediaStore.isLoading">
+        <MediaItemListerCard class="my-5" v-for="item in mediaStore.searchItems" :item="item"> </MediaItemListerCard>
       </ul>
       <p v-else-if="searchQuery !== ''" class="text-center text-2xl text-red-500">
         {{ $t('pages.movies.movieNotFound', { query: searchQuery }) }}

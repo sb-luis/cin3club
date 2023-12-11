@@ -1,10 +1,11 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+
 import TwInput from './base/TwInput.vue';
 import TwButton from './base/TwButton.vue';
-import { ref, onMounted } from 'vue';
+
 import { useRatingStore } from '../stores/RatingStore';
-import { useMovieStore } from '../stores/MovieStore';
-import { useMainStore } from '../stores/MainStore';
+import { useMediaStore } from '../stores/MediaStore';
 
 const props = defineProps({
   mediaItem: {
@@ -17,8 +18,7 @@ const props = defineProps({
   },
 });
 
-const mainStore = useMainStore();
-const movieStore = useMovieStore();
+const mediaStore = useMediaStore();
 const ratingStore = useRatingStore();
 
 const formatDate = (d) => {
@@ -53,17 +53,17 @@ onMounted(() => {
 const handleSubmitRating = async () => {
   if (props.update) {
     await ratingStore.updateRating({ dateSeen: tempDate.value, score: tempScore.value });
-    await movieStore.refreshMediaItemRatings();
+    await mediaStore.refreshMediaItemRatings();
   } else {
     console.log(props.mediaItem);
     await ratingStore.createRating({ dateSeen: tempDate.value, score: tempScore.value, mediaItem: props.mediaItem });
-    await movieStore.refreshMediaItemRatings();
+    await mediaStore.refreshMediaItemRatings();
   }
 };
 
 const handleDeleteRating = async () => {
   await ratingStore.deleteRating();
-  await movieStore.refreshMediaItemRatings();
+  await mediaStore.refreshMediaItemRatings();
 };
 
 const i18nRatingFormKey = props.update ? 'update' : 'create';

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useMainStore } from '../stores/MainStore';
-import { useMovieStore } from '../stores/MovieStore';
+import { useMediaStore } from '../stores/MediaStore';
 
 const props = defineProps({
   item: {
@@ -14,7 +14,7 @@ const props = defineProps({
   },
 });
 const mainStore = useMainStore();
-const movieStore = useMovieStore();
+const mediaStore = useMediaStore();
 
 const dateStrToYear = (str) => {
   const d = new Date(str);
@@ -53,7 +53,7 @@ const fullPosterUrl = (path) => {
       <img
         :src="fullPosterUrl(item.posterPath)"
         class="ml-2 w-[150px] rounded-2xl bg-red-200 object-contain shadow-sm md:w-[200px]"
-        :class="{ 'opacity-50 blur-xl': movieStore.selectedMediaItem === item.id }"
+        :class="{ 'opacity-50 blur-xl': mediaStore.selectedMediaItem === item.id }"
       />
     </div>
   </div>

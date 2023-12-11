@@ -2,7 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useMainStore } from './MainStore';
 import Joi from 'joi';
 
-export const useMovieStore = defineStore('MovieStore', {
+export const useMediaStore = defineStore('MediaStore', {
   state: () => {
     return {
       isLoading: false,
@@ -99,5 +99,5 @@ export const useMovieStore = defineStore('MovieStore', {
 
 // https://pinia.vuejs.org/cookbook/hot-module-replacement.html
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMovieStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useMediaStore, import.meta.hot));
 }

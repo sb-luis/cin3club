@@ -6,18 +6,18 @@ import debounce from 'lodash.debounce';
 import MediaItemDetailsCard from '../components/MediaItemDetailsCard.vue';
 
 import { useMainStore } from '../stores/MainStore';
-import { useMovieStore } from '../stores/MovieStore';
+import { useMediaStore } from '../stores/MediaStore';
 
-const movieStore = useMovieStore();
+const mediaStore = useMediaStore();
 const mainStore = useMainStore();
 const route = useRoute();
 
 const getMovieDetailsDebounced = debounce(async () => {
-  movieStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
+  mediaStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
 }, 1000);
 
 onMounted(() => {
-  movieStore.selectedMediaItem = {};
+  mediaStore.selectedMediaItem = {};
   getMovieDetailsDebounced();
 });
 
@@ -25,7 +25,7 @@ watch(
   () => mainStore.lang,
   () => {
     // re-fetch movie details if language changes
-    movieStore.isLoading = true;
+    mediaStore.isLoading = true;
     getMovieDetailsDebounced();
   },
 );
