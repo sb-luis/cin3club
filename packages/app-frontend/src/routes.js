@@ -65,6 +65,9 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   console.log('Vue router navigation guard run');
 
+  console.log(`Navigating to: ${to.name}`);
+  console.log(to);
+
   const authStore = useAuthStore();
   const mainStore = useMainStore();
   const isPublic = to.meta.public === true;

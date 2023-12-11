@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('AuthStore', {
       this.isLoading = false;
     },
     async loadCredentials() {
-      console.log('Loading credentials!');
+      console.log('Loading user credentials!');
       this.isLoading = true;
       const mainStore = useMainStore();
 
