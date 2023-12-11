@@ -1,16 +1,12 @@
 <script setup>
 import NavBar from '../components/NavBar.vue';
 import { onMounted } from 'vue';
-import { useAuthStore } from '../stores/AuthStore';
-
-const authStore = useAuthStore();
 
 const date = new Date();
 const year = date.getFullYear();
 
 onMounted(() => {
   console.log('Layout mounted');
-  authStore.loadCredentials();
 });
 </script>
 

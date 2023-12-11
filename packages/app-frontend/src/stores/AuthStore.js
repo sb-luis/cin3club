@@ -52,18 +52,19 @@ export const useAuthStore = defineStore('AuthStore', {
       mainStore.navigate({ path: '/', replace: true });
       this.isLoading = false;
     },
-    async loadCredentials() {
+    async loadCredentials(entryPath = '/') {
       console.log('Loading user credentials!');
       this.isLoading = true;
       const mainStore = useMainStore();
 
       try {
-        const entryPath = this.$router.options.history.state.current;
         // Get credentials from the server
         const res = await this.$axios.get('/api/auth/me');
         if (![200, 204].includes(res.status)) return console.log(`Authentication request failed: ${res.status}`);
         // Store credentials
         this.credentials = res.data;
+        // Redirect to current page, with credentials loaded
+        mainStore.navigate({ path: entryPath, replace: true });
       } catch (err) {
         console.error(err);
       }

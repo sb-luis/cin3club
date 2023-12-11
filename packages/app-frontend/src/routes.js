@@ -77,14 +77,9 @@ router.beforeEach(async (to) => {
 
   // If user is not authenticated...
   if (!isPublic && !authStore.credentials) {
-    // Try loading the credentials
-    await authStore.loadCredentials();
-
-    if (!authStore.credentials) {
-      console.log('Redirecting to /login page');
-      // Redirect to login if credentials are invalid
-      return { path: '/login', replace: true };
-    }
+    console.log("Unauthenticated user trying to access protected route.Redirecting to '/login' page");
+    // Redirect to login if credentials are invalid
+    return { path: '/login', replace: true };
   }
 });
 
