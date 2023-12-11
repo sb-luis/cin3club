@@ -12,7 +12,13 @@
 html,
 body,
 #app {
-  @apply m-0 h-full min-h-full w-full bg-neutral-200 p-0 text-neutral-800;
+  @apply bg-neutral-200 text-neutral-800;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
   text-rendering: optimizeLegibility;
   font-family: 'Nanum Gothic', sans-serif;
 }
