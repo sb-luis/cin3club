@@ -5,14 +5,15 @@
   "description": "",
   "author": "Luis Sanchez Barranquero <luis.sb.dev@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "dev": "nodemon server",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ."
-  },
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "dev": "nodemon server",
+    "build": "npm run build --workspace @private/frontend",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
   "engines": {
     "node": ">=20.6.0"
   }
