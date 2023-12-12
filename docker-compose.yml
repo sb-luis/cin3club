@@ -6,16 +6,16 @@ services:
     build:
       context: ./packages/app-frontend
       dockerfile: Dockerfile
-      target: prod
+      target: dev
     environment:
       - VITE_BASE_URL=http://localhost:3000
       - BACKEND_URL=http://cin3club-backend:3000
     volumes:
-      - ./packages/app-frontend/src/:/home/node/src
-      - ./packages/app-frontend/index.html/:/home/node/index.html
+      - ./packages/app-frontend/:/home/node/
       - /home/node/node_modules
     ports:
       - '8000:8000'
+      - '24678:24678'
   backend:
     container_name: cin3club-backend
     build:

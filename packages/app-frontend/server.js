@@ -37,7 +37,7 @@ if (!isProduction) {
   console.log('Running development vite server');
   const { createServer } = await import('vite');
   vite = await createServer({
-    server: { middlewareMode: true },
+    server: { host: '0.0.0.0', middlewareMode: true },
     appType: 'custom',
     base,
   });
@@ -58,12 +58,13 @@ const apiProxy = createProxyMiddleware('/api', {
 });
 
 app.use('/api', apiProxy);
-
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '');
     const { lang = 'en' } = req.query;
+
+    console.log('blahhh');
 
     let template;
     let render;
