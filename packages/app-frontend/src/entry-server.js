@@ -8,7 +8,7 @@ import { renderToString } from 'vue/server-renderer';
 export async function render(options = {}, ssrManifest) {
   console.log(`Render SSR App with options:`);
   console.log(options);
-  const { app, router } = createApp(options);
+  const { app, router } = await createApp(options);
 
   // set the router to the desired URL before rendering
   if (options.path !== undefined) {

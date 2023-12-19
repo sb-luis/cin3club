@@ -4,18 +4,25 @@
 import { createSSRApp } from 'vue';
 import { createPinia } from 'pinia';
 import './assets/main.css';
-import router from './routes';
 import axios from 'axios';
 import App from './App.vue';
 import i18next from 'i18next';
 import i18NextVue from 'i18next-vue';
 import * as locales from './locales';
+import createRouter from './routes.js';
+import { createHead } from '@unhead/vue';
 
 // SSR requires a fresh app instance per request, therefore we export a function that creates a fresh app instance. If using Pinia, we'd also be creating a fresh store here.
-export function createApp(options = {}) {
+export async function createApp(options = {}) {
   const app = createSSRApp(App);
+  const head = createHead();
+  app.use(head);
+
   const { path, lang = 'en' } = options;
 
+  const router = createRouter();
+
+  console.log('Creating vue app');
   console.log(`'lang' is: '${lang}'`);
   console.log(`'path' is: '${path}'`);
 
