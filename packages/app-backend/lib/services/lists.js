@@ -1,6 +1,6 @@
 import Schmervice from '@hapipal/schmervice';
 
-export default class RatingService extends Schmervice.Service {
+export default class ListService extends Schmervice.Service {
   async getAllLists({ userId, sortOrder = 'desc', sortType = 'title' }) {
     this.server.log(['info', 'list-service'], `READ user lists`);
     console.log('Getting lists!');

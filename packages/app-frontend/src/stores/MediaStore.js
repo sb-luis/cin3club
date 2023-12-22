@@ -71,6 +71,7 @@ export const useMediaStore = defineStore('MediaStore', {
     },
     //  --- MEDIA ITEM RATINGS ---
     async refreshMediaItemRatings() {
+      console.log('Refreshing Media Item Ratings')
       this.isLoading = true;
       try {
         await this.getMediaItemRatings();
@@ -84,7 +85,7 @@ export const useMediaStore = defineStore('MediaStore', {
       this.isLoading = true;
       try {
         // GET MOVIE RATINGS
-        console.log('fetching media item ratings');
+        console.log('Fetching Media Item Ratings');
         const url = `/api/ratings?tmdbId=${this.selectedMediaItem.tmdbId}&mediaType=${this.selectedMediaItem.mediaType}`;
         const res = await this.$axios.get(url);
         console.log(res.data);

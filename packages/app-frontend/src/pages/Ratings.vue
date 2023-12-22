@@ -3,6 +3,8 @@ import { watch, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import debounce from 'lodash.debounce';
 import { LoopingRhombusesSpinner } from 'epic-spinners';
+import { useTranslation } from "i18next-vue";
+import { useHead } from '@unhead/vue'
 
 import MediaItemListerCard from '../components/MediaItemListerCard.vue';
 import TwButton from '../components/base/TwButton.vue';
@@ -14,6 +16,15 @@ import { useRatingStore } from '../stores/RatingStore';
 const mainStore = useMainStore();
 const ratingStore = useRatingStore();
 const route = useRoute();
+const { t } = useTranslation();
+
+const computeHead = () => {
+  useHead({
+    title: `${t('app.title')} | ${t('pages.ratings.title')}`,
+  });
+};
+
+computeHead();
 
 const getRatingsDebounced = debounce(async () => {
   await ratingStore.getAllRatings();
@@ -48,7 +59,9 @@ onMounted(() => {
   getRatingsDebounced();
 });
 
-watch([() => ratingStore.currentPage, () => ratingStore.sortOrder, () => ratingStore.sortType], async (newVal) => {
+watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.sortOrder, () => ratingStore.sortType], async (newVal) => {
+  computeHead();
+  console.log('Watcher triggered refetch of Member Ratings');
   ratingStore.isLoading = true;
   mainStore.navigate({
     path: route.path,
@@ -75,25 +88,16 @@ watch([() => ratingStore.currentPage, () => ratingStore.sortOrder, () => ratingS
           <p>
             {{ $t('pages.ratings.sort.sortTypeLabel') }}
           </p>
-          <TwButton
-            size="sm"
-            @click="ratingStore.sortType = 'dateSeen'"
-            :highlight="ratingStore.sortType === 'dateSeen'"
-          >
+          <TwButton size="sm" @click="ratingStore.sortType = 'dateSeen'" :highlight="ratingStore.sortType === 'dateSeen'">
             {{ $t('pages.ratings.sort.sortByDateLabel') }}
           </TwButton>
           <TwButton size="sm" @click="ratingStore.sortType = 'score'" :highlight="ratingStore.sortType === 'score'">
             {{ $t('pages.ratings.sort.sortByScoreLabel') }}
           </TwButton>
-          <TwButton
-            @click="ratingStore.toggleRatingsSort"
-            size="sm"
-            class="flex justify-end rounded-xl text-lg transition-all duration-500"
-          >
-            <span
-              class="rotate-90 text-sm transition-transform duration-500"
-              :class="{ 'rotate-[-450deg]': ratingStore.sortOrder === 'asc' }"
-            >
+          <TwButton @click="ratingStore.toggleRatingsSort" size="sm"
+            class="flex justify-end rounded-xl text-lg transition-all duration-500">
+            <span class="rotate-90 text-sm transition-transform duration-500"
+              :class="{ 'rotate-[-450deg]': ratingStore.sortOrder === 'asc' }">
               &gt;
             </span>
           </TwButton>
@@ -101,19 +105,15 @@ watch([() => ratingStore.currentPage, () => ratingStore.sortOrder, () => ratingS
       </div>
 
       <!-- PAGINATION CONTROLS -->
-      <TwPagination
-        v-if="ratingStore.totalPages"
-        v-model="ratingStore.currentPage"
-        :total-pages="ratingStore.totalPages"
-      >
+      <TwPagination v-if="ratingStore.totalPages" v-model="ratingStore.currentPage" :total-pages="ratingStore.totalPages">
         <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
         <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
         <template v-slot:next>{{ $t('pages.ratings.pagination.nextButton') }}</template>
         <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
 
         <p class="text-center text-lg">
-          <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span
-          ><span>{{ ratingStore.currentPage }} / {{ ratingStore.totalPages }}</span>
+          <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span><span>{{ ratingStore.currentPage }} / {{
+            ratingStore.totalPages }}</span>
         </p>
       </TwPagination>
     </div>
@@ -126,28 +126,19 @@ watch([() => ratingStore.currentPage, () => ratingStore.sortOrder, () => ratingS
             <p class="border-b-4 border-neutral-300 px-4 text-2xl">
               {{ group.dateSeen.toDateString() }}
             </p>
-            <MediaItemListerCard
-              class="my-5"
-              v-for="rating in group.ratings"
-              :item="rating.mediaItem"
-              :rating="rating"
-            />
+            <MediaItemListerCard class="my-5" v-for="rating in group.ratings" :item="rating.mediaItem" :rating="rating" />
           </li>
         </ul>
-        <TwPagination
-          class="py-5"
-          v-if="ratingStore.totalPages && ratingStore.ratings.length > 3"
-          v-model="ratingStore.currentPage"
-          :total-pages="ratingStore.totalPages"
-        >
+        <TwPagination class="py-5" v-if="ratingStore.totalPages && ratingStore.ratings.length > 3"
+          v-model="ratingStore.currentPage" :total-pages="ratingStore.totalPages">
           <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
           <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
           <template v-slot:next>{{ $t('pages.ratings.pagination.nextButton') }}</template>
           <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
 
           <p class="text-center text-lg">
-            <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span
-            ><span>{{ ratingStore.currentPage }} / {{ ratingStore.totalPages }}</span>
+            <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span><span>{{ ratingStore.currentPage }} /
+              {{ ratingStore.totalPages }}</span>
           </p>
         </TwPagination>
       </div>

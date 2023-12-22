@@ -7,32 +7,41 @@ import MediaItemDetailsCard from '../components/MediaItemDetailsCard.vue';
 
 import { useMainStore } from '../stores/MainStore';
 import { useMediaStore } from '../stores/MediaStore';
+import { useTranslation } from "i18next-vue";
+import { useHead } from '@unhead/vue'
 
 const mediaStore = useMediaStore();
 const mainStore = useMainStore();
 const route = useRoute();
+const { t } = useTranslation();
 
-await mediaStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
+const computeHead = () => {
+  useHead({
+    title: `${t('app.title')} | ${t('pages.' + route.meta.mediaType + 'Details.title')}`,
+  });
+};
 
-useHead({
-  title: 'My awesome site',
-});
+computeHead();
 
-const getMovieDetailsDebounced = debounce(async () => {
+const getMediaItemDetailsDebounced = debounce(async () => {
   mediaStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
 }, 1000);
 
 onMounted(() => {
+  console.log('Media Item Details mounted');
   mediaStore.selectedMediaItem = {};
-  getMovieDetailsDebounced();
+  getMediaItemDetailsDebounced();
 });
 
 watch(
   () => mainStore.lang,
   () => {
+    computeHead();
     // re-fetch movie details if language changes
+    console.log('Language change triggered refetch of Media Item Details');
+    mediaStore.selectedMediaItem = {};
     mediaStore.isLoading = true;
-    getMovieDetailsDebounced();
+    getMediaItemDetailsDebounced();
   },
 );
 </script>
