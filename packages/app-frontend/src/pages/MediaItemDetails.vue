@@ -12,12 +12,6 @@ const mediaStore = useMediaStore();
 const mainStore = useMainStore();
 const route = useRoute();
 
-await mediaStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
-
-useHead({
-  title: 'My awesome site',
-});
-
 const getMovieDetailsDebounced = debounce(async () => {
   mediaStore.getMediaItemDetails(route.params.id, route.meta.mediaType);
 }, 1000);
