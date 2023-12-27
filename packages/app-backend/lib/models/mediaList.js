@@ -1,10 +1,10 @@
 import { DataTypes } from 'sequelize';
 
 export default {
-  name: 'MediaList',
+  name: 'MediaItemList',
   schema: {
-    // mediaItems (FK)
-    // creator (FK)
+    // mediaItemIds (FK)
+    // creatorId (FK)
     title: DataTypes.STRING,
     description: { 
         type: DataTypes.STRING, 

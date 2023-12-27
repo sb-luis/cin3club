@@ -12,6 +12,7 @@ export const es = {
         spanishOptionLabel: 'Español',
         mediaItemSearchLink: 'buscar',
         ratingsLink: 'valoraciones',
+        listsLink: 'listas',
         loginLink: 'inicio de sesión',
         logoutLink: 'cerrar sesión',
         registerLink: 'registro',
@@ -50,6 +51,13 @@ export const es = {
           lastButton: 'Última',
         },
         noRatingsText: 'Actualmente no tienes ninguna valoración',
+      },
+      lists: {
+        title: 'listas',
+        totalCount_one: '{{count}} lista',
+        totalCount_other: '{{count}} listas',
+        noListsText: "You currently don't have any listas",
+        createButton: "Nueva Lista"
       },
       movieDetails: {
         title: 'detalles de la película',
@@ -100,6 +108,12 @@ export const es = {
         update: { title: 'Edita tu valoración', submitButton: 'Actualizar', deleteButton: 'Eliminar valoración' },
         scoreLabel: 'Puntuación (0-100)',
         dateSeenLabel: 'Fecha de visualización',
+      },
+      listForm: {
+        create: { title: 'Crear Lista', submitButton: 'Crear Lista' },
+        update: { title: 'Editar Lista', submitButton: 'Actualizar Lista', deleteButton: 'Eliminar Lista' },
+        titleLabel: 'Título',
+        descriptionLabel: 'Descripción',
       },
     },
   },

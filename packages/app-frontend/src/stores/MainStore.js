@@ -9,7 +9,7 @@ export const useMainStore = defineStore('MainStore', {
   },
   actions: {
     async populateAppStateFromQuery(query) {
-      console.log('Populating app state from query');
+      console.log('Populating MainStore state from query');
 
       if (!query.lang) {
         console.log("No 'lang' query param, using default language");

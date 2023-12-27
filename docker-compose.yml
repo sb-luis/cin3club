@@ -11,8 +11,10 @@ services:
       - VITE_BASE_URL=http://localhost:3000
       - BACKEND_URL=http://cin3club-backend:3000
     volumes:
-      - ./packages/app-frontend/:/home/node/
-      - /home/node/node_modules
+      - ./packages/app-frontend/src/:/home/node/src
+      - ./packages/app-frontend/public/:/home/node/public
+      - ./packages/app-frontend/server.js/:/home/node/server.js
+      - ./packages/app-frontend/index.html/:/home/node/index.html
     ports:
       - '8000:8000'
       - '24678:24678'
@@ -34,7 +36,6 @@ services:
     volumes:
       - ./packages/app-backend/lib/:/app/lib
       - ./packages/app-backend/server/:/app/server
-      - ./packages/app-backend/package.json/:/app/package.json
     ports:
       - '3000:3000'
     depends_on:

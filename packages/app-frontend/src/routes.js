@@ -9,6 +9,7 @@ import MediaItemDetails from './pages/MediaItemDetails.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
 import Ratings from './pages/Ratings.vue';
+import Lists from './pages/Lists.vue';
 
 export default () => {
   const routes = [
@@ -28,6 +29,12 @@ export default () => {
       path: '/ratings',
       name: 'Ratings',
       component: Ratings,
+      meta: { public: false },
+    },
+    {
+      path: '/lists',
+      name: 'Lists',
+      component: Lists,
       meta: { public: false },
     },
     {

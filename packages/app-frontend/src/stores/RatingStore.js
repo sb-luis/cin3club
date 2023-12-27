@@ -20,7 +20,7 @@ export const useRatingStore = defineStore('RatingStore', {
   },
   actions: {
     async populateRatingStoreFromQuery(query) {
-      console.log('Populating query state from query');
+      console.log('Populating RatingStore from query');
 
       if (!query.page) {
         console.log("No 'page' query param, using default page");
@@ -64,7 +64,6 @@ export const useRatingStore = defineStore('RatingStore', {
       this.isLoading = false;
     },
     async createRating({ dateSeen, score, mediaItem }) {
-      const mainStore = useMainStore();
       this.isLoading = true;
 
       console.log('Creating Rating!');
@@ -88,7 +87,6 @@ export const useRatingStore = defineStore('RatingStore', {
       this.isLoading = false;
     },
     async updateRating({ dateSeen, score }) {
-      const mainStore = useMainStore();
       this.isLoading = true;
 
       try {
@@ -103,7 +101,6 @@ export const useRatingStore = defineStore('RatingStore', {
       this.isLoading = false;
     },
     async deleteRating() {
-      const mainStore = useMainStore();
       this.isLoading = true;
       try {
         // DELETE MOVIE RATING

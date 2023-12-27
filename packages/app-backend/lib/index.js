@@ -3,6 +3,7 @@
 import { Sequelize } from 'sequelize';
 import pino from 'hapi-pino';
 import HauteCouture from '@hapipal/haute-couture';
+import associations from './associations.js';
 
 // ESM doesn't support JSON imports
 import { createRequire } from 'module';
@@ -67,31 +68,13 @@ export const plugin = {
     server.log('info', 'Composing Hapi server with HauteCouture...');
     await HauteCouture.compose(server, options);
 
-    // Set up Sequelize associations
     // After all models have been created by Haute Couture
-    // https://sequelize.org/docs/v6/core-concepts/assocs/
-    const { User, Session, Rating, MediaItem, MediaItemLang, MediaList } = server.app.models;
-    // Add `userId` foreign key in Session and Rating
-    Session.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-    Rating.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-
-    // Add `mediaItemId` foreign key in Rating
-    Rating.belongsTo(MediaItem, { as: 'mediaItem', foreignKey: 'mediaItemId' });
-
-    // Add `mediaItemId` foreign key in MediaItemLang
-    MediaItem.hasMany(MediaItemLang, { as: 'mediaItemLangs', foreignKey: 'mediaItemId' });
-    MediaItemLang.belongsTo(MediaItem, { foreignKey: 'mediaItemId' });
-      
-    // Add `mediaItemId` foreign key in MediaList 
-    MediaItem.hasMany(MediaList, { as: 'mediaItems', foreignKey: 'mediaListId' });
-    MediaList.belongsTo(MediaItem, { foreignKey: 'mediaList' });
-    // Add `userId` foreign key in MediaList 
-    MediaList.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-
+    // Set up db associations 
+    associations(server.app.models);
     // Sync database
     await server.app.connection.sync();
     server.log('info', 'All Sequelize models synchronized successfully!');
 
     server.auth.default('session');
-  },
+  }
 };

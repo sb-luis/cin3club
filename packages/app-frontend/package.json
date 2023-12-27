@@ -17,6 +17,7 @@
   "dependencies": {
     "@unhead/vue": "^1.8.9",
     "@vueuse/core": "^10.6.1",
+    "@vueuse/integrations": "^10.7.0",
     "axios": "^1.6.2",
     "compression": "^1.7.4",
     "epic-spinners": "^2.0.0",
@@ -28,6 +29,7 @@
     "lodash.debounce": "^4.0.8",
     "pinia": "^2.1.7",
     "sirv": "^2.0.3",
+    "sortablejs": "^1.15.1",
     "vue": "^3.2.45",
     "vue-router": "^4.2.5"
   },

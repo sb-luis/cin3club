@@ -12,6 +12,7 @@ export const en = {
         spanishOptionLabel: 'Spanish',
         mediaItemSearchLink: 'search',
         ratingsLink: 'ratings',
+        listsLink: 'lists',
         loginLink: 'login',
         logoutLink: 'logout',
         registerLink: 'register',
@@ -50,6 +51,13 @@ export const en = {
           lastButton: 'Last',
         },
         noRatingsText: "You currently don't have any ratings",
+      },
+      lists: {
+        title: 'lists',
+        totalCount_one: '{{count}} list',
+        totalCount_other: '{{count}} lists',
+        noListsText: "You currently don't have any lists",
+        createButton: "New List"
       },
       movieDetails: {
         title: 'movie details',
@@ -96,10 +104,16 @@ export const en = {
     },
     components: {
       ratingForm: {
-        create: { title: 'Rate this movie', submitButton: 'Rate' },
+        create: { title: 'Rate this', submitButton: 'Rate' },
         update: { title: 'Edit your rating', submitButton: 'Update', deleteButton: 'Delete Rating' },
         scoreLabel: 'Score (0-100)',
         dateSeenLabel: 'Date Seen',
+      },
+      listForm: {
+        create: { title: 'Create List', submitButton: 'Create List' },
+        update: { title: 'Edit List', submitButton: 'Update List', deleteButton: 'Delete List' },
+        titleLabel: 'Title',
+        descriptionLabel: 'Description',
       },
     },
   },

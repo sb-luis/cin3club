@@ -48,8 +48,9 @@ const hideNavDrawer = () => {
       <div class="space-x-2">
         <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
         <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/ratings">
-          {{ $t('app.nav.ratingsLink') }}</NavLink
-        >
+          {{ $t('app.nav.ratingsLink') }}</NavLink>
+        <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/lists">
+          {{ $t('app.nav.listsLink') }}</NavLink>
       </div>
       <template v-if="authStore.credentials">
         <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
@@ -80,20 +81,11 @@ const hideNavDrawer = () => {
       </details>
 
       <!-- TOGGLE THEME -->
-      <button
-        @click="mainStore.toggleTheme()"
-        class="relative flex h-10 w-10 cursor-pointer items-center justify-center"
-      >
-        <GoIcon
-          class="absolute rotate-90 transition-all duration-500"
-          name="light_mode"
-          :class="{ 'invisible rotate-[360] opacity-0': mainStore.theme !== 'light' }"
-        />
-        <GoIcon
-          class="absolute rotate-[360] transition-all duration-500"
-          name="dark_mode"
-          :class="{ 'invisible rotate-[720deg] opacity-0': mainStore.theme !== 'dark' }"
-        />
+      <button @click="mainStore.toggleTheme()" class="relative flex h-10 w-10 cursor-pointer items-center justify-center">
+        <GoIcon class="absolute rotate-90 transition-all duration-500" name="light_mode"
+          :class="{ 'invisible rotate-[360] opacity-0': mainStore.theme !== 'light' }" />
+        <GoIcon class="absolute rotate-[360] transition-all duration-500" name="dark_mode"
+          :class="{ 'invisible rotate-[720deg] opacity-0': mainStore.theme !== 'dark' }" />
       </button>
 
       <!-- NAVBAR DRAWER -->
@@ -102,23 +94,18 @@ const hideNavDrawer = () => {
       </button>
 
       <div class="absolute left-0 top-0 h-screen w-full" :class="{ 'pointer-events-none': !navbarDrawerIsOpen }">
-        <div
-          class="absolute left-0 top-0 h-full w-full bg-neutral-200/90"
-          :class="{ hidden: !navbarDrawerIsOpen }"
-        ></div>
-        <div
-          ref="navDrawer"
-          class="absolute h-screen w-0 overflow-hidden bg-neutral-100 transition-all duration-500"
-          :class="{ '!w-60': navbarDrawerIsOpen }"
-        >
+        <div class="absolute left-0 top-0 h-full w-full bg-neutral-200/90" :class="{ hidden: !navbarDrawerIsOpen }"></div>
+        <div ref="navDrawer" class="absolute h-screen w-0 overflow-hidden bg-neutral-100 transition-all duration-500"
+          :class="{ '!w-60': navbarDrawerIsOpen }">
           <div class="space-y-3 overflow-hidden">
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
               <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
               <template v-if="authStore.credentials">
                 <NavLink @click="hideNavDrawer" class="text-xl" path="/ratings">
-                  {{ $t('app.nav.ratingsLink') }}</NavLink
-                >
+                  {{ $t('app.nav.ratingsLink') }}</NavLink>
+                <NavLink @click="hideNavDrawer" class="text-xl" path="/lists">
+                  {{ $t('app.nav.listsLink') }}</NavLink>
                 <NavLink @click="hideNavDrawer" class="text-xl" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
               </template>
               <template v-else>

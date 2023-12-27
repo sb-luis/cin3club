@@ -63,9 +63,6 @@ app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '');
     const { lang = 'en' } = req.query;
-
-    console.log('blahhh');
-
     let template;
     let render;
     if (!isProduction) {

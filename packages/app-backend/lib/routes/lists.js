@@ -7,16 +7,16 @@ import Boom from '@hapi/boom';
 
 export default [
 
-  // GET all user list - private
+  // GET all user lists - private
   {
     method: 'GET',
     path: '/api/lists',
     handler: async (request, h) => {
       console.log('getting user lists!');
       const { listService } = request.services();
-      const userId = request.auth.credentials.userId;
+      const creatorId = request.auth.credentials.userId;
       try {
-        const lists = await listService.getAllLists({ userId });
+        const lists = await listService.getAllLists({ creatorId });
         return lists;
       } catch (err) {
         return Boom.boomify(err);
@@ -32,9 +32,9 @@ export default [
       try {
         console.log('creating user list');
         const { listService } = request.services();
-        const userId = request.auth.credentials.userId;
+        const creatorId = request.auth.credentials.userId;
         const { title, description } = request.payload;
-        const list = await listService.createOneList({ userId, title, description });
+        const list = await listService.createOneList({ creatorId, title, description });
         return list;
       } catch (err) {
         return Boom.boomify(err);
@@ -57,11 +57,11 @@ export default [
     handler: async (request, h) => {
       console.log('updating user list!');
       const { listService } = request.services();
-      const userId = request.auth.credentials.userId;
+      const creatorId = request.auth.credentials.userId;
       const { id } = request.params;
       const { title, description, mediaItems } = request.payload;
       try {
-        const list = await listService.updateRating({ id, userId, title, description, mediaItems });
+        const list = await listService.updateOneList({ id, creatorId, title, description, mediaItems });
         return list;
       } catch (err) {
         return Boom.boomify(err);
@@ -70,8 +70,8 @@ export default [
     options: {
       validate: {
         payload: Joi.object({
-          title: Joi.string(),
-          dateSeen: Joi.string(),
+          title: Joi.string().required(),
+          description: Joi.string(),
           mediaItems: Joi.array().items(Joi.number()),
         }),
         params: Joi.object({
@@ -81,17 +81,17 @@ export default [
     },
   },
 
-  // DELETE USER RATINGS - private
+  // DELETE user list - private
   {
     method: 'DELETE',
     path: '/api/lists/{id}',
     handler: async (request, h) => {
       console.log('deleting user list!');
       const { listService } = request.services();
-      const userId = request.auth.credentials.userId;
+      const creatorId = request.auth.credentials.userId;
       const { id } = request.params;
       try {
-        const list = await listService.deleteOneList({ userId, id });
+        const list = await listService.deleteOneList({ creatorId, id });
         return list;
       } catch (err) {
         return Boom.boomify(err);
