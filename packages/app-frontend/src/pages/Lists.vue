@@ -54,11 +54,18 @@ const computeHead = () => {
 
 computeHead();
 
+const handleSubmitListForm = () => {
+  modalIsOpen.value = false;
+  createListFormIsOpen.value = false;
+  updateListFormIsOpen.value = false;
+}
+
 const getListsDebounced = debounce(async () => {
   await listStore.getAllLists();
 }, 1000);
 
 const { option } = useSortable(draggable, tempLists, {
+  animation: 150,
   onUpdate: (e) => {
     // optimistic update on the FE 
     console.log(`Moving element at ${e.oldIndex} to ${e.newIndex}`)
@@ -98,8 +105,8 @@ watch([() => mainStore.lang, () => listStore.currentPage, () => listStore.sortOr
   <section>
     <!-- LIST FORM MODAL -->
     <TwModal v-model="modalIsOpen">
-      <ListForm v-if="updateListFormIsOpen" update class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
-      <ListForm v-else-if="createListFormIsOpen" class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
+      <ListForm v-if="updateListFormIsOpen" @submit="handleSubmitListForm" update class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
+      <ListForm v-else-if="createListFormIsOpen" @submit="handleSubmitListForm" class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
     </TwModal>
     <!-- LIST PAGE -->
     <div>

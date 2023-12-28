@@ -14,6 +14,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['submit']);
+
 const listStore = useListStore();
 
 const tempTitle = ref(null);
@@ -38,11 +40,13 @@ const handleSubmitList = async () => {
     await listStore.createList({ title: tempTitle.value, description: tempDescription.value });
   }
   await listStore.getAllLists();
+  emit('submit');
 };
 
 const handleDeleteList = async () => {
   await listStore.deleteList();
   await listStore.getAllLists();
+  emit('submit');
 };
 
 const i18nListFormKey = props.update ? 'update' : 'create';

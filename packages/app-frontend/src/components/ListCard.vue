@@ -1,5 +1,6 @@
 <script setup>
 import { useMainStore } from '../stores/MainStore';
+import { useListStore} from '../stores/ListStore';
 
 const props = defineProps({
     item: {
@@ -8,6 +9,7 @@ const props = defineProps({
     },
 });
 const mainStore = useMainStore();
+const listStore= useListStore();
 </script>
 
 <template>
