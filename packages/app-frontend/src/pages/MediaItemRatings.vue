@@ -6,7 +6,7 @@ import { LoopingRhombusesSpinner } from 'epic-spinners';
 import { useTranslation } from "i18next-vue";
 import { useHead } from '@unhead/vue'
 
-import MediaItemListerCard from '../components/MediaItemListerCard.vue';
+import MediaItemCard from '../components/MediaItemCard.vue';
 import TwButton from '../components/base/TwButton.vue';
 import TwPagination from '../components/base/TwPagination.vue';
 
@@ -20,7 +20,7 @@ const { t } = useTranslation();
 
 const computeHead = () => {
   useHead({
-    title: `${t('app.title')} | ${t('pages.ratings.title')}`,
+    title: `${t('app.title')} | ${t('pages.mediaItemRatings.title')}`,
   });
 };
 
@@ -80,19 +80,19 @@ watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.so
 <template>
   <section>
     <div>
-      <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.ratings.title`) }}</h1>
+      <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.mediaItemRatings.title`) }}</h1>
       <div class="mb-2 flex items-center justify-between">
-        <p class="text-lg">{{ $t('pages.ratings.totalCount', { count: ratingStore.ratingsTotal }) }}</p>
+        <p class="text-lg">{{ $t('pages.mediaItemRatings.totalCount', { count: ratingStore.ratingsTotal }) }}</p>
         <!-- SORT CONTROLS -->
         <div class="flex items-center space-x-2">
           <p>
-            {{ $t('pages.ratings.sort.sortTypeLabel') }}
+            {{ $t('pages.mediaItemRatings.sort.sortTypeLabel') }}
           </p>
           <TwButton size="sm" @click="ratingStore.sortType = 'dateSeen'" :highlight="ratingStore.sortType === 'dateSeen'">
-            {{ $t('pages.ratings.sort.sortByDateLabel') }}
+            {{ $t('pages.mediaItemRatings.sort.sortByDateLabel') }}
           </TwButton>
           <TwButton size="sm" @click="ratingStore.sortType = 'score'" :highlight="ratingStore.sortType === 'score'">
-            {{ $t('pages.ratings.sort.sortByScoreLabel') }}
+            {{ $t('pages.mediaItemRatings.sort.sortByScoreLabel') }}
           </TwButton>
           <TwButton @click="ratingStore.toggleRatingsSort" size="sm"
             class="flex justify-end rounded-xl text-lg transition-all duration-500">
@@ -106,14 +106,15 @@ watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.so
 
       <!-- PAGINATION CONTROLS -->
       <TwPagination v-if="ratingStore.totalPages" v-model="ratingStore.currentPage" :total-pages="ratingStore.totalPages">
-        <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
-        <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
-        <template v-slot:next>{{ $t('pages.ratings.pagination.nextButton') }}</template>
-        <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
+        <template v-slot:first>{{ $t('pages.mediaItemRatings.pagination.firstButton') }}</template>
+        <template v-slot:back>{{ $t('pages.mediaItemRatings.pagination.backButton') }}</template>
+        <template v-slot:next>{{ $t('pages.mediaItemRatings.pagination.nextButton') }}</template>
+        <template v-slot:last>{{ $t('pages.mediaItemRatings.pagination.lastButton') }}</template>
 
         <p class="text-center text-lg">
-          <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span><span>{{ ratingStore.currentPage }} / {{
-            ratingStore.totalPages }}</span>
+          <span class="pr-2">{{ $t('pages.mediaItemRatings.pagination.pageLabel') }}</span><span>{{
+            ratingStore.currentPage }} / {{
+    ratingStore.totalPages }}</span>
         </p>
       </TwPagination>
     </div>
@@ -126,23 +127,24 @@ watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.so
             <p class="border-b-4 border-neutral-300 px-4 text-2xl">
               {{ group.dateSeen.toDateString() }}
             </p>
-            <MediaItemListerCard class="my-5" v-for="rating in group.ratings" :item="rating.mediaItem" :rating="rating" />
+            <MediaItemCard class="my-5" v-for="rating in group.ratings" :item="rating.mediaItem" :rating="rating" />
           </li>
         </ul>
         <TwPagination class="py-5" v-if="ratingStore.totalPages && ratingStore.ratings.length > 3"
           v-model="ratingStore.currentPage" :total-pages="ratingStore.totalPages">
-          <template v-slot:first>{{ $t('pages.ratings.pagination.firstButton') }}</template>
-          <template v-slot:back>{{ $t('pages.ratings.pagination.backButton') }}</template>
-          <template v-slot:next>{{ $t('pages.ratings.pagination.nextButton') }}</template>
-          <template v-slot:last>{{ $t('pages.ratings.pagination.lastButton') }}</template>
+          <template v-slot:first>{{ $t('pages.mediaItemRatings.pagination.firstButton') }}</template>
+          <template v-slot:back>{{ $t('pages.mediaItemRatings.pagination.backButton') }}</template>
+          <template v-slot:next>{{ $t('pages.mediaItemRatings.pagination.nextButton') }}</template>
+          <template v-slot:last>{{ $t('pages.mediaItemRatings.pagination.lastButton') }}</template>
 
           <p class="text-center text-lg">
-            <span class="pr-2">{{ $t('pages.ratings.pagination.pageLabel') }}</span><span>{{ ratingStore.currentPage }} /
+            <span class="pr-2">{{ $t('pages.mediaItemRatings.pagination.pageLabel') }}</span><span>{{
+              ratingStore.currentPage }} /
               {{ ratingStore.totalPages }}</span>
           </p>
         </TwPagination>
       </div>
     </div>
-    <p v-else>{{ $t('pages.ratings.noRatingsText') }}</p>
+    <p v-else>{{ $t('pages.mediaItemRatings.noRatingsText') }}</p>
   </section>
 </template>

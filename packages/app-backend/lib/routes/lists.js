@@ -6,21 +6,48 @@ import Boom from '@hapi/boom';
 // --- PROTECTED USER LIST ENDPOINTS ---
 
 export default [
-
   // GET all user lists - private
   {
     method: 'GET',
     path: '/api/lists',
     handler: async (request, h) => {
       console.log('getting user lists!');
-      const { listService } = request.services();
+      const { mediaItemListsService } = request.services();
       const creatorId = request.auth.credentials.userId;
       try {
-        const lists = await listService.getAllLists({ creatorId });
+        const lists = await mediaItemListsService.getAllLists({ creatorId });
         return lists;
       } catch (err) {
         return Boom.boomify(err);
       }
+    },
+  },
+  // GET one user lists - private
+  {
+    method: 'GET',
+    path: '/api/lists/{id}',
+    handler: async (request, h) => {
+      console.log('getting one user list!');
+      const { mediaItemListsService } = request.services();
+      const { lang } = request.query;
+      const { id } = request.params;
+      const creatorId = request.auth.credentials.userId;
+      try {
+        const list = await mediaItemListsService.getOneList({ creatorId, id, lang });
+        return list;
+      } catch (err) {
+        return Boom.boomify(err);
+      }
+    },
+    options: {
+      validate: {
+        query: Joi.object({
+          lang: Joi.string().max(URL_QUERY_STR_MAX).default('en'),
+        }),
+        params: Joi.object({
+          id: Joi.number(),
+        }),
+      },
     },
   },
 
@@ -31,10 +58,10 @@ export default [
     handler: async (request, h) => {
       try {
         console.log('creating user list');
-        const { listService } = request.services();
+        const { mediaItemListsService } = request.services();
         const creatorId = request.auth.credentials.userId;
         const { title, description } = request.payload;
-        const list = await listService.createOneList({ creatorId, title, description });
+        const list = await mediaItemListsService.createOneList({ creatorId, title, description });
         return list;
       } catch (err) {
         return Boom.boomify(err);
@@ -56,12 +83,12 @@ export default [
     path: '/api/lists/{id}',
     handler: async (request, h) => {
       console.log('updating user list!');
-      const { listService } = request.services();
+      const { mediaItemListsService } = request.services();
       const creatorId = request.auth.credentials.userId;
       const { id } = request.params;
-      const { title, description, mediaItems } = request.payload;
+      const { title, description } = request.payload;
       try {
-        const list = await listService.updateOneList({ id, creatorId, title, description, mediaItems });
+        const list = await mediaItemListsService.updateOneList({ id, creatorId, title, description });
         return list;
       } catch (err) {
         return Boom.boomify(err);
@@ -72,10 +99,39 @@ export default [
         payload: Joi.object({
           title: Joi.string().required(),
           description: Joi.string(),
-          mediaItems: Joi.array().items(Joi.number()),
-        }),
+        }).unknown(true),
         params: Joi.object({
           id: Joi.number(),
+        }),
+      },
+    },
+  },
+
+  // UPDATE user lists order - private
+  {
+    method: 'PUT',
+    path: '/api/lists',
+    handler: async (request, h) => {
+      console.log('updating user lists order!');
+      const { mediaItemListsService } = request.services();
+      const creatorId = request.auth.credentials.userId;
+      const { lists } = request.payload;
+      try {
+        const result = await mediaItemListsService.updateListOrder({ lists, creatorId });
+        return result;
+      } catch (err) {
+        return Boom.boomify(err);
+      }
+    },
+    options: {
+      validate: {
+        payload: Joi.object({
+          lists: Joi.array().items(
+            Joi.object({
+              id: Joi.number(),
+              order: Joi.number(),
+            }).unknown(true),
+          ),
         }),
       },
     },
@@ -87,11 +143,11 @@ export default [
     path: '/api/lists/{id}',
     handler: async (request, h) => {
       console.log('deleting user list!');
-      const { listService } = request.services();
+      const { mediaItemListsService } = request.services();
       const creatorId = request.auth.credentials.userId;
       const { id } = request.params;
       try {
-        const list = await listService.deleteOneList({ creatorId, id });
+        const list = await mediaItemListsService.deleteOneList({ creatorId, id });
         return list;
       } catch (err) {
         return Boom.boomify(err);

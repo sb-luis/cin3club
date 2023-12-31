@@ -32,7 +32,7 @@ export const en = {
         searchPlaceholder: 'search',
         welcomeMessage: 'The place where your favourite movies and TV shows live!',
       },
-      ratings: {
+      mediaItemRatings: {
         title: 'ratings',
         totalCount_one: '{{count}} rating',
         totalCount_other: '{{count}} ratings',
@@ -52,12 +52,16 @@ export const en = {
         },
         noRatingsText: "You currently don't have any ratings",
       },
-      lists: {
+      mediaItemLists: {
         title: 'lists',
         totalCount_one: '{{count}} list',
         totalCount_other: '{{count}} lists',
         noListsText: "You currently don't have any lists",
-        createButton: "New List"
+        createButton: 'New List',
+      },
+      mediaItemListDetails: {
+        title: 'list details',
+        noMediaItemsText: `You currently don't have any movie or TV show in your list`,
       },
       movieDetails: {
         title: 'movie details',

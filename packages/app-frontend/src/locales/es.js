@@ -32,7 +32,7 @@ export const es = {
         searchPlaceholder: 'buscar',
         welcomeMessage: '¡El lugar donde viven tus películas y series favoritas!',
       },
-      ratings: {
+      mediaItemRatings: {
         title: 'valoraciones',
         totalCount_one: '{{count}} valoración',
         totalCount_other: '{{count}} valoraciones',
@@ -52,12 +52,16 @@ export const es = {
         },
         noRatingsText: 'Actualmente no tienes ninguna valoración',
       },
-      lists: {
+      mediaItemLists: {
         title: 'listas',
         totalCount_one: '{{count}} lista',
         totalCount_other: '{{count}} listas',
-        noListsText: "You currently don't have any listas",
-        createButton: "Nueva Lista"
+        noListsText: 'Aún no has creado ninguna lista',
+        createButton: 'Nueva Lista',
+      },
+      mediaItemListDetails: {
+        title: 'detalles de la lista',
+        noMediaItemsText: 'Aún no has añadido ninguna película ni serie a tu lista',
       },
       movieDetails: {
         title: 'detalles de la película',

@@ -11,20 +11,20 @@ export default [
     method: 'GET',
     path: '/api/ratings',
     handler: async (request, h) => {
-      const { ratingService } = request.services();
+      const { mediaItemRatingsService } = request.services();
       const { lang, page, sortOrder, sortType, tmdbId, mediaType } = request.query;
       const userId = request.auth.credentials.userId;
 
       try {
         let ratings = [];
         if (!tmdbId) {
-          console.log(`Getting all user ratings with locale = '${lang}'`);
+          console.log(`Getting all user mediaItem ratings with locale = '${lang}'`);
           // GET all user ratings
-          ratings = await ratingService.getAllRatings({ userId, page, sortOrder, sortType, limit: 10, lang });
+          ratings = await mediaItemRatingsService.getAllRatings({ userId, page, sortOrder, sortType, limit: 10, lang });
         } else {
-          console.log('Getting mediaItem user ratings');
+          console.log(`Getting user mediaItem ratings for '${tmdbId}'`);
           // GET mediaItem user ratings
-          ratings = await ratingService.getMediaItemRatings({
+          ratings = await mediaItemRatingsService.getMediaItemRatings({
             userId,
             tmdbId,
             mediaType,
@@ -57,11 +57,11 @@ export default [
     path: '/api/ratings',
     handler: async (request, h) => {
       try {
-        console.log('craeting user rating');
-        const { ratingService } = request.services();
+        console.log('creating user mediaItem rating');
+        const { mediaItemRatingsService } = request.services();
         const userId = request.auth.credentials.userId;
         const { mediaItem, score, dateSeen } = request.payload;
-        const rating = await ratingService.createRating({ userId, mediaItem, score, dateSeen });
+        const rating = await mediaItemRatingsService.createRating({ userId, mediaItem, score, dateSeen });
         return rating;
       } catch (err) {
         return Boom.boomify(err);
@@ -86,12 +86,12 @@ export default [
     path: '/api/ratings/{id}',
     handler: async (request, h) => {
       console.log('getting ratings!');
-      const { ratingService } = request.services();
+      const { mediaItemRatingsService } = request.services();
       const userId = request.auth.credentials.userId;
       const { id } = request.params;
       const { score, dateSeen } = request.payload;
       try {
-        const rating = await ratingService.updateRating({ id, userId, score, dateSeen });
+        const rating = await mediaItemRatingsService.updateRating({ id, userId, score, dateSeen });
         return rating;
       } catch (err) {
         return Boom.boomify(err);
@@ -114,11 +114,11 @@ export default [
     method: 'DELETE',
     path: '/api/ratings/{id}',
     handler: async (request, h) => {
-      const { ratingService } = request.services();
+      const { mediaItemRatingsService } = request.services();
       const userId = request.auth.credentials.userId;
       const { id } = request.params;
       try {
-        const rating = await ratingService.deleteRating({ userId, id });
+        const rating = await mediaItemRatingsService.deleteRating({ userId, id });
         return rating;
       } catch (err) {
         return Boom.boomify(err);

@@ -6,10 +6,11 @@ import Layout from './layouts/Layout.vue';
 // Pages
 import MediaItemSearch from './pages/MediaItemSearch.vue';
 import MediaItemDetails from './pages/MediaItemDetails.vue';
+import MediaItemRatings from './pages/MediaItemRatings.vue';
+import MediaItemLists from './pages/MediaItemLists.vue';
+import MediaItemListDetails from './pages/MediaItemListDetails.vue';
 import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
-import Ratings from './pages/Ratings.vue';
-import Lists from './pages/Lists.vue';
 
 export default () => {
   const routes = [
@@ -28,13 +29,19 @@ export default () => {
     {
       path: '/ratings',
       name: 'Ratings',
-      component: Ratings,
+      component: MediaItemRatings,
       meta: { public: false },
     },
     {
       path: '/lists',
       name: 'Lists',
-      component: Lists,
+      component: MediaItemLists,
+      meta: { public: false },
+    },
+    {
+      path: '/list/:id',
+      name: 'ListDetails',
+      component: MediaItemListDetails,
       meta: { public: false },
     },
     {

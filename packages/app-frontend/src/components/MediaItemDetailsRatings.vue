@@ -4,7 +4,7 @@ import { useMainStore } from '../stores/MainStore';
 import { useMediaStore } from '../stores/MediaStore';
 import { useRatingStore } from '../stores/RatingStore';
 import TwModal from './base/TwModal.vue';
-import RatingsForm from './RatingsForm.vue';
+import MediaItemRatingForm from './MediaItemRatingForm.vue';
 import { useRoute } from 'vue-router';
 
 const mainStore = useMainStore();
@@ -58,17 +58,10 @@ watch(modalIsOpen, (newVal) => {
   <div class="rounded-2xl bg-neutral-200 p-3 text-xl md:max-w-[250px] md:text-neutral-500">
     <!-- RATINGS MODAL -->
     <TwModal v-model="modalIsOpen">
-      <RatingsForm
-        :media-item="mediaItem"
-        v-if="mediaItem && updateRatingFormIsOpen"
-        update
-        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10"
-      />
-      <RatingsForm
-        v-else-if="mediaItem && createRatingFormIsOpen"
-        :media-item="mediaItem"
-        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10"
-      />
+      <MediaItemRatingForm :media-item="mediaItem" v-if="mediaItem && updateRatingFormIsOpen" update
+        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
+      <MediaItemRatingForm v-else-if="mediaItem && createRatingFormIsOpen" :media-item="mediaItem"
+        class="m-auto mt-20 max-w-[400px] rounded-2xl p-10" />
     </TwModal>
 
     <!-- RATINGS -->
@@ -78,24 +71,19 @@ watch(modalIsOpen, (newVal) => {
     </h3>
     <ul v-if="sortedRatings.length" class="mb-5">
       <li v-for="(rating, i) in sortedRatings">
-        <button
-          @click="() => handleUpdateRating(rating)"
+        <button @click="() => handleUpdateRating(rating)"
           class="mb-2 flex w-full justify-between rounded bg-neutral-100 p-2 text-xl opacity-60 hover:bg-neutral-50 hover:opacity-100 md:w-[200px] md:text-neutral-500"
-          :class="{ '!opacity-100': i === 0 }"
-        >
+          :class="{ '!opacity-100': i === 0 }">
           <span class="text-primary-900 text-sm italic md:text-xs">
             {{ formatDate(rating.dateSeen) }}
           </span>
           <span class="bg-primary-200 rounded px-2 font-bold" :class="{ '!bg-primary-600': i === 0 }">
-            {{ rating.score }}</span
-          >
+            {{ rating.score }}</span>
         </button>
       </li>
     </ul>
-    <button
-      @click="handleCreateRating"
-      class="hover:border-primary-900 hover:text-primary-900 m-auto block w-[220px] rounded-2xl border border-neutral-200 bg-neutral-300 p-2 transition-all duration-500 hover:bg-neutral-200"
-    >
+    <button @click="handleCreateRating"
+      class="hover:border-primary-900 hover:text-primary-900 m-auto block w-[220px] rounded-2xl border border-neutral-200 bg-neutral-300 p-2 transition-all duration-500 hover:bg-neutral-200">
       {{ $t(`pages.${route.meta.mediaType}Details.newRatingButton`, { count: sortedRatings.length }) }}
     </button>
   </div>

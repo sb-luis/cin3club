@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 export default {
-  name: 'Rating',
+  name: 'MediaItemRating',
   schema: {
     // userId - FOREIGN KEY
     // mediaItemId - FOREIGN KEY (i.e. tmdbId)

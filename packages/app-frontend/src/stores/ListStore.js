@@ -1,3 +1,4 @@
+import { toRaw } from 'vue';
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useMainStore } from './MainStore';
 import Joi from 'joi';
@@ -8,6 +9,7 @@ export const useListStore = defineStore('ListStore', {
       isLoading: false,
       selectedList: [],
       lists: [],
+      mediaItemListsOrderChanged: false,
     };
   },
   actions: {
@@ -37,12 +39,13 @@ export const useListStore = defineStore('ListStore', {
       this.isLoading = true;
 
       try {
-        // GET ALL LISTS 
+        // GET ALL LISTS
         const url = `/api/lists`;
         console.log(`GET ${url}`);
         const res = await this.$axios.get(url);
         console.log(res.data);
         this.lists = res.data.lists;
+        this.mediaItemListsOrderChanged = false;
       } catch (err) {
         console.error(err);
       }
@@ -54,7 +57,7 @@ export const useListStore = defineStore('ListStore', {
       console.log('Creating List!');
 
       try {
-        // CREATE MOVIE LIST 
+        // CREATE MOVIE LIST
         const data = {
           title,
           description,
@@ -66,11 +69,44 @@ export const useListStore = defineStore('ListStore', {
       }
       this.isLoading = false;
     },
-    async updateList({ title, description}) {
+    async getMediaItemListDetails(id) {
+      console.log(`getting media item list details of MediaItemList ${id}!`);
+      const mainStore = useMainStore();
+
+      this.isLoading = true;
+      try {
+        const url = `/api/lists/${id}?lang=${mainStore.lang}`;
+        const res = await this.$axios.get(url);
+        console.log(res.data);
+        this.selectedList = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async createList({ title, description }) {
+      this.isLoading = true;
+
+      console.log('Creating List!');
+
+      try {
+        // CREATE MOVIE LIST
+        const data = {
+          title,
+          description,
+        };
+
+        const res = await this.$axios.post(`/api/lists`, data);
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
+    async updateList({ title, description }) {
       this.isLoading = true;
 
       try {
-        // CREATE LIST 
+        // CREATE LIST
         const res = await this.$axios.put(`/api/lists/${this.selectedList.id}`, {
           title,
           description,
@@ -80,10 +116,24 @@ export const useListStore = defineStore('ListStore', {
       }
       this.isLoading = false;
     },
+    async updateListOrder() {
+      try {
+        // SORT LISTS
+        console.log(toRaw(this.lists));
+
+        const res = await this.$axios.put(`/api/lists`, {
+          lists: toRaw(this.lists),
+        });
+        await this.getAllLists();
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
     async deleteList() {
       this.isLoading = true;
       try {
-        // DELETE LIST 
+        // DELETE LIST
         const res = await this.$axios.delete(`/api/lists/${this.selectedList.id}`);
       } catch (err) {
         console.error(err);

@@ -5,7 +5,6 @@ import TwInput from './base/TwInput.vue';
 import TwButton from './base/TwButton.vue';
 
 import { useListStore } from '../stores/ListStore';
-import Lists from '../pages/Lists.vue';
 
 const props = defineProps({
   update: {

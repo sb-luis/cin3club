@@ -9,7 +9,7 @@ export const seed = async (server) => {
   const { User, Rating } = server.app.models;
   const alias = 'test';
 
-  const createRating = async ({ userId, score, dateSeen, mediaItem }) => {
+  const createMediaItemRating = async ({ userId, score, dateSeen, mediaItem }) => {
     server.log('debug', `Creating rating for '${mediaItem.title}'...`);
     const { Rating, Movie } = server.app.models;
 
@@ -71,7 +71,7 @@ export const seed = async (server) => {
       // If 'test' user already exists skip its creation
       server.log('info', `A user named '${alias}' already exists. Skipping user creation.`);
 
-      server.log('info', `Deleting all user ratings.`);
+      server.log('info', `Deleting all user's MediaItemRatings.`);
       Rating.destroy({ where: { userId: user.id } });
     } else {
       const badPassword = '12345';
@@ -91,9 +91,9 @@ export const seed = async (server) => {
       throw Error('No data found in seed file');
     }
 
-    // Create user ratings from data
+    // Create user MediaItemRatings from data
     for (let i = 0; i < data.length; i++) {
-      await createRating({
+      await createMediaItemRating({
         userId: user.id,
         score: data[i].score,
         dateSeen: data[i].dateSeen,
