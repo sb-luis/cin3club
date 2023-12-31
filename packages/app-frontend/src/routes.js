@@ -4,7 +4,6 @@ import { useMainStore } from './stores/MainStore';
 import Layout from './layouts/Layout.vue';
 
 // Pages
-import MediaItemSearch from './pages/MediaItemSearch.vue';
 import MediaItemDetails from './pages/MediaItemDetails.vue';
 import MediaItemRatings from './pages/MediaItemRatings.vue';
 import MediaItemLists from './pages/MediaItemLists.vue';
@@ -16,8 +15,7 @@ export default () => {
   const routes = [
     {
       path: '/',
-      name: 'Home',
-      component: MediaItemSearch,
+      redirect: '/ratings',
     },
     { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
     {

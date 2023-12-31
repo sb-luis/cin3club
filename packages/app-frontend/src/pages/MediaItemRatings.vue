@@ -1,5 +1,5 @@
 <script setup>
-import { watch, onMounted, computed } from 'vue';
+import { watch, onMounted, computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import debounce from 'lodash.debounce';
 import { LoopingRhombusesSpinner } from 'epic-spinners';
@@ -7,6 +7,8 @@ import { useTranslation } from "i18next-vue";
 import { useHead } from '@unhead/vue'
 
 import MediaItemCard from '../components/MediaItemCard.vue';
+import MediaItemSearch from '../components/MediaItemSearch.vue';
+import TwModal from '../components/base/TwModal.vue';
 import TwButton from '../components/base/TwButton.vue';
 import TwPagination from '../components/base/TwPagination.vue';
 
@@ -14,6 +16,7 @@ import { useMainStore } from '../stores/MainStore';
 import { useRatingStore } from '../stores/RatingStore';
 
 const mainStore = useMainStore();
+const modalIsOpen = ref(false);
 const ratingStore = useRatingStore();
 const route = useRoute();
 const { t } = useTranslation();
@@ -53,6 +56,11 @@ const groupedRatings = computed(() => {
   }
 });
 
+const handleMediaItemSelected = (item) => {
+  modalIsOpen.value = false;
+  mainStore.navigate({ path: `${item.mediaType}/${item.tmdbId}` });
+}
+
 onMounted(() => {
   ratingStore.populateRatingStoreFromQuery(route.query);
   ratingStore.isLoading = true;
@@ -79,8 +87,14 @@ watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.so
 
 <template>
   <section>
+    <!-- SEARCH MODAL -->
+    <TwModal v-model="modalIsOpen">
+      <MediaItemSearch class="p-5 py-10 h-[90%]" @item-selected="handleMediaItemSelected" />
+    </TwModal>
+    <!-- RATINGS PAGE -->
     <div>
       <h1 class="text-primary-900 mb-5 text-2xl font-bold uppercase">{{ $t(`pages.mediaItemRatings.title`) }}</h1>
+      <TwButton @click="() => modalIsOpen = true"> {{ $t(`pages.mediaItemRatings.searchCatalogButton`) }}</TwButton>
       <div class="mb-2 flex items-center justify-between">
         <p class="text-lg">{{ $t('pages.mediaItemRatings.totalCount', { count: ratingStore.ratingsTotal }) }}</p>
         <!-- SORT CONTROLS -->
@@ -127,7 +141,8 @@ watch([() => mainStore.lang, () => ratingStore.currentPage, () => ratingStore.so
             <p class="border-b-4 border-neutral-300 px-4 text-2xl">
               {{ group.dateSeen.toDateString() }}
             </p>
-            <MediaItemCard class="my-5" v-for="rating in group.ratings" :item="rating.mediaItem" :rating="rating" />
+            <MediaItemCard class="my-5" v-for="rating in group.ratings"
+              @click="() => handleMediaItemSelected(rating.mediaItem)" :item="rating.mediaItem" :rating="rating" />
           </li>
         </ul>
         <TwPagination class="py-5" v-if="ratingStore.totalPages && ratingStore.ratings.length > 3"

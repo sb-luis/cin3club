@@ -27,11 +27,8 @@ const fullPosterUrl = (path) => {
 </script>
 
 <template>
-  <div
-    v-if="item"
-    @click="() => mainStore.navigate({ path: `${item.mediaType}/${item.tmdbId}` })"
-    class="flex w-full justify-between rounded-2xl bg-neutral-100 px-2 py-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] hover:bg-neutral-200 md:p-6"
-  >
+  <div v-if="item"
+    class="flex w-full justify-between rounded-2xl bg-neutral-100 px-2 py-5 shadow-[0_30px_50px_-15px_rgba(0,0,0,0.5)] hover:bg-neutral-200 md:p-6">
     <div class="max-w-[50%] text-start md:max-w-[480px]">
       <h3 class="break-words py-2 text-xl md:text-3xl">{{ item.title }}</h3>
       <p v-if="item.originalTitle !== item.title" class="text-primary-900 py-2 text-sm italic md:text-xl">
@@ -50,11 +47,9 @@ const fullPosterUrl = (path) => {
       </div>
     </div>
     <div>
-      <img
-        :src="fullPosterUrl(item.posterPath)"
+      <img :src="fullPosterUrl(item.posterPath)"
         class="ml-2 w-[150px] rounded-2xl bg-red-200 object-contain shadow-sm md:w-[200px]"
-        :class="{ 'opacity-50 blur-xl': mediaStore.selectedMediaItem === item.id }"
-      />
+        :class="{ 'opacity-50 blur-xl': mediaStore.selectedMediaItem === item.id }" />
     </div>
   </div>
 </template>

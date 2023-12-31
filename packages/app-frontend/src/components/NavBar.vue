@@ -46,7 +46,6 @@ const hideNavDrawer = () => {
     <!-- DESKTOP NAV -->
     <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
       <div class="space-x-2">
-        <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
         <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/ratings">
           {{ $t('app.nav.ratingsLink') }}</NavLink>
         <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/lists">
@@ -100,7 +99,6 @@ const hideNavDrawer = () => {
           <div class="space-y-3 overflow-hidden">
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
-              <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
               <template v-if="authStore.credentials">
                 <NavLink @click="hideNavDrawer" class="text-xl" path="/ratings">
                   {{ $t('app.nav.ratingsLink') }}</NavLink>

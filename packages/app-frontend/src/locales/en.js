@@ -25,17 +25,11 @@ export const en = {
       profile: {
         title: 'profile',
       },
-      mediaItemSearch: {
-        title: 'search',
-        movieNotFound: "we can't find any movie or TV show matching that name",
-        searchLabel: 'Search for a movie or TV show',
-        searchPlaceholder: 'search',
-        welcomeMessage: 'The place where your favourite movies and TV shows live!',
-      },
       mediaItemRatings: {
         title: 'ratings',
         totalCount_one: '{{count}} rating',
         totalCount_other: '{{count}} ratings',
+        searchCatalogButton: 'Search movies and TV shows in our catalog',
         sort: {
           sortTypeLabel: 'Sort by',
           sortByScoreLabel: 'Score',
@@ -118,6 +112,12 @@ export const en = {
         update: { title: 'Edit List', submitButton: 'Update List', deleteButton: 'Delete List' },
         titleLabel: 'Title',
         descriptionLabel: 'Description',
+      },
+      mediaItemSearch: {
+        title: 'search',
+        mediaItemNotFound: "we can't find any movie or TV show matching that name",
+        searchLabel: 'Search for a movie or TV show',
+        searchPlaceholder: 'search',
       },
     },
   },

@@ -6,12 +6,12 @@ export default class MediaItemRatingsService extends Schmervice.Service {
     console.log('Getting ratings!');
     console.log(lang);
 
-    const { Rating, MediaItem, MediaItemLang } = this.server.app.models;
+    const { MediaItemRating, MediaItem, MediaItemLang } = this.server.app.models;
 
     const offset = parseInt(page - 1) * 10;
 
     // Fetch data from DB
-    let ratings = await Rating.findAll({
+    let ratings = await MediaItemRating.findAll({
       where: {
         userId,
       },
@@ -50,7 +50,7 @@ export default class MediaItemRatingsService extends Schmervice.Service {
       },
     }));
 
-    const total = await Rating.count({
+    const total = await MediaItemRating.count({
       where: {
         userId,
       },
@@ -77,12 +77,12 @@ export default class MediaItemRatingsService extends Schmervice.Service {
       `READ user ratings for tmdbId: '${tmdbId}', mediaType: '${mediaType}', userId:'${userId}'`,
     );
 
-    const { Rating } = this.server.app.models;
+    const { MediaItemRating } = this.server.app.models;
 
     const offset = parseInt(page - 1) * 10;
 
     // Fetch data from DB
-    const ratings = await Rating.findAll({
+    const ratings = await MediaItemRating.findAll({
       where: {
         mediaType,
         tmdbId,
@@ -106,7 +106,7 @@ export default class MediaItemRatingsService extends Schmervice.Service {
     console.log('creating rating!');
     console.log(mediaItem);
 
-    const { Rating, MediaItem } = this.server.app.models;
+    const { MediaItemRating, MediaItem } = this.server.app.models;
     const { connection } = this.server.app;
     // Start transaction...
     const transaction = await connection.transaction();
@@ -144,7 +144,7 @@ export default class MediaItemRatingsService extends Schmervice.Service {
       console.log('Rating data');
       console.log(ratingData);
 
-      const rating = await Rating.create(ratingData, { transaction });
+      const rating = await MediaItemRating.create(ratingData, { transaction });
 
       // If transaction went well...
       transaction.commit();
@@ -161,10 +161,10 @@ export default class MediaItemRatingsService extends Schmervice.Service {
   async updateRating({ id, userId, score, dateSeen }) {
     this.server.log(['info', 'rating-service'], `UPDATE rating ${id} with score:${score} and dateSeen:${dateSeen}`);
 
-    const { Rating } = this.server.app.models;
+    const { MediaItemRating } = this.server.app.models;
 
     // Get existing rating
-    let rating = await Rating.findOne({
+    let rating = await MediaItemRating.findOne({
       where: {
         id,
         userId,
@@ -188,10 +188,10 @@ export default class MediaItemRatingsService extends Schmervice.Service {
 
   async deleteRating({ id, userId }) {
     this.server.log(['info', 'rating-service'], `DELETE rating with ${id}`);
-    const { Rating } = this.server.app.models;
+    const { MediaItemRating } = this.server.app.models;
 
     // Delete rating
-    const rating = await Rating.destroy({
+    const rating = await MediaItemRating.destroy({
       where: {
         id,
         userId,

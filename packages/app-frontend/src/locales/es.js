@@ -25,17 +25,11 @@ export const es = {
       profile: {
         title: 'perfil',
       },
-      mediaItemSearch: {
-        title: 'buscar',
-        movieNotFound: 'No podemos encontrar ninguna película o serie que coincida con ese nombre',
-        searchLabel: 'Buscar una película o serie',
-        searchPlaceholder: 'buscar',
-        welcomeMessage: '¡El lugar donde viven tus películas y series favoritas!',
-      },
       mediaItemRatings: {
         title: 'valoraciones',
         totalCount_one: '{{count}} valoración',
         totalCount_other: '{{count}} valoraciones',
+        searchCatalogButton: 'Busca películas y series en nuestro catálogo',
         sort: {
           sortTypeLabel: 'Ordernar por',
           sortByScoreLabel: 'Puntuación',
@@ -118,6 +112,12 @@ export const es = {
         update: { title: 'Editar Lista', submitButton: 'Actualizar Lista', deleteButton: 'Eliminar Lista' },
         titleLabel: 'Título',
         descriptionLabel: 'Descripción',
+      },
+      mediaItemSearch: {
+        title: 'buscar',
+        searchLabel: 'Buscar una película o serie',
+        searchPlaceholder: 'buscar',
+        mediaItemNotFound: 'No podemos encontrar ninguna película o serie que coincida con ese nombre',
       },
     },
   },
