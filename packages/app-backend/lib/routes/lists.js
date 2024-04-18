@@ -161,4 +161,78 @@ export default [
       },
     },
   },
+
+  // ADD MediaItem to list content - private
+  {
+    method: 'POST',
+    path: '/api/lists/{mediaItemListId}/media',
+    handler: async (request, h) => {
+      const { mediaItemListId } = request.params;
+      const { mediaItem } = request.payload;
+      const creatorId = request.auth.credentials.userId;
+      const { mediaItemListsService } = request.services();
+
+      try {
+        const result = await mediaItemListsService.createOneMediaItemInList({
+          mediaItemListId,
+          mediaItem,
+          creatorId,
+        });
+        return result;
+      } catch (err) {
+        return Boom.boomify(err);
+      }
+    },
+    options: {
+      validate: {
+        payload: Joi.object({
+          mediaItem: Joi.object({
+            mediaType: Joi.string(),
+            tmdbId: Joi.number(),
+          }),
+        }),
+        params: Joi.object({
+          mediaItemListId: Joi.number(),
+        }),
+      },
+    },
+  },
+
+  // UPDATE MediaItems in list order - private
+  {
+    method: 'PUT',
+    path: '/api/lists/{mediaItemListId}/media',
+    handler: async (request, h) => {
+      console.log('updating user lists order!');
+      const { mediaItemListsService } = request.services();
+      const creatorId = request.auth.credentials.userId;
+      const { mediaItemListId } = request.params;
+      const { mediaItems } = request.payload;
+      try {
+        const result = await mediaItemListsService.updateMediaItemsOrderInList({
+          mediaItemListId,
+          mediaItems,
+          creatorId,
+        });
+        return result;
+      } catch (err) {
+        return Boom.boomify(err);
+      }
+    },
+    options: {
+      validate: {
+        payload: Joi.object({
+          mediaItems: Joi.array().items(
+            Joi.object({
+              id: Joi.number(),
+              order: Joi.number(),
+            }).unknown(true),
+          ),
+        }),
+        params: Joi.object({
+          mediaItemListId: Joi.number(),
+        }),
+      },
+    },
+  },
 ];

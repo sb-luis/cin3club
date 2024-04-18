@@ -193,9 +193,11 @@ export default class MediaItemListsService extends Schmervice.Service {
   }
 
   // CRUD operation of MediaItem within lists
-  async createOneMediaItemInList({ mediaItemListId, mediaItem, creatorId }) {
+  async createOneMediaItemInList({ mediaItemListId, mediaItem }) {
     this.server.log(['info', 'lists-service'], `CREATE MediaItem inside MediaItemList with id '${mediaItemListId}'`);
     // Start transaction...
+    const { connection } = this.server.app;
+    const { MediaItemListMediaItem, MediaItem } = this.server.app.models;
     const transaction = await connection.transaction();
 
     try {
@@ -227,7 +229,7 @@ export default class MediaItemListsService extends Schmervice.Service {
       }
 
       // Add MediaItem to MediaItemList
-      const result = await MediaItemListMediaItem.create({ order, mediaItemListId, mediaItemId: mediaItem.id });
+      const result = await MediaItemListMediaItem.create({ order, mediaItemListId, mediaItemId: existingItem.id });
 
       // If transaction went well...
       transaction.commit();
@@ -275,7 +277,7 @@ export default class MediaItemListsService extends Schmervice.Service {
     }
   }
 
-  async deleteOneMediaItemInList({ mediaItemListId, mediaItemId, id }) {
+  async deleteOneMediaItemInList({ mediaItemListId, mediaItemId }) {
     this.server.log(
       ['info', 'lists-service'],
       `DELETE MediaItem with id '${mediaItemId}' inside MediaItemList with id '${mediaItemListId}'`,
@@ -284,6 +286,6 @@ export default class MediaItemListsService extends Schmervice.Service {
 
     const { MediaItemListMediaItem } = this.server.app.models;
 
-    await MediaItemListMediaItem.destroy({ order }, { where: { mediaItemListId, mediaItemId, id } });
+    await MediaItemListMediaItem.destroy({ order }, { where: { mediaItemListId, mediaItemId } });
   }
 }

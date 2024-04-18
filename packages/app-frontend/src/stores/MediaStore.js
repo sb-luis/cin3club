@@ -17,11 +17,13 @@ export const useMediaStore = defineStore('MediaStore', {
   actions: {
     //  --- MOVIES ---
     async validateQuery() {
+      console.log('validating query...');
       this.searchQueryError = '';
       const mainStore = useMainStore();
 
       // Update router with last query
-      mainStore.navigate({ path: '/', query: { s: this.searchQuery }, replace: true });
+      const route = this.$router.currentRoute;
+      mainStore.navigate({ path: route.path, query: { s: this.searchQuery }, replace: true });
 
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
@@ -30,6 +32,7 @@ export const useMediaStore = defineStore('MediaStore', {
       }
     },
     async getMediaItems() {
+      console.log('getting media items...');
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);
       if (error) {
@@ -71,7 +74,7 @@ export const useMediaStore = defineStore('MediaStore', {
     },
     //  --- MEDIA ITEM RATINGS ---
     async refreshMediaItemRatings() {
-      console.log('Refreshing Media Item Ratings')
+      console.log('Refreshing Media Item Ratings');
       this.isLoading = true;
       try {
         await this.getMediaItemRatings();

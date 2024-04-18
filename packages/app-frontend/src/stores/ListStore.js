@@ -84,6 +84,22 @@ export const useListStore = defineStore('ListStore', {
       }
       this.isLoading = false;
     },
+    async addMediaItemToList(id, mediaItem) {
+      console.log('POST MediaItem');
+      console.log(mediaItem);
+      const mainStore = useMainStore();
+
+      this.isLoading = true;
+      try {
+        const res = await this.$axios.post(`/api/lists/${id}/media`, {
+          mediaItem: { mediaType: mediaItem.mediaType, tmdbId: mediaItem.tmdbId },
+        });
+        console.log(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+      this.isLoading = false;
+    },
     async createList({ title, description }) {
       this.isLoading = true;
 

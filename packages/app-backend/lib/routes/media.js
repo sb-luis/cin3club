@@ -7,7 +7,7 @@ import { URL_QUERY_STR_MAX } from '../../server/constants.js';
 export default [
   // SEARCH MOVIES AND TV SHOWS - public
   {
-    method: 'get',
+    method: 'GET',
     path: '/api/media',
     handler: async (request, h) => {
       const { s, lang } = request.query;
