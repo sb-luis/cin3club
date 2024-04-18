@@ -1,16 +1,13 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAuthStore } from '../stores/AuthStore';
 import { useMainStore } from '../stores/MainStore';
 import { onClickOutside } from '@vueuse/core';
 // https://vueuse.org/core/onClickOutside/
 import GoIcon from './base/GoIcon.vue';
 import NavLink from './NavLink.vue';
 
-const authStore = useAuthStore();
 const mainStore = useMainStore();
-const { credentials } = storeToRefs(authStore);
 
 const langMenuIsOpen = ref(false);
 const reactiveTabIndex = ref(0);
@@ -47,16 +44,6 @@ const hideNavDrawer = () => {
     <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
       <div class="space-x-2">
         <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
-        <NavLink v-if="authStore.credentials" @click="hideNavDrawer" path="/ratings">
-          {{ $t('app.nav.ratingsLink') }}</NavLink
-        >
-      </div>
-      <template v-if="authStore.credentials">
-        <NavLink @click="hideNavDrawer" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
-      </template>
-      <div class="space-x-2" v-else>
-        <NavLink @click="hideNavDrawer" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
-        <NavLink @click="hideNavDrawer" path="/register">{{ $t('app.nav.registerLink') }}</NavLink>
       </div>
     </div>
 
@@ -115,18 +102,6 @@ const hideNavDrawer = () => {
             <!-- NAVBAR DRAWER CONTENT -->
             <div class="flex flex-col space-y-2 p-5">
               <NavLink @click="hideNavDrawer" class="text-xl" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
-              <template v-if="authStore.credentials">
-                <NavLink @click="hideNavDrawer" class="text-xl" path="/ratings">
-                  {{ $t('app.nav.ratingsLink') }}</NavLink
-                >
-                <NavLink @click="hideNavDrawer" class="text-xl" path="/logout">{{ $t('app.nav.logoutLink') }}</NavLink>
-              </template>
-              <template v-else>
-                <NavLink @click="hideNavDrawer" class="text-xl" path="/login">{{ $t('app.nav.loginLink') }}</NavLink>
-                <NavLink @click="hideNavDrawer" class="text-xl" path="/register">{{
-                  $t('app.nav.registerLink')
-                }}</NavLink>
-              </template>
             </div>
           </div>
         </div>

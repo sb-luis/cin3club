@@ -19,7 +19,6 @@ export const plugin = {
           error - severe issues
     */
 
-
     /* --- Register Pino Logging ---
      */
     const devLogOptions = {
@@ -46,7 +45,7 @@ export const plugin = {
         mergeHapiLogData: true,
         level: process.env.LOG_LEVEL,
         logEvents: ['log', 'request-error'],
-        ...extraOptions,
+        ...extraPinoOptions,
       },
     });
     server.log('info', 'Pino logging registered!');

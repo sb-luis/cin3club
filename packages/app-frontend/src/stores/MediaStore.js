@@ -7,7 +7,6 @@ export const useMediaStore = defineStore('MediaStore', {
     return {
       isLoading: false,
       selectedMediaItem: {},
-      selectedMediaItemRatings: [],
       searchItems: [],
       searchQuery: '',
       searchQuerySchema: Joi.string().min(3).max(50).required().label('search query'),
@@ -63,32 +62,6 @@ export const useMediaStore = defineStore('MediaStore', {
         const url = `/api/media/${mediaType}/${id}?lang=${mainStore.lang}`;
         const res = await this.$axios.get(url);
         this.selectedMediaItem = { ...res.data, mediaType };
-        await this.refreshMediaItemRatings();
-      } catch (err) {
-        console.error(err);
-      }
-      this.isLoading = false;
-    },
-    //  --- MEDIA ITEM RATINGS ---
-    async refreshMediaItemRatings() {
-      this.isLoading = true;
-      try {
-        await this.getMediaItemRatings();
-      } catch (err) {
-        console.log(err);
-      }
-      this.isLoading = false;
-    },
-    async getMediaItemRatings() {
-      this.selectedMediaItemRatings = {};
-      this.isLoading = true;
-      try {
-        // GET MOVIE RATINGS
-        console.log('fetching media item ratings');
-        const url = `/api/ratings?tmdbId=${this.selectedMediaItem.tmdbId}&mediaType=${this.selectedMediaItem.mediaType}`;
-        const res = await this.$axios.get(url);
-        console.log(res.data);
-        this.selectedMediaItemRatings = res.data;
       } catch (err) {
         console.error(err);
       }

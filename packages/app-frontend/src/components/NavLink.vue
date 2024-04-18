@@ -1,10 +1,8 @@
 <script setup>
 import { useMainStore } from '../stores/MainStore';
-import { useAuthStore } from '../stores/AuthStore';
 import { useRoute } from 'vue-router';
 
 const mainStore = useMainStore();
-const authStore = useAuthStore();
 const route = useRoute();
 
 const { path, query, replace } = defineProps({
@@ -23,12 +21,7 @@ const { path, query, replace } = defineProps({
 });
 
 const handleNavigation = () => {
-  if (path === '/logout') {
-    authStore.logout();
-    mainStore.navigate({ path: '/' });
-  } else {
-    mainStore.navigate({ path, query, replace });
-  }
+  mainStore.navigate({ path, query, replace });
 };
 </script>
 

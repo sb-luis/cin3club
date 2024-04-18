@@ -3,13 +3,9 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { SelfBuildingSquareSpinner } from 'epic-spinners';
 
-import MovieDetailsRatings from './MediaItemDetailsRatings.vue';
-
 import { useMediaStore } from '../stores/MediaStore';
-import { useAuthStore } from '../stores/AuthStore';
 
 const mediaStore = useMediaStore();
-const authStore = useAuthStore();
 const route = useRoute();
 
 const isTvShow = route.meta.mediaType === 'tv';
@@ -133,13 +129,6 @@ const moviePosterUrl = computed(() => {
         {{ genre.name }}
       </li>
     </ul>
-    <!-- RATINGS -->
-    <div class="justify-end pt-5 md:flex">
-      <p v-if="mediaItem.overview" class="pb-5 text-lg md:pr-20">{{ mediaItem.overview }}</p>
-      <div v-if="authStore.credentials">
-        <MovieDetailsRatings />
-      </div>
-    </div>
   </div>
   <SelfBuildingSquareSpinner v-else class="m-auto mt-20" :animation-duration="2000" :size="48" />
 </template>

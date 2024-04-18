@@ -19,7 +19,6 @@ export function createApp(options = {}) {
   console.log(`'lang' is: '${lang}'`);
   console.log(`'path' is: '${path}'`);
 
-  const isSsr = import.meta.env.SSR;
   const isDev = import.meta.env.DEV;
   const baseURL = isDev ? import.meta.env.VITE_BASE_URL : '/';
 
