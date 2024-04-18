@@ -27,6 +27,7 @@
     "lodash.debounce": "^4.0.8",
     "pinia": "^2.1.7",
     "sirv": "^2.0.3",
+    "socket.io": "^4.7.5",
     "vue": "^3.2.45",
     "vue-router": "^4.2.5"
   },

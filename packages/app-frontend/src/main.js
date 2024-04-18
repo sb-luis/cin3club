@@ -19,6 +19,12 @@ export function createApp(options = {}) {
   console.log(`'lang' is: '${lang}'`);
   console.log(`'path' is: '${path}'`);
 
+  // --- global Socket IO instance ---
+  if (options?.socket) {
+    app.config.globalProperties.$socket = options.socket;
+    app.provide('$socket', options.socket);
+  }
+
   const isDev = import.meta.env.DEV;
   const baseURL = isDev ? import.meta.env.VITE_BASE_URL : '/';
 

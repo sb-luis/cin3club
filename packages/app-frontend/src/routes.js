@@ -6,11 +6,17 @@ import Layout from './layouts/Layout.vue';
 import MediaItemSearch from './pages/MediaItemSearch.vue';
 import MediaItemDetails from './pages/MediaItemDetails.vue';
 import NotFound from './pages/NotFound.vue';
+import SocketTest from './pages/SocketTest.vue';
 
 export const routes = [
   {
     path: '/',
     name: 'Home',
+    component: SocketTest,
+  },
+  {
+    path: '/search',
+    name: 'Search',
     component: MediaItemSearch,
   },
   { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
