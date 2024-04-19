@@ -19,7 +19,7 @@ import fs from 'node:fs/promises';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { createServer } from 'node:http';
-import { Server } from 'socket.io';
+import { createSocketServer } from './socket-server.js';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
@@ -61,13 +61,15 @@ const apiProxy = createProxyMiddleware('/api', {
 });
 
 app.use('/api', apiProxy);
+
+// Initialise socket io server
+createSocketServer(server);
+
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '');
     const { lang = 'en' } = req.query;
-
-    console.log('blahhh');
 
     let template;
     let render;
@@ -95,18 +97,6 @@ app.use('*', async (req, res) => {
     console.log(e.stack);
     res.status(500).end(e.stack);
   }
-});
-
-const io = new Server(server);
-
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    setTimeout(() => {
-      io.emit('chat message', 'hi back from the server');
-    }, 2000);
-  });
 });
 
 // Start http server
