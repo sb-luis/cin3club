@@ -6,19 +6,21 @@ import Layout from './layouts/Layout.vue';
 import MediaItemSearch from './pages/MediaItemSearch.vue';
 import MediaItemDetails from './pages/MediaItemDetails.vue';
 import NotFound from './pages/NotFound.vue';
-import SocketTest from './pages/SocketTest.vue';
+import PollCreate from './pages/PollCreate.vue';
+import PollJoin from './pages/PollJoin.vue';
 
 export const routes = [
   {
     path: '/',
     name: 'Home',
-    component: SocketTest,
+    component: PollCreate,
   },
   {
     path: '/search',
     name: 'Search',
     component: MediaItemSearch,
   },
+  { path: '/poll/:id', name: 'LivePoll', component: PollJoin, meta: { public: true } },
   { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
   { path: '/movie/:id', name: 'MovieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
   {

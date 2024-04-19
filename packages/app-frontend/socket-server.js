@@ -34,6 +34,7 @@ class SocketServer {
 
       if (!requestedRoom) {
         console.log(`Room ${roomId} doesn't exist`);
+        this.io.to(socket.id).emit('room does not exists');
         return;
       }
 
@@ -60,15 +61,29 @@ class SocketServer {
     socket.on('accept membership', (userId, roomId) => {
       // Only accept user if the room exists
       // and this socket is the host of the room
+      const room = this.rooms.find((room) => room.id === roomId);
+      if (!room || room.host !== socket.id) {
+        return;
+      }
+
+      this.io.to(userId).emit('membership approved', room.members);
+      this.io.to(roomId).emit('member joined', userId);
+      room.members.push(userId);
+      room.joinRequests = room.joinRequests.filter((request) => request !== userId);
+      console.log(`user ${userId} is now a member of the room ${roomId}`);
+    });
+
+    socket.on('reject membership', (userId, roomId) => {
+      // Only reject user if the room exists
+      // and this socket is the host of the room
       if (!this.rooms.find((room) => room.id === roomId && room.host === socket.id)) {
         return;
       }
 
-      this.io.to(roomId).emit('member joined', userId);
+      this.io.to(userId).emit('membership rejected');
       const room = this.rooms.find((room) => room.id === roomId);
-      room.members.push(userId);
       room.joinRequests = room.joinRequests.filter((request) => request !== userId);
-      console.log(`user ${userId} is now a member of the room ${roomId}`);
+      console.log(`user ${userId} was rejected from the room ${roomId}`);
     });
 
     socket.on('increase count', (roomId) => {
@@ -79,7 +94,6 @@ class SocketServer {
         this.io.to(roomId).emit('count increased', socket.id);
       } else {
         console.log(`user ${socket.id} is not a member of the room ${roomId}`);
-        console.log(room.members);
       }
     });
 

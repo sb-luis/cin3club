@@ -52,6 +52,7 @@ const hideNavDrawer = () => {
     <!-- NAVBAR END -->
     <div class="flex w-44 items-center justify-between md:w-32">
       <!-- TOGGLE LOCALE -->
+      <!--
       <details ref="langMenu" :open="langMenuIsOpen" @click="toggleLangMenu" class="mr-2 w-60">
         <summary>{{ $t('app.nav.langSelectionLabel') }}</summary>
         <ul class="rounded-box absolute z-[1] mt-2 w-40 space-y-2 rounded-2xl bg-neutral-100 p-3 shadow">
@@ -67,8 +68,8 @@ const hideNavDrawer = () => {
           </li>
         </ul>
       </details>
+    -->
 
-      <!-- TOGGLE THEME -->
       <button
         @click="mainStore.toggleTheme()"
         class="relative flex h-10 w-10 cursor-pointer items-center justify-center"
