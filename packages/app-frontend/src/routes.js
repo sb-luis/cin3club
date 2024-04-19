@@ -1,43 +1,28 @@
 import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from './stores/AuthStore';
 import { useMainStore } from './stores/MainStore';
 import Layout from './layouts/Layout.vue';
 
 // Pages
 import MediaItemSearch from './pages/MediaItemSearch.vue';
 import MediaItemDetails from './pages/MediaItemDetails.vue';
-import Auth from './pages/Auth.vue';
 import NotFound from './pages/NotFound.vue';
-import Ratings from './pages/Ratings.vue';
+import PollCreate from './pages/PollCreate.vue';
+import PollJoin from './pages/PollJoin.vue';
 
 export const routes = [
   {
     path: '/',
     name: 'Home',
+    component: PollCreate,
+  },
+  {
+    path: '/search',
+    name: 'Search',
     component: MediaItemSearch,
   },
+  { path: '/poll/:id', name: 'LivePoll', component: PollJoin, meta: { public: true } },
   { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
   { path: '/movie/:id', name: 'MovieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
-  {
-    path: '/ratings',
-    name: 'Ratings',
-    component: Ratings,
-    meta: { public: false },
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Auth,
-    props: { authPage: 'login' },
-    meta: { public: true },
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Auth,
-    props: { authPage: 'register' },
-    meta: { public: true },
-  },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -68,19 +53,11 @@ router.beforeEach(async (to) => {
   console.log(`Navigating to: ${to.name}`);
   console.log(to);
 
-  const authStore = useAuthStore();
   const mainStore = useMainStore();
   const isPublic = to.meta.public === true;
 
   // Initialise app state
   mainStore.populateAppStateFromQuery(to.query);
-
-  // If user is not authenticated...
-  if (!isPublic && !authStore.credentials) {
-    console.log("Unauthenticated user trying to access protected route.Redirecting to '/login' page");
-    // Redirect to login if credentials are invalid
-    return { path: '/login', replace: true };
-  }
 });
 
 export default router;

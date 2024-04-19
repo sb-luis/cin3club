@@ -8,10 +8,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  rating: {
-    type: Object,
-    default: null,
-  },
 });
 const mainStore = useMainStore();
 const mediaStore = useMediaStore();
@@ -39,14 +35,6 @@ const fullPosterUrl = (path) => {
       </p>
       <div class="flex items-center space-x-2 md:space-x-4 md:text-lg">
         <p>{{ item.releaseYear }}</p>
-      </div>
-      <div v-if="rating" class="flex pt-10">
-        <p class="bg-primary-700 mb-3 flex flex-col whitespace-nowrap rounded-xl p-3 text-center text-4xl">
-          <span class="mb-2 text-sm font-bold uppercase">your score</span>
-          <span>
-            {{ rating.score }}
-          </span>
-        </p>
       </div>
     </div>
     <div>

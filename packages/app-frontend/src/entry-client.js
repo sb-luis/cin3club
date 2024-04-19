@@ -3,7 +3,9 @@
 
 import { createApp } from './main.js';
 
-const { app, router } = createApp();
+// We only initialise the socket-io client on the client-side JS
+const socket = io();
+const { app, router } = createApp({ socket });
 
 // wait until router is ready before mounting to ensure hydration match
 router.isReady().then(() => {

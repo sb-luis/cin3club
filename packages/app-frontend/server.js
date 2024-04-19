@@ -18,6 +18,8 @@
 import fs from 'node:fs/promises';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { createServer } from 'node:http';
+import { createSocketServer } from './socket-server.js';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
@@ -30,6 +32,7 @@ const ssrManifest = isProduction ? await fs.readFile('./dist/client/ssr-manifest
 
 // Create http server
 const app = express();
+const server = createServer(app);
 
 // Add Vite or respective production middlewares
 let vite;
@@ -58,13 +61,15 @@ const apiProxy = createProxyMiddleware('/api', {
 });
 
 app.use('/api', apiProxy);
+
+// Initialise socket io server
+createSocketServer(server);
+
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '');
     const { lang = 'en' } = req.query;
-
-    console.log('blahhh');
 
     let template;
     let render;
@@ -95,6 +100,6 @@ app.use('*', async (req, res) => {
 });
 
 // Start http server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });

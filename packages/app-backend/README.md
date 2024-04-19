@@ -2,10 +2,7 @@
 
 This is a Node.js backend providing an API to:
 
-- authenticate requests and manage sessions through cookies
-- create, read, update and delete users
 - search movies and movie details through the [TMDB API](https://developer.themoviedb.org/docs)
-- create, read, update and delete user ratings for movies
 
 ## getting started
 
@@ -37,10 +34,6 @@ npm run dev
   - **[@hapipal/schmervice](https://www.npmjs.com/package/@hapipal/schmervice)**: Service layer for the Hapi.js framework.
   - **[@hapipal/toys](https://www.npmjs.com/package/@hapipal/toys)**: Set of utilities for hapi.js applications.
   - **[hapi-pino](https://www.npmjs.com/package/hapi-pino)**: Hapi plugin for the Pino logger.
-- **[pg](https://www.npmjs.com/package/pg)**: PostgreSQL client for Node.js.
-  - **[pg-hstore](https://www.npmjs.com/package/pg-hstore)**: A Node package for serializing and deserializing JSON data in and out of PostgreSQL.
-  - **[sequelize](https://www.npmjs.com/package/sequelize)**: A promise-based Node.js ORM for PostgreSQL, MySQL, MariaDB, SQLite, and Microsoft SQL Server.
-  - **[sqlite3](https://www.npmjs.com/package/sqlite3)**: Asynchronous, non-blocking SQLite3 bindings for Node.js.
 - **[axios](https://www.npmjs.com/package/axios)**: Promise-based HTTP client for the browser and Node.js.
 - **[bcrypt](https://www.npmjs.com/package/bcrypt)**: A library to help you hash passwords.
 - **[joi](https://www.npmjs.com/package/joi)**: Object schema description language and validator for JavaScript objects.
