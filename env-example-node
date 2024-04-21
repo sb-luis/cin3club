@@ -1,0 +1,12 @@
+OMDB_ENDPOINT=http://www.omdbapi.com
+OMDB_KEY=foo
+TMDB_ENDPOINT=https://api.themoviedb.org/3
+TMDB_KEY=bar
+DATABASE_URL=postgres://user:pass@db:5432/cin3club
+BCRYPT_SALT_ROUNDS=11
+COOKIE_KEY=1111111111111111111111111111111111
+FRONTEND_URL=http://localhost:8000
+FRONTEND_URL_DEV=http://localhost:8000
+LOG_LEVEL=debug
+VITE_BASE_URL=http://localhost:3000
+BACKEND_URL=http://localhost:3000

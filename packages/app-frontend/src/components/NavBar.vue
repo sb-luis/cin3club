@@ -44,7 +44,7 @@ const hideNavDrawer = () => {
     <!--
     <div class="margin-auto hidden max-w-5xl flex-1 items-center justify-between pl-[5%] pr-4 md:flex lg:pr-6 xl:pl-28">
       <div class="space-x-2">
-        <NavLink @click="hideNavDrawer" path="/">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
+        <NavLink @click="hideNavDrawer" path="/search">{{ $t('app.nav.mediaItemSearchLink') }}</NavLink>
       </div>
     </div>
     -->

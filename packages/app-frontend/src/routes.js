@@ -49,9 +49,7 @@ const router = createRouter({
 // https://router.vuejs.org/guide/advanced/navigation-guards.html
 router.beforeEach(async (to) => {
   console.log('Vue router navigation guard run');
-
   console.log(`Navigating to: ${to.name}`);
-  console.log(to);
 
   const mainStore = useMainStore();
   const isPublic = to.meta.public === true;

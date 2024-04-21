@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
       target: dev
     env_file:
-      - .env
+      - .env-compose
     environment:
       - DATABASE_URL=postgres://user:pass@db:5432/cin3club
       - BCRYPT_SALT_ROUNDS=11
