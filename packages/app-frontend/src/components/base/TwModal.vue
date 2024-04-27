@@ -1,5 +1,5 @@
 <script setup>
-import TwButton from './TwButton.vue';
+import BaseButton from './BaseButton.vue';
 import { computed } from 'vue';
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({ modelValue: { type: Boolean, required: true } });
@@ -20,6 +20,6 @@ const visible = computed({
     :class="{ 'pointer-events-auto opacity-[95%]': visible }"
   >
     <slot></slot>
-    <TwButton @click="() => (visible = false)" class="absolute right-5 top-5">BACK</TwButton>
+    <BaseButton @click="() => (visible = false)" class="absolute right-5 top-5">BACK</BaseButton>
   </div>
 </template>

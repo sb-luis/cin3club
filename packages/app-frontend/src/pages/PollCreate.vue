@@ -1,38 +1,64 @@
 <script setup>
-  import { onMounted, inject, ref } from 'vue'
-  import TwButton from '@/components/base/TwButton.vue'
-  import PollRoom from '@/components/PollRoom.vue'
-  import PollRoomStaging from '@/components/PollRoomStaging.vue'
+import { onMounted, inject, ref } from 'vue';
+import PollRoomCreate from '@/components/PollRoomCreate.vue';
+import PollRoomStage from '@/components/PollRoomStage.vue';
+import PollRoomRun from '@/components/PollRoomRun.vue';
+import PollRoomResults from '@/components/PollRoomResults.vue';
 
-  const $socket = inject('$socket')
+const POLL_PHASES = Object.freeze({
+  create: 'create',
+  staging: 'staging',
+  running: 'running',
+  end: 'finished',
+});
 
-  const roomCreated = ref(false)
-  const roomId = ref('')
+const $socket = inject('$socket');
 
-  function createRoom() {
-    $socket.emit('create room')
-  }
+const pollPhase = ref(POLL_PHASES.create);
+const pollData = ref({});
 
-  onMounted(() => {
-    console.log('PollCreate page mounted')
+function handlePollCreationDone(_poll) {
+  console.log('Handling Poll Creation Done');
+  console.log(_poll);
+  pollData.value = _poll;
+  pollPhase.value = POLL_PHASES.staging;
+}
 
-    $socket.on('room created', _roomId => {
-      roomId.value = _roomId
-      roomCreated.value = true
-    })
-  })
+function handlePollStagingDone(_poll) {
+  console.log('Handling Poll Staging Done');
+  console.log(_poll);
+  pollData.value = _poll;
+  pollPhase.value = POLL_PHASES.running;
+}
+
+function handlePollRunningDone(_poll) {
+  console.log('Handling Poll Running Done');
+  console.log(_poll);
+  pollData.value = _poll;
+  pollPhase.value = POLL_PHASES.end;
+}
+
+onMounted(() => {
+  console.log('PollCreate page mounted');
+  console.log('Poll Data');
+  console.log(pollData.value);
+});
 </script>
 
 <template>
   <section class="space-y-3">
-    <div v-if="!roomCreated">
-      <TwButton @click="createRoom">Create poll</TwButton>
-    </div>
-    <!-- Poll Room component -->
-    <div v-else class="border-2 border-black p-2">
-      <PollRoomStaging :roomId="roomId" />
-    </div>
-    <PollRoom v-if="roomCreated" :roomId="roomId" :initialMembers="[$socket.id]" />
+    <PollRoomCreate v-if="pollPhase === POLL_PHASES.create" @done="(poll) => handlePollCreationDone(poll)" />
+    <PollRoomStage
+      v-else-if="pollPhase === POLL_PHASES.staging"
+      :initialPollData="pollData"
+      @done="(poll) => handlePollStagingDone(poll)"
+    />
+    <PollRoomRun
+      v-else-if="pollPhase === POLL_PHASES.running"
+      :initialPollData="pollData"
+      @done="(poll) => handlePollRunningDone(poll)"
+    />
+    <PollRoomResults v-else-if="pollPhase === POLL_PHASES.end" :pollData="pollData" />
   </section>
 </template>
 

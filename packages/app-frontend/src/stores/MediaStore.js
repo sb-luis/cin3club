@@ -20,7 +20,7 @@ export const useMediaStore = defineStore('MediaStore', {
       const mainStore = useMainStore();
 
       // Update router with last query
-      mainStore.navigate({ path: '/search', query: { s: this.searchQuery }, replace: true });
+      // mainStore.navigate({ path: '/search', query: { s: this.searchQuery }, replace: true });
 
       // Validate query
       const { value, error } = this.searchQuerySchema.validate(this.searchQuery);

@@ -1,5 +1,6 @@
 <script setup>
-import NavBar from '../components/NavBar.vue';
+import BaseNotificator from '@/components/base/BaseNotificator.vue';
+import NavBar from '@/components/NavBar.vue';
 import { onMounted } from 'vue';
 
 const date = new Date();
@@ -16,15 +17,17 @@ onMounted(() => {
       <!-- HEADER -->
       <header class="relative w-full">
         <!-- NAVBAR -->
-        <NavBar />
+        <!-- <NavBar /> -->
       </header>
 
       <!-- MAIN -->
-      <main class="relative mt-14 w-full max-w-4xl flex-1">
-        <router-view v-slot="{ Component, route }">
-          <component :is="Component" :key="route.path" />
-        </router-view>
-      </main>
+      <BaseNotificator>
+        <main class="relative mt-14 w-full max-w-4xl flex-1">
+          <router-view v-slot="{ Component, route }">
+            <component :is="Component" :key="route.path" />
+          </router-view>
+        </main>
+      </BaseNotificator>
 
       <!-- FOOTER -->
       <footer class="py-6 text-center text-xs text-neutral-400">
