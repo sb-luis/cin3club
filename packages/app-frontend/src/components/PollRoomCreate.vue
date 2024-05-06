@@ -12,7 +12,7 @@ const $notify = inject('$notify');
 const startCreating = ref(false);
 const mediaItemsSelected = ref([]);
 const roomCreationRequestSent = ref(false);
-const mediaItemsMin = 5;
+const mediaItemsMin = 2;
 const mediaItemsMax = 100;
 
 const handleRemoveItem = (item) => {
