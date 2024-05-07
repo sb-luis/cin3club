@@ -3,7 +3,7 @@ import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'rad
 import { ref, inject, onMounted } from 'vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import MediaItemSearch from '@/components/MediaItemSearch.vue';
-import MediaItemListerCard from '@/components/MediaItemListerCard.vue';
+import MediaItemCard from '@/components/MediaItemCard.vue';
 import { CREATE_ROOM, ROOM_CREATED } from '@/socket-constants';
 
 const emit = defineEmits(['done']);
@@ -77,7 +77,7 @@ onMounted(() => {
             : `Select at least ${mediaItemsMin - mediaItemsSelected.length} more films`
         }}
       </h1>
-      <BaseButton v-if="mediaItemsSelected.length >= mediaItemsMin" @click="() => $socket.emit(CREATE_ROOM)"> 
+      <BaseButton class="mb-3" v-if="mediaItemsSelected.length >= mediaItemsMin" @click="() => $socket.emit(CREATE_ROOM)"> 
         Start Poll
       </BaseButton>
       <TabsRoot class="shadow-blackA4 flex w-full flex-col shadow-[0_2px_10px]" default-value="tab1">
@@ -113,8 +113,8 @@ onMounted(() => {
           class="grow rounded-b-md p-5 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
           value="tab2"
         >
-          <MediaItemListerCard
-            class="my-5"
+          <MediaItemCard
+            class="my-2"
             v-for="item in mediaItemsSelected"
             :item="item"
             @click="handleRemoveItem(item)"

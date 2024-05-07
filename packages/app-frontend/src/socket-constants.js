@@ -18,6 +18,7 @@ const POLL_ENDED = 'poll ended';
 const ROUND_STARTED = 'round started';
 const ROUND_ENDED = 'round ended';
 const SUBMIT_VOTES = 'submit votes';
+const POLL_TIE = 'poll tie';
 
 export {
   // Room events
@@ -40,4 +41,5 @@ export {
   ROUND_STARTED,
   ROUND_ENDED,
   SUBMIT_VOTES,
+  POLL_TIE,
 };

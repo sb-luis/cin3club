@@ -8,6 +8,7 @@ import MediaItemDetails from './pages/MediaItemDetails.vue';
 import NotFound from './pages/NotFound.vue';
 import PollCreate from './pages/PollCreate.vue';
 import PollJoin from './pages/PollJoin.vue';
+import Debug from './pages/Debug.vue';
 
 export const routes = [
   {
@@ -23,6 +24,11 @@ export const routes = [
   { path: '/poll/:id', name: 'LivePoll', component: PollJoin, meta: { public: true } },
   { path: '/tv/:id', name: 'TvDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'tv' } },
   { path: '/movie/:id', name: 'MovieDetails', component: MediaItemDetails, meta: { public: true, mediaType: 'movie' } },
+  {
+    path: '/debug',
+    name: 'Debug',
+    component: Debug,
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

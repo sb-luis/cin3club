@@ -2,6 +2,9 @@
 import { ref, watch, computed } from 'vue';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
+import TwInput from '../components/base/TwInput.vue';
+import MediaItemCard from '../components/MediaItemCard.vue';
+import { useMediaStore } from '../stores/MediaStore';
 
 const emit = defineEmits(['item-selected']);
 
@@ -19,11 +22,6 @@ const filteredItems = computed(() => {
     return !itemsMatch; 
   });
 });
-
-import TwInput from '../components/base/TwInput.vue';
-import MediaItemListerCard from '../components/MediaItemListerCard.vue';
-
-import { useMediaStore } from '../stores/MediaStore';
 
 const mediaStore = useMediaStore();
 const { searchQuery } = storeToRefs(mediaStore);
@@ -61,8 +59,8 @@ const selectItem = (item) => {
         :placeholder="$t('pages.mediaItemSearch.searchPlaceholder')"
       />
     </div>
-    <ul v-if="filteredItems.length">
-      <MediaItemListerCard class="my-5" v-for="item in filteredItems" :item="item" @click="selectItem(item)" />
+    <ul class="py-2" v-if="filteredItems.length">
+      <MediaItemCard class="my-2" v-for="item in filteredItems" :item="item" @click="selectItem(item)" size="md" />
     </ul>
   </section>
 </template>

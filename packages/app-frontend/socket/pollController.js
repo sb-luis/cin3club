@@ -1,4 +1,4 @@
-import { START_POLL, ROUND_STARTED, POLL_STARTED, POLL_ENDED, SUBMIT_VOTES } from '../src/socket-constants.js';
+import { START_POLL, ROUND_STARTED, POLL_STARTED, POLL_ENDED, SUBMIT_VOTES, POLL_TIE } from '../src/socket-constants.js';
 
 function startPoll(_socket, _server, _pollChoices, _roomId) {
   console.log('attempting to start poll');
@@ -157,7 +157,17 @@ function submitVotes(_socket, _server, _votes, _roomId) {
     if (poll.roundIndex === poll.roundsTotal - 1) {
       console.log('all rounds have been completed');
       console.log(`round ${poll.roundIndex + 1} is the last round - determining winner`);
-      poll.winner = reducedChoices[0];
+
+      // If there is a tie - pick a random winner
+      if (reducedChoices.length > 1) {
+        const randomIndex = Math.floor(Math.random() * reducedChoices.length);
+        poll.winner = reducedChoices[randomIndex];
+        _server.io.to(_roomId).emit(POLL_TIE, reducedChoices);
+      } else {
+        // Else - the winner is the only choice left
+        poll.winner = reducedChoices[0];
+      }
+
       console.log('winner is', poll.winner);
       _server.io.to(_roomId).emit(POLL_ENDED, poll);
       return;
